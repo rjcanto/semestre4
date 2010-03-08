@@ -1,0 +1,40 @@
+REM Builder para construção automática das cadeiras dos semestres
+REM Nuno Cancelo
+REM Versão 0.1
+REM Março/2010
+@echo off
+cls
+REM Definição da Raiz da Localição das Pastas/Ficheiros
+set "ISEL_PATH=d:\ESCOLA\ISEL\Semestre4"
+REM Definição das Cadeiras a serem realizadas
+set "CADEIRAS=REDES LS EGP PSC POO"
+REM Definição das SubPastas
+set "PASTAS=SERIES TRABALHOS DOCS TRABALHOS\Work TRABALHOS\Test TRABALHOS\Work\src TRABALHOS\Test\src"
+
+:MAIN
+IF NOT EXIST %ISEL_PATH% mkdir %ISEL_PATH%
+
+
+:FOR
+	SET CADEIRA_PATH=""	
+for %%i in (%CADEIRAS%) DO (
+	IF NOT EXIST %ISEL_PATH%\%%i (
+		echo Build %ISEL_PATH%\%%i
+		MKDIR %ISEL_PATH%\%%i
+	)
+	for %%j in (%PASTAS%) do (
+		IF NOT EXIST %ISEL_PATH%\%%i\%%j (
+			echo Build %ISEL_PATH%\%%i\%%j
+			MKDIR %ISEL_PATH%\%%i\%%j
+		)
+	)
+)
+GOTO END
+	
+
+:END
+ECHO Finnish!
+
+		
+	
+
