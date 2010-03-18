@@ -36,6 +36,65 @@ void simplyPrint(InfoUC *uniCurr){
 	(uniCurr->depf[2]->uc != NULL)?uniCurr->depf[2]->uc:"");
 }
 
+void printHeader(char * header){
+		puts("================================================================================");
+		puts("Listagem de Unidades Curriculares Filtradas");
+		puts("================================================================================");
+		puts("Uni.Curr|Tipo|Semestre|Dependencias Fortes|Dependencias Fracas");	
+}
+void printTrailer(int nbrRecords){
+		char c=(nbrRecords>1)?'s':' ';
+		puts("================================================================================");
+		printf("Numero de registo%c encontrado%c: %d\n",c,c,nbrRecords);
+		puts("================================================================================");
+}
+
+
+
+
+void list(int (*condition)(struct info_uc*,void*),void *p, int o){
+		int i;
+		int nbr=0;
+		
+		for (i=0;i<size;(++i)){
+		/*
+		 * if (ucDb[i].tipo == type)
+		 * if (ucDb[i].sem & mask)
+		 * if(isDep(uniCurr,ucDb[i].depF) || isDep(uniCurr,ucDb[i].depf) )
+		 * 
+		 * */	
+			
+			if (condition(&ucDb[i],p)){
+				simplyPrint(&ucDb[i]);
+				++nbr;
+			}
+		}
+		
+		printTrailer(nbr);
+
+}
+int condition(struct info_uc* uc,void* p){
+
+
+	return 0;
+}
+/*
+ * Lista todas as Unidades Curriculares
+ * */
+void listAllUC(){
+		int i;
+		int nbr=0;
+		printHeader("Listagem de Todas as Unidades Curriculares");
+		list(condition,NULL);
+/*		for (i=0;i<size;++i){
+			simplyPrint(&ucDb[i]);
+			++nbr;
+		}
+*/
+		printTrailer(nbr);
+}
+
+
 /*
  * Lista as Unidades Curriculares mediante um filtro:
  * B - Obrigatorio
@@ -43,29 +102,21 @@ void simplyPrint(InfoUC *uniCurr){
  * C - Complementar
  * */
 void listAllUCFilter(char type){
-		int i;
-		puts("================================================================================");
-		puts("Listagem de Unidades Curriculares Filtradas");
-		puts("================================================================================");
-		puts("Uni.Curr|Tipo|Semestre|Dependencias Fortes|Dependencias Fracas");
-		for (i=0;i<size;++i)
-			if (ucDb[i].tipo == type)
+		int i=0; int nbr=0;
+
+		printHeader("Listagem de Unidades Curriculares Filtradas");
+	
+		list(condition,type);
+/*		for (i=0;i<size;++i){
+			if (ucDb[i].tipo == type){
 				simplyPrint(&ucDb[i]);
-		puts("================================================================================");
+				++nbr;
+			}
+		}
+*/
+		printTrailer(nbr);
 }
-/*
- * Lista todas as Unidades Curriculares
- * */
-void listAllUC(){
-		int i;
-		puts("================================================================================");
-		puts("Listagem de Todas as Unidades Curriculares");
-		puts("================================================================================");
-		puts("Uni.Curr|Tipo|Semestre|Dependencias Fortes|Dependencias Fracas");
-		for (i=0;i<size;++i)
-				simplyPrint(&ucDb[i]);
-		puts("================================================================================");
-}
+
 
 /*
  * Lista todas as Unidades Curriculares de um dado Semestre
@@ -73,18 +124,41 @@ void listAllUC(){
 void listFromSemester(char semestre){
 	int mask=1;
 	int i=0;
+	int nbr=0;
 	mask=mask<<(semestre-1);
-	puts("================================================================================");
-	puts("Listagem de Unidades de um dado semestre");
-	puts("================================================================================");
-	puts("Uni.Curr|Tipo|Semestre|Dependencias Fortes|Dependencias Fracas");
-	for (i=0;i<size;++i)
-		if (ucDb[i].sem & mask)
+
+	printHeader("Listagem de Unidades de um dado semestre");
+	list(condition,mask);
+/*	for (i=0;i<size;++i){
+		if (ucDb[i].sem & mask){
 			simplyPrint(&ucDb[i]);
-	puts("================================================================================");
+			++nbr;
+		}
+	}
+	*/
+	printTrailer(nbr);
 }
 
 
+
+/*
+ * Lista todas as Unidades Curriculares que têm dependencias de uma dada
+ * cadeira
+ * */
+void listDepUC(char* uniCurr){
+	int i;
+	int nbr=0;
+	printHeader("Listagem de Unidade Curriculares Dependentes");
+	list(condition,uniCurr);
+/*	for (i=0;i<size;++i){
+		if(isDep(uniCurr,ucDb[i].depF) || isDep(uniCurr,ucDb[i].depf) ){
+			simplyPrint(&ucDb[i]);
+			++nbr;
+		}
+	}*/
+	
+	printTrailer(nbr);
+}
 /*
  * Verifica se uma dada Unidade Curricular tem dependencias de outra 
  * unidade curricular.
@@ -98,25 +172,6 @@ unsigned int isDep(char* uniCurr,InfoUC *dependencias[]){
 			return 1;
 	 }
 	return 0;
-}
-/*
- * Lista todas as Unidades Curriculares que têm dependencias de uma dada
- * cadeira
- * */
-void listDepUC(char* uniCurr){
-	
-	int i;
-	puts("================================================================================");
-	puts("Listagem de Unidade Curriculares Dependentes");
-	puts("================================================================================");
-	puts("Uni.Curr|Tipo|Semestre|Dependencias Fortes|Dependencias Fracas");
-	for (i=0;i<size;++i){
-		if(isDep(uniCurr,ucDb[i].depF))
-			simplyPrint(&ucDb[i]);
-		if(isDep(uniCurr,ucDb[i].depf))
-			simplyPrint(&ucDb[i]);
-	}
-	puts("================================================================================");
 }
 
 /*
@@ -224,18 +279,27 @@ void printSyntax(char * program){
 }
 
 int main(int argc,char** argv){
-
 	char line[MAX_LINE_SIZE];
+	/*
+	 * Valida se existem argumentos
+	 * */
+	if (argc == 1){
+		printSyntax(argv[0]);
+		return 1;
+	}
+
+	/*
+	 * Popula a base de dados
+	 * */
 	while((fgets(line,MAX_LINE_SIZE,stdin))!= NULL){
 		populateDB(line,size);
 		++size;
 	}
 	
 	
-	if (argc == 1){
-		printSyntax(argv[0]);
-		return 1;
-	}
+	/*
+	 * Executa a função para o respectivo argumento
+	 * */
 	
 	if (strcmp(argv[1],"-a") == 0)
 		listAllUC();
