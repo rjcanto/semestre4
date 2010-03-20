@@ -17,13 +17,13 @@ recorrer a outras funções dessa biblioteca.
  * dessa biblioteca.
  * */
 char * xstrcat(char * str1, const char * str2){
-	int i,j;
-	for(i=0;str1[i];++i);
-	for(j=0,--i;str2[j];++j,++i){
-		str1[i]=str2[j];
+	char *tmp=str1;
+	for(;*str1;++str1);
+	for(--str1;*str2;++str2,++str1){
+		*str1=*str2;
 	}
-	str1[i]=0;
-	return str1;	
+	*str1=0;
+	return tmp;	
 }
 /*
  * Escreva um programa de teste que apresenta no standard output as 
