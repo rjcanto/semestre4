@@ -1,0 +1,76 @@
+===================================================================================================================
+Nuno Cancelo
+31401
+2010/04/02
+Redes de Computadores
+Ficha 01
+===================================================================================================================
+Falta:
+3,8,11
+===================================================================================================================
+1:
+    O controlo de fluxo tem como objectivo controlar o débito binário da ligação, de forma que o emissor não sobrecarregue o receptor e desta forma se percam pacotes na transmissão.
+-------------------------------------------------------------------------------------------------------------------
+2:
+* "O nível físico define as características mecânicas das interfaces de redes."
+    Neste nível são estipulados as caracteristicas técnicas de funcionamento dos seus componentes, contem os componentes que comunicão directamente com controlador da interface de rede. Permite uma comunicação fiável e simples.
+
+* "O nível de transporte assegura a transmissão entre nós de rede de fim-a-fim."
+    No Emissor recebe os dados da "Camada de Sessão" e divide-os para serem transmitidos pela "Camada de Rede". No Receptor e recebe os dados da "Camada de Rede", unifica os pacotes de forma a ficarem "iguais" ao original e enviar para a "Camada de Sessão".
+-------------------------------------------------------------------------------------------------------------------
+3:
+-------------------------------------------------------------------------------------------------------------------
+4:
+* Um registo do tipo A associa um nome a um endereço IP
+    Um registo do tipo A, Utilizado para converter um nome de domínio num endereço IPv4
+* Um registo do tipo MX associa um nome a um nome de um servidor de email
+    Um registo do tipo MX, Permite conhecer os servidores de email responsáveis pelo domínio.
+-------------------------------------------------------------------------------------------------------------------
+5:
+    O registo do tipo A
+    nslookup -type=A 18.9.22.169
+-------------------------------------------------------------------------------------------------------------------
+6:
+    Windows: ipconfig /flushdns
+    Linux: reiniciar o serviço nscd. sudo /etc/init.d/nscd restart
+-------------------------------------------------------------------------------------------------------------------
+7:
+    nslookup -type=NS ipl.pt
+Resposta sem autoridade:
+ipl.pt  nameserver = ns4.net.ipl.pt
+ipl.pt  nameserver = ns1.net.ipl.pt
+ipl.pt  nameserver = ns2.net.ipl.pt
+ipl.pt  nameserver = ns3.net.ipl.pt
+
+ns1.net.ipl.pt  internet address = 192.104.48.16
+ns2.net.ipl.pt  internet address = 193.137.220.12
+ns3.net.ipl.pt  internet address = 193.137.220.1
+ns4.net.ipl.pt  internet address = 192.104.48.17
+-------------------------------------------------------------------------------------------------------------------
+8:
+-------------------------------------------------------------------------------------------------------------------
+9:
+* No protocolo IMAP o servidor mantém os emails originais e os clientes sincronizam a sua cópia de emails com o servidor
+    Permite que qualquer alteração local, seja sincornizada (modo online) com o servidor e esta alteração poder ser vísivel noutro cliente IMAP.
+-------------------------------------------------------------------------------------------------------------------
+10:
+* O domain name de um endereço de email permite à rede entregar a mensagem ao servidor de email do destino
+    O dominio é utilizado como chave para a tentativa de entrega do email ao servidor de email desse dominio. No entanto não há garantia que esse dominio tenha servidor de email ou mesmo que a conta de endereço destino exista nesse servidor.
+* No protocolo SMTP o envelope é apenas informativo e, serve para guardar a informação do remetente e do destinatário
+    O envelope de um email tem o mesmo proposito do envelope em papel, informar ao "carteiro" (servidor de email) qual é o destino do envelope (email) e quem é que o enviou, para poder devolver o email caso o endereço esteja indisponível.
+-------------------------------------------------------------------------------------------------------------------
+11:
+* Através do registo MX do DNS obtido a partir do domínio do endereço de destino
+
+-------------------------------------------------------------------------------------------------------------------
+12:
+    base64 a string ASCII “ascenso”
+Decimal:	097 115 099 101 110 115 111
+8-Bit:		01100001 01110011 01100011 01100101 01101110 01110011 01101111
+6-Bit:		011000	010111	001101	100011	011001	010110	111001	110011	011011	110000	==
+Decimal:	24	23	13	35	25	22	57	51	27	48	==
+
+Base64:		Y	X	N	j	Z	W	5	z	b	w	==
+-------------------------------------------------------------------------------------------------------------------
+THE END
+-------------------------------------------------------------------------------------------------------------------
