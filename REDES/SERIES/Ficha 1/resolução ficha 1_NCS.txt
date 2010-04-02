@@ -1,0 +1,94 @@
+OSI
+
+Application
+Presentation
+Session
+Transport
+Network
+Data Link
+Phisical
+
+
+1 – A função de "controlo de fluxo" tem como objectivo controlar o ritmo de transmissão entre dois pontos para que o receptor não receba mais dados do que aqueles que consegue processar evitando a perda de dados por não terem sido processados. Pode ser "Stop & Wait" em que o emissor aguarda pela confirmação de recepção de cada pacote de dados ou "Slidding Window" em que o emissor envia um conjunto n de pacotes e se não receber confirmação de recepção de nenhum pacote para o envio ou envia novamente dependendo de como está configurada a aplicação.
+
+2- 
+1ª errada
+2ª certa. O nível físico do modelo OSI define as interfaces mecânicas da ligação e as suas características eléctricas, forma de estabelecer a ligação, etc. e da comunicação dos bits através do meio de transmissão.
+3ª certa. O nível de rede é responsável pelo encaminhamento do tráfego, controlo de congestionamento e controlo de sequência que garante que os dados que são entregues às camadas superiores estão na mesma ordem em que foram entregues à camada Física.
+4ªcerta. O nível de transporte utiliza cabeçalhos e mensagens de controlo para assegurar a transmissão de dados fim-a-fim entre dois pontos da rede. Faz a separação entre as camadas aplicacionais das mais físicas.
+
+3 - 
+Um comutador de nível dois (por ex. Switch) processa as comunicações entre equipamentos dentro da mesma rede IP. Um encaminhador de nível 3 (por ex. Router)  consegue efectuar o encaminhamento de dados entre redes distintas. 
+As vantagens dos comutadores de nível 2 é que são muito mais económicos e permitem as ligações entres equipamentos da mesma rede. Como desvantagem, não permite o acesso a redes externas nem o tipo de controlo das comunicações que os encaminhadores de nível 3 permitem. 
+Para criar uma rede local utilizam-se comutadores de nível dois e para ligar essa rede a outras redes exteriores (por exemplo à internet) utilizam-se encaminhadores de nível 3 ligados à rede local e a outra ligação que permita aceder às redes externas que se pretende.
+
+4 - 
+1ª errada. Um registo do tipo A associa um nome de um servidor a um endereço IP.
+2ª certa. Os registos de tipo A têm o nome e o endereço IP associado a esse nome.
+3ª certa. Os registos MX associam um nome ao nome do servidor de mail desse domínio. Depois é efectuada uma segunda questão ao servidor de DNS para associar o nome do servidor de email ao endereço de IP respectivo.
+4ª errada. Ver resposta da 3ª
+
+5 - Os registos que fazem a correspondência de um endereço IP a um nome são os PTR.
+Executando o nslookup ao endereço IP 18.9.22.169
+Name:    WWW.MIT.EDU
+Address:  18.9.22.169
+
+6 – ipconfig /flushdns
+
+7 -
+ns3.net.ipl.pt  internet address = 193.137.220.1
+ns4.net.ipl.pt  internet address = 192.104.48.17
+ns1.net.ipl.pt  internet address = 192.104.48.16
+ns2.net.ipl.pt  internet address = 193.137.220.12
+
+8-
+
+ipl.pt
+        primary name server = ns1.net.ipl.pt
+        responsible mail addr = helpdesk.net.ipl.pt
+        serial  = 2010031501
+        refresh = 21600 (6 hours)
+        retry   = 3600 (1 hour)
+        expire  = 1209600 (14 days)
+        default TTL = 3600 (1 hour)
+
+ipl.pt  nameserver = ns2.net.ipl.pt
+ipl.pt  nameserver = ns3.net.ipl.pt
+ipl.pt  nameserver = ns4.net.ipl.pt
+ipl.pt  nameserver = ns1.net.ipl.pt
+ns1.net.ipl.pt  internet address = 192.104.48.16
+ns1.net.ipl.pt  AAAA IPv6 address = 2001:690:2008::100:1001
+ns2.net.ipl.pt  internet address = 193.137.220.12
+ns2.net.ipl.pt  AAAA IPv6 address = 2001:690:2008::101:1001
+ns3.net.ipl.pt  internet address = 193.137.220.1
+ns4.net.ipl.pt  internet address = 192.104.48.17
+
+O typo de registo SOA (start of authority) existe nos servidores de DNS para indicar que esse servidor é a melhor fonte de informação para os dados desse domínio.
+
+O primeiro bloco de dados indica o nome do servidor de DNS primário, o endereço do responsável por esse servidor, o nº de série da informação (serve para saber se a informação é a mais actualizada, o tempo de refresh e o TTL (time-to-live).
+O segundo bloco indica o nome de todos os servidores DNS responsáveis por essa zona (primários e secundários) e os seus endereços IPv4 e nalguns casos os endereços IPv6.
+
+9 -
+apenas 3ª correcta - No protocolo IMAP o cliente mantém uma cópia dos emails existentes no servidor e, caso esteja no modo online, todas as alterações efectuadas pelo utilizador são sincronizadas com o servidor permitindo que vários clientes de mail possam ver as mesmas versões dos emails existentes na caixa de correio.
+
+10-
+1ª correcta
+É através do domain name que a rede vai tentar encontrar o nome (e posteriormente o seu endereço IP) do servidor de mail respectivo através do DNS para proceder à entrega da mensagem. O domínio poderá não ter um servidor de mail ou, mesmo tendo servidor de mail, a caixa de correio do destinatário não existir e nestes casos o envio vai falhar.
+2ªcorrecta
+O protocolo de envio SMTP apenas suporta mensagens codificadas em ASCII de 7 bits. Assim, a extensão MIME transforma as mensagens de conteúdo Non-ASCII ou ASCII e Non-ASCII em conteúdos ASCII passíveis de ser transmitidos pelo protocolo SMTP.
+3ª correcta
+O envelope apenas guarda o endereço de email do remetente e do destinatário para que o servidor de envio saiba a quem deve entregar o email e o de destino saiba a quem devolver a mensagem caso o destinatário não exista. Esta informação pode ser adulterada no envio de emails.
+
+11-
+2ª correcta:
+A partir do domínio do endereço de destino o MTA de origem faz uma querie ao servidor de DNS para descobrir o nome do servidor de email desse domínio (registo MX) e depois o endereço IP do servidor obtido para iniciar a comunicação e efectuar a entrega da mensagem.
+
+12 - 
+    base64 a string ASCII “ascenso”
+Decimal:	097 115 099 101 110 115 111
+8-Bit:		01100001 01110011 01100011 01100101 01101110 01110011 01101111
+6-Bit:		011000	010111	001101	100011	011001	010110	111001	110011	011011	110000	==
+Decimal:	24	23	13	35	25	22	57	51	27	48	==
+
+Base64:		Y	X	N	j	Z	W	5	z	b	w	==
+
