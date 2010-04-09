@@ -46,12 +46,13 @@ mulff:
 	
 	and edx, _EXP_MASK
 	shr edx, _MAT_SIZE
-	sub edx, _EXP_BIAS_MASK
+	/*sub edx, _EXP_BIAS_MASK*/
 
 	add cl,dl
-	jo _return_false
+	sub cl, _EXP_BIAS_MASK
+	/*jo _return_false*/
 
-	add ecx, _EXP_BIAS_MASK
+	/*add ecx, _EXP_BIAS_MASK*/
 	shl ecx, _MAT_SIZE
 	or ebx,ecx
 
@@ -61,11 +62,12 @@ mulff:
 
 	mov eax,esi
 
-	and eax,_MAT_MASK
-	or eax, _MAT_CORR_MASK
 	
-	and edi, _MAT_MASK
-	or edi, _MAT_CORR_MASK
+		and eax,_MAT_MASK
+		or eax, _MAT_CORR_MASK
+	
+		and edi, _MAT_MASK
+		or edi, _MAT_CORR_MASK
 
 
 
@@ -75,10 +77,13 @@ mulff:
 	shr eax, 24
 	shl edx,8
 
+
 	or eax,edx
+	shr eax,2
 	and eax,_MAT_MASK
 	
 	or ebx,eax
+
 	jmp _return1
 
 	
