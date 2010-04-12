@@ -1,11 +1,11 @@
 /* int mulff(float *res, float a, float b); */
+
 .intel_syntax noprefix
 .data
 
 
 .text
 .global mulff
-
 .equ _EXP_MASK, 0x7F800000
 .equ _SIG_MASK, 0x80000000
 .equ _MAT_MASK, 0x007FFFFF
@@ -28,15 +28,22 @@ mulff:
 	
 	test edi,edi
 	jz _return0
-	
-	/* Signal */
+
+/*
+------------------------------------------------------------------------
+	Signal
+------------------------------------------------------------------------
+*/	
 	mov ebx,esi
 	mov ecx, edi
 	and ebx,_SIG_MASK
 	and ecx,_SIG_MASK
 	xor ebx,ecx
-	
-	/* Expoent */ 
+/*
+------------------------------------------------------------------------
+	Expoent 
+------------------------------------------------------------------------
+*/	
 	mov ecx, esi
 	mov edx, edi
 
@@ -46,47 +53,43 @@ mulff:
 	
 	and edx, _EXP_MASK
 	shr edx, _MAT_SIZE
-	/*sub edx, _EXP_BIAS_MASK*/
+	sub edx, _EXP_BIAS_MASK
 
 	add cl,dl
-	sub cl, _EXP_BIAS_MASK
-	/*jo _return_false*/
+	jo _return_false
 
-	/*add ecx, _EXP_BIAS_MASK*/
+	add ecx, _EXP_BIAS_MASK
 	shl ecx, _MAT_SIZE
 	or ebx,ecx
-
-
-	
-	/* Matisse Contemplar o Bit 'escondido' */
-
+/*
+------------------------------------------------------------------------
+	Matisse Contemplar o Bit 'escondido' 
+------------------------------------------------------------------------
+*/	
 	mov eax,esi
+	and eax,_MAT_MASK
+	or eax, _MAT_CORR_MASK
 
-	
-		and eax,_MAT_MASK
-		or eax, _MAT_CORR_MASK
-	
-		and edi, _MAT_MASK
-		or edi, _MAT_CORR_MASK
+	and edi, _MAT_MASK
+	or edi, _MAT_CORR_MASK
 
-
-
-	/*remontar o valor do float*/
 	mul edi
-
+	/*
+	--------------------------------------------------------------------
+	Remontar o resultado de 48 bits para 24
+	--------------------------------------------------------------------
+	*/
 	shr eax, 24
 	shl edx,8
 
 
 	or eax,edx
-	shr eax,2
-	and eax,_MAT_MASK
-	
+	shl eax,1
+	and eax, _MAT_MASK
 	or ebx,eax
 
 	jmp _return1
 
-	
 _return0:
 	xor eax,eax
 _return1:
