@@ -1,0 +1,28 @@
+[1]-> Post est occasio calva.
+[2]-> 
+	Algoritmo:
+		[A] -> Maior digito * 4
+		[B] -> Numero de digitos * 3
+		[C] -> Soma de todos os digitos
+		[D] -> [A] + [B] + [C] = 42 (0x2A)
+	+ Hipoteses:
+	-> 66 
+	-> 553 (e respectivas permutações)
+	-> 4442 (e respectivas permutações)
+	-> 33333
+	Não há hipoteses com um digito ou com mais de 5
+[3]-> fdxcaojc
+[4]-> 1 3 1 2 2 8 4
+-------------------------------
+Tem como objectivo descobrir a senha associada a cada uma das 4 fases
+Boa sorte!
+Senha 1: Post est occasio calva.
+OK, esta era simples! Que tal a seguinte?
+Senha 2: 2444
+Bem conseguido! E agora?
+Senha 3: fdxcaojc
+Boa! Mais uma?
+Senha 4: 1 3 1 2 2 8 4
+Parabens! Resolveu todas as fases!
+
+
