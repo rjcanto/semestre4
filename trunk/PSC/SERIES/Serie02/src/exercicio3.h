@@ -59,11 +59,11 @@ void printHeader(char *header);
 void printTrailer(int nbrRecords);
 void simplyPrint(InfoUC *uniCurr);
 
-void list(char* header,int (*condition)(struct info_uc*,void*),void *p);
-int cmpAll(struct info_uc* uc,void* p);
-int cmpAllFilter(struct info_uc* uc,void* p);
-int cmpAllSemester(struct info_uc* uc,void* p);
-int cmpAllDep(struct info_uc* uc,void* p);
+void list(char* header,int (*condition)(const void*,const void*),void *p);
+int cmpAll(const void* uc,const void* p);
+int cmpAllFilter(const void* uc,const void* p);
+int cmpAllSemester(const void* uc,const void* p);
+int cmpAllDep(const void* uc,const void* p);
 
 
 #define listAllUCObligatory() {char c=OBRIGATORIO;list(FILTER_HEADER,cmpAllFilter,&c);}

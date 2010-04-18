@@ -1,4 +1,4 @@
-/*
+	/*
 Turma: 	LI31N
 Nome: 	Nuno Cancelo
 Numero: 31401
@@ -21,7 +21,8 @@ de comando:
 
 InfoUC ucDb[MAX_UC];
 unsigned int size=0;
-
+void * ssearch (const void * key, const void * base, size_t size,size_t elem_size, int (* compare)(const void * k, const void * p)
+);
 
 void printHeader(char *header){
 		puts("================================================================================");
@@ -54,33 +55,63 @@ void simplyPrint(InfoUC *uniCurr){
 /*
  * Imprime no ecrâ o relatorio.
  * */
-void list(char* header,int (*condition)(struct info_uc*,void*),void *p){
-		int i;
+void list(char* header,int (*compare)(const void *,const void*),void *key){
+		struct info_uc *uniCurr=NULL;
+		struct info_uc * base=&ucDb[0];
 		int nbr=0;
+		int i=0;
+		int s=size;
 		printHeader(header);
-		for (i=0;i<size;(++i)){
-			if (condition(&ucDb[i],p)){
+		/*
+		void * ssearch (
+		+8		const void * key, 
+		+12		const void * base, 
+		+16		size_t size,
+		+20		size_t elem_size, 
+		+24		int (* compare)(const void * k, const void * p)
+		);
+		 
+		 ssearch(key, ucDb[i], size,sizeof(ucDb[0]) , condition);
+		 * */
+		
+		/*for (i=0;i<size;(++i)){
+			if (condition(&ucDb[i],key)){
 				simplyPrint(&ucDb[i]);
 				++nbr;
 			}
+		}*/
+		
+		
+		if (ssearch(key, base, s ,sizeof(struct info_uc),compare))
+			simplyPrint(uniCurr);
+/*		while(){
+				
+				simplyPrint(uniCurr);
+				
+				++nbr;
+				base=uniCurr;
+				
+				s=s-(base-ucDb);
 		}
+		
+	*/	
 		printTrailer(nbr);
 }
 
 /*
  * Comparadores
  * */
-int cmpAll(struct info_uc* uc,void* p){
+int cmpAll(const void* uc,const void* p){
 	return 1;
 }
-int cmpAllFilter(struct info_uc* uc,void* p){
-	return (uc->tipo == *(char*)p);
+int cmpAllFilter(const void* uc,const void* p){
+	return ((*(struct info_uc*)uc).tipo == *(char*)p);
 }
-int cmpAllSemester(struct info_uc* uc,void* p){
-	return (*(char*)p & uc->sem );
+int cmpAllSemester(const void* uc,const void* p){
+	return (*(char*)p & (*(struct info_uc*)uc).sem );
 }
-int cmpAllDep(struct info_uc* uc,void* p){
-	return (isDep(*(char**)p,uc->depF) || isDep(*(char**)p,uc->depf));
+int cmpAllDep(const void* uc,const void* p){
+	return (isDep(*(char**)p,(*(struct info_uc*)uc).depF) || isDep(*(char**)p,(*(struct info_uc*)uc).depf));
 }
 
 
