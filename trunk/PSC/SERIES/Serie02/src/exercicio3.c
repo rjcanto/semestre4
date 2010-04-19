@@ -21,8 +21,7 @@ de comando:
 
 InfoUC ucDb[MAX_UC];
 unsigned int size=0;
-void * ssearch (const void * key, const void * base, size_t size,size_t elem_size, int (* compare)(const void * k, const void * p)
-);
+void * ssearch (const void * key, const void * base, size_t size,size_t elem_size, int (* compare)(const void * k, const void * p));
 
 void printHeader(char *header){
 		puts("================================================================================");
@@ -56,45 +55,17 @@ void simplyPrint(InfoUC *uniCurr){
  * Imprime no ecrâ o relatorio.
  * */
 void list(char* header,int (*compare)(const void *,const void*),void *key){
-		struct info_uc *uniCurr=NULL;
-		struct info_uc * base=&ucDb[0];
+		struct info_uc *uniCurr=ucDb;
+		struct info_uc * base=ucDb;
 		int nbr=0;
-		int i=0;
-		int s=size;
 		printHeader(header);
-		/*
-		void * ssearch (
-		+8		const void * key, 
-		+12		const void * base, 
-		+16		size_t size,
-		+20		size_t elem_size, 
-		+24		int (* compare)(const void * k, const void * p)
-		);
-		 
-		 ssearch(key, ucDb[i], size,sizeof(ucDb[0]) , condition);
-		 * */
-		
-		/*for (i=0;i<size;(++i)){
-			if (condition(&ucDb[i],key)){
-				simplyPrint(&ucDb[i]);
-				++nbr;
-			}
-		}*/
-		
-		
-		if (ssearch(key, base, s ,sizeof(struct info_uc),compare))
-			simplyPrint(uniCurr);
-/*		while(){
-				
+
+		while((uniCurr=ssearch(key, base, size - (uniCurr-ucDb)-1 ,sizeof(struct info_uc),compare))){
 				simplyPrint(uniCurr);
-				
+				base=uniCurr+1;				
 				++nbr;
-				base=uniCurr;
-				
-				s=s-(base-ucDb);
 		}
-		
-	*/	
+
 		printTrailer(nbr);
 }
 
