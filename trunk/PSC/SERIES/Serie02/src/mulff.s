@@ -1,11 +1,17 @@
-/* int mulff(float *res, float a, float b); */
+/* 
+	int mulff(float *res, float a, float b); 
+*/
 
 .intel_syntax noprefix
 .data
 
-
 .text
 .global mulff
+/*
+------------------------------------------------------------------------
+	Constantes
+------------------------------------------------------------------------
+*/
 .equ _EXP_MASK, 0x7F800000
 .equ _SIG_MASK, 0x80000000
 .equ _MAT_MASK, 0x007FFFFF
@@ -16,6 +22,7 @@
 mulff:
 	push ebp
 	mov ebp,esp
+	
 	push ebx
 	push edi
 	push esi
@@ -79,11 +86,19 @@ mulff:
 	Remontar o resultado de 48 bits para 24
 	--------------------------------------------------------------------
 	*/
+
 	shr eax, 24
 	shl edx,8
 
 
 	or eax,edx
+
+	test eax, _MAT_CORR_MASK
+	jz _next2
+	shr eax,1
+	add ebx, _MAT_CORR_MASK
+	
+	_next2:
 	shl eax,1
 	and eax, _MAT_MASK
 	or ebx,eax
