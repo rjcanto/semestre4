@@ -4,7 +4,7 @@ void * ssearch (
 	+12		const void * base, 
 	+16		size_t size,
 	+20		size_t elem_size, 
-	+24		int (* compare)(const void * k, const void * p)
+	+24		int (* compare)(const void * k, const void * key)
 );
 */
 
@@ -19,12 +19,9 @@ ssearch:
 	
 	push	ebx
 	push	edi
-	push	esi
-	
 
 	mov		ebx,[ebp+12]
 	mov		edi,[ebp+16]
-	xor		esi,esi
 
 for:
 	test	edi,edi
@@ -36,7 +33,7 @@ for:
 	add		esp,8
 	
 	test 	eax, eax
-	jz 		_loadEax
+	jnz		_loadEax
 	
 	dec 	edi
 	add		ebx,[ebp+20]
@@ -48,7 +45,6 @@ _loadEax:
 _resetEax:
 	xor 	eax,eax
 _fim:
-	pop esi
 	pop edi
 	pop ebx
 	pop ebp
