@@ -1,3 +1,9 @@
+/*
+Turma: 	LI31N
+Nome: 	Nuno Cancelo
+Numero: 31401
+*/
+
 .intel_syntax noprefix
 
 .text
