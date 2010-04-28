@@ -1,3 +1,9 @@
+/*
+Turma: 	LI31N
+Nome: 	Nuno Cancelo
+Numero: 31401
+*/
+
 #include <stdio.h>
 int mulff(float *res, float a, float b);
 

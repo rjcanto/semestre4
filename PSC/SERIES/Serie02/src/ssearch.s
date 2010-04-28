@@ -1,3 +1,9 @@
+/*
+Turma: 	LI31N
+Nome: 	Nuno Cancelo
+Numero: 31401
+*/
+
 /* 
 void * ssearch (
 	+8		const void * key, 
