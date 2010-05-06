@@ -1,13 +1,21 @@
 GCC_OPTION= -Wall -pedantic
 
-all:  exercicio1  exercicio2 exercicio3
+all:  benchmark  exercicio02 x1strcat x2strcat xstrcat xstrlen
 
-exercicio1: exercicio1.c exercicio1.h astrcat.s
+benchmark: 
 	gcc -g $(GCC_OPTION) -o $@ $^
 
-
-exercicio2: mulff.c mulff.s
+exercicio02: 
 	gcc -g $(GCC_OPTION) -o $@ $^
 	
-exercicio3: exercicio3.c exercicio3.h ssearch.s
+x1strcat: 
+	gcc -g $(GCC_OPTION) -o $@ $^
+
+x2strcat: 
+	gcc -g $(GCC_OPTION) -o $@ $^
+	
+xstrcat:
+	gcc -g $(GCC_OPTION) -o $@ $^
+	
+xstrlen:
 	gcc -g $(GCC_OPTION) -o $@ $^
