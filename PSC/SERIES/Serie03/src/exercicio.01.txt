@@ -1,0 +1,103 @@
+================================================================================
+Dado um sistema de cache de 16KiB, 4-way set associative, com linhas de 32 bytes,
+indique (apresentando os respectivos cálculos, quando se aplique):
+
+	a)Caracterize a divisão dos endereços em tag, index e offset, sabendo que a 
+cache é utilizada num sistema com um address bus de 36 bits.
+================================================================================
+E =  4-way
+B = 32 bytes
+m = 36 bits
+C = 16 KiB
+
+C = S * E * B
+16*1024 = S * 4 * 32 <=> 16*1024 / (4*32) = S <=> S = 128
+
+s = log2(S) <=> s = 7
+b = log2(B) <=> b = 5
+t = m - (s + b) <=> t = 36 - (7 + 5) <=> t = 24
+M = 2^m <=> M = 4294967296 endereços
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+|t|t|t|t|t|t|t|t|t|t|t|t|t|t|t|t|t|t|t|t|t|t|t|t|s|s|s|s|s|s|s|b|b|b|b|b|
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+--------------------------------------------------------------------------------
+Resposta:
+Para os elementos fornecidos, os tamanhos obtidos são:
+TAG: 	24 bits
+INDEX:  07 bits
+OFSSET:	05 bits
+---------------
+Total:	36 bits
+================================================================================
+	b)Considere sizeof(int) == 4, a variável global int dat[N] e a função 
+cyclic_read, que consiste num ciclo infinito de leitura de todas as posições do 
+array dat e que utiliza apenas os registos do processador para manter as 
+variáveis auxiliares de que necessita. Qual o menor valor de N que garante que 
+duas entradas do array dat pertencem ao mesmo set da cache? E qual o menor valor
+de N que garante a ocorrência de cache misses da segunda passagem no array em 
+diante, mesmo que existam caches separadas para código e dados?
+================================================================================
+Dados fornecidos:
+* sizeof(int) == 4 bytes
+* int dat[N]
+função cyclic_read.
+
+Dados pretendidos:
+* N minimo, que garante a partir do qual que duas entradas de dat, pertencem ao 
+mesmo set (em vias diferentes)?
+* N minimo, que garante a ocorrencia de cache misses na segunda passagem no 
+array em diante?
+
+Raciocinio:
+Admitindo (para efeitos de simplificação), que:
+* todos os SET's estão vazios
+* o endereço do array se encontra num endereço múltiplo de 8
+
+Em tenho que:
+* cada linha de cache tem 32 bytes = 8 * 4 bytes = 8 inteiros
+* cada via da cache tem 128 sets
+
+Dado que é lido o tamanho da linha (quando possivel) na obtenção de dados, que 
+não estão presentes na cache, verifica-se que após a obtenção de 32 bytes, a 
+proxima linha a "carregar" na cache será colocada no SET seguinte e assim suces-
+sivamente até preencher todos os SET's dessa via.
+Assim sendo, temos que S*B=espaço ocupado por uma via. Após o preenchimento 
+total desta via, o próximo a ser "carregado" será colocado no primeiro SET, numa 
+das outras vias ainda dísponiveis.
+
+Assumindo este prosoposto, verifico que:
+
+S * B = 128 * 32 = 4098 bytes = 1024 inteiros
+Desta forma o 1025º inteiro do array, é garantido, que irá ser colocado no mesmo
+SET dos primeiros 8 inteiros, mas noutra via.
+--------------------------------------------------------------------------------
+Resposta:
+Desta forma, o N minimo que vai de encontro ao solicitado no enunciado será 1025.
+--------------------------------------------------------------------------------
+Ao continuar o estudo da cache, e de forma análoga, demonstra-se que para obter 
+uma cache completamente cheia temos:
+S * B * E = 128 * 32 * 4 = 16384 bytes = 4096 inteiros
+
+Desta forma corrobora-se o facto de a cache ficar totalmente preenchida, a 
+partir deste momento todos os valores "carregados" vai originar misses e 
+proceder à substituição de dados nas linhas de SET da cache.
+--------------------------------------------------------------------------------
+Resposta:
+Concluí-se então que o N mínimo que garante a ocorrência de caches misses será
+com N= 4097.
+--------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
