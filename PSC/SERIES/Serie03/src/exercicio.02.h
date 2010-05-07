@@ -3,9 +3,10 @@
 #define MAX 8192
 #define RUN	64
 #define GAP 16
+#include "strcatlib.h"
 struct timespec tsTimerBeg;
 struct timespec tsTimerEnd;
 
-long benchmark(char * string1, char* string2, char* (* concatenate)(char *s1, const char *s2));
+long benchmark(char * string1, const char* string2,int nbrRun, char* (* concatenate)(char *s1, const char *s2));
 
 #endif 
