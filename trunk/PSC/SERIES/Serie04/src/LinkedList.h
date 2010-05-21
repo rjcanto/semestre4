@@ -8,11 +8,7 @@ Numero: 31401
 
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
-
-typedef struct node_type{
-	struct * node previous;
-	struct * node next;
-} node;
+#include "Common.h"
 
 
 #define isEmpty_LinkedList(NODE)				(NODE)->next == (NODE)
