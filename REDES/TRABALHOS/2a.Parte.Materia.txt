@@ -1,0 +1,38 @@
+::Encaminhamento IP::
+- 5 classes de IP: A -> E
+
+:Características:
+* Baseado em tabelas de roteamento
+* Efectuado pelos router e máquinas
+* Formato da entrada nas tabelas de routing:
+	* Caminhos para redes: <End. IP Destino, End. IP do Próximo Router>
+	* Caminhos para hosts: <End. IP Host, End. IP do Próximo Router>
+	* Caminhos por defeito: End. IP do Próximo Router
+	
+:Entregas do Datagrama:
+* Entrega Directa:
+	* Ocorre quando a máquina destino está na mesma rede que máquina origem
+	* O datagrama é enviado numa trama física para a máquina com o DA do datagrama IP
+	* Na comunicação entre duas máquinas existem sempre uma entrega directa
+	
+* Entrega Indirecta:
+	* Ocorre quando a máquina destinho não está na mesma rede IP
+	* O datagrama é enviado numa trama física para o router, o conteudo do datagrama não é alterado
+	* Na comunicação entre duas máquinas poderão existir 0 ou mais entregas indirectas
+	
+:Máscaras de Rede:
+* Define onde se situa a divisão IP, em parte da Rede(net) e Parte da máquina (host)
+
+:Subnetting:
+* Criação de multiplas sub-nets tornando o perfixo maior
+
+:Sumarização:
+* Sumarização de multiplas subnets tornando o prefixo mais pequeno
+
+:CIDR:
+* Definição: "An address Assignment and Aggregation Strategy"
+	* Permite englobar endereços IP em gamas(prefixos)
+	* Propõe uma estratégia de atribuição de endereços de rede de acordo com a topologia fisica e geográfica
+	* Permite diminuir as tabelas de encaminhamento dos routers  que só precisam de uma entrada para cada gama
+
+

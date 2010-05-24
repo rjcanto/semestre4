@@ -1,0 +1,51 @@
+=============
+Capitalização
+=============
+i 	Taxa de Juro por unidade de Tempo
+n 	Numero de unidades de tempo no período em consideração
+C0	Capital aplicado no Momento Inicial
+Vt	Valor do Capital inicial capitalizado ao longo de t unidade de tempo
+
+Vt = C0 + Co*i <=> Vt = C0*(1+i)
+Vt = Vt-1*(1+i)
+Vt = C0*(1+i)^t
+
+============
+Actualização
+============
+Vt = Co*(1+i)^t 
+Co = Vt/(1+i)^t
+
+==================================
+Valor Capitalizado de uma anuidade
+==================================
+Sn = a*SUM 0->n (1+i)^(n-1)
+
+=================================
+Valor Actualizado de uma anuidade
+=================================
+a0 = a*SUM 0->n (1+i)^(-n)
+
+========================================================
+Anuidade Necessária para fazer face a um pagamento futuro
+=========================================================
+a = Sn/(*SUM 0->n (1+i)^(n-1)) 
+
+==================================================
+Anuidade Necessária para Esgotar um Valor Presente
+==================================================
+a = a0/(*SUM 0->n (1+i)^(-n))
+
+===
+VAL
+===
+VAL = SUM 0->n Vt*(1+i)^(-t)
+
+=================================
+Cálculo da Taxa de Juro Implicita
+=================================
+
+
+
+
+
