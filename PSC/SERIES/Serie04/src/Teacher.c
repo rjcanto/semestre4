@@ -1,7 +1,5 @@
 #include "Teacher.h"
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
+
 
 
 Teacher* Teacher_new(char * name, char * email, unsigned short mec_number){
