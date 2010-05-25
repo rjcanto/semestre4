@@ -2,12 +2,14 @@
 #define UNICURR_H
 #include "DepList.h"
 
+#include "Common.h"
+
 typedef struct unidadeCurricular_type{
 	char *			unidadeCurricular;
 	char *			acronimo;
 	DepList*		DependenciasFortes;
 	DepList*		DependenciasFracas;
-	unsigned short	mec_number:
+	unsigned short	mec_number;
 	byte			type;
 	byte			semestre;
 } UniCurr;

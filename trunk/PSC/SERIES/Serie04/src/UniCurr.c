@@ -1,6 +1,6 @@
 #include "UniCurr.h"
 
-UniCurr* UniCurr_new(char* unidadeCurricular,char* acronimo, Dep_list* depFortes, \
+UniCurr* UniCurr_new(char* unidadeCurricular,char* acronimo, DepList* depFortes,\
 					DepList* depFracas, unsigned short mec_number,	byte type, byte semestre){
 	UniCurr* this = (UniCurr*)malloc(sizeof(UniCurr));
 	UniCurr_init(this,unidadeCurricular, acronimo, depFortes, depFracas, mec_number, type, semestre);
@@ -10,9 +10,15 @@ UniCurr* UniCurr_new(char* unidadeCurricular,char* acronimo, Dep_list* depFortes
 void UniCurr_init(	UniCurr* this, char* unidadeCurricular, \
 					char* acronimo, DepList* depFortes, \
 					DepList* depFracas, unsigned short mec_number, \
-					byte type, byte semestre);
+					byte type, byte semestre){
 
-void UniCurr_toString(UniCurr* this);
+	/*Method yet to be implemented*/
+						
+}
+
+void UniCurr_toString(UniCurr* this){
+	/*Method yet to be implemented*/
+}
 
 void UniCurr_cleanup(UniCurr* this){
 	if (this == NULL) return;
@@ -24,13 +30,13 @@ void UniCurr_cleanup(UniCurr* this){
 		free(this->acronimo);
 		this->acronimo=NULL;
 	}
-	if (this->depFortes != NULL){
-		DepList_deleteNode(this->depFortes);
-		this->depFortes = NULL;
+	if (this->DependenciasFortes != NULL){
+		DepList_deleteNode(this->DependenciasFortes);
+		this->DependenciasFortes = NULL;
 	}
-	if (this->depFracas != NULL){
-		DepList_deleteNode(this->depFracas);
-		this->depFracas = NULL;
+	if (this->DependenciasFracas != NULL){
+		DepList_deleteNode(this->DependenciasFracas);
+		this->DependenciasFracas = NULL;
 	}	
 }
 

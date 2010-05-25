@@ -1,5 +1,7 @@
 #ifndef TEACHER_H
 #define TEACHER_H
+
+#include "Common.h"
 typedef struct teacher_type{
 	char *			name;
 	char *			email;
