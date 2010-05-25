@@ -1,0 +1,40 @@
+ALGA|B|1|||Álgebra Linear e Geometria Analítica|617
+M1|B|1|||Matemática I|1735
+Elctr|B|1|||Electrónica|1254
+LSD|B|1|||Lógica e Sistemas Digitais|899
+Pg|B|1|||Programação|697
+PE|B|2|M1||Probabilidades e Estatística|1409
+M2|B|2|M1||Matemática II|1317
+AC|B|2|LSD||Arquitectura de Computadores|1367
+POO|B|2|Pg||Programação Orientada por Objectos|715
+LIC|B|2|Pg;LSD||Laboratório de Informática e Computadores|564
+AED|B|4|POO|PE|Algoritmos e Estruturas de Dados|1207
+PSC|B|4|POO|AC|Programação em Sistemas Computacionais|889
+SI1|B|4|POO||Sistemas de Informação I|668
+Com|B|4|PE|M2|Comunicações|1375
+PF|P|20|POO||Programação Funcional|691
+LC|P|20|POO||Lógica e Computação|668
+CG|P|20|POO|ALGA|Computação Gráfica|1235
+EGP|C|60|||Economia e Gestão de Projecto|139
+OGE|C|60|||Organização e Gestão de Empresas|1213
+SG|C|60|||Sistemas de Gestão|1014
+AVE|B|8|PSC|AED|Ambientes Virtuais de Execução|697
+RCp|B|8|Com||Redes de Computadores|1288
+SOi|B|8|PSC;AC||Sistemas Operativos|1070
+LS|B|8|POO;SI1|PSC;AED|Laboratório de Software|889
+MPD|P|40|POO||Modelação e Padrões de Desenho|1619
+IA|P|40|LC||Inteligência Artificial|838
+SM|P|40|PE;Com||Sistemas Multimédia|690
+PC|B|16|AVE;SOi||Programação Concorrente|465
+SI2|B|16|SI1||Sistemas de Informação II|668
+PI|B|16|AVE;SI1|RCp|Programação na Internet|1245
+Cpl|P|16|AVE;AED||Compiladores|1245
+RI|P|16|RCp||Redes de Internet|1288
+SI|P|16||AVE;RCp;SOi|Segurança Informática|1207
+SE1|P|16|PSC;AC||Sistemas Embebidos I|754
+SD|P|48|SOi;AVE|PC|Sistemas Distribuídos|710
+PS|B|32||PI;SI2|Projecto e Seminário|690
+PDM|P|32|AVE||Programação em Dispositivos Móveis|1369
+PDSI|P|32|Com||Processamento Digital de Sinal e Imagem|690
+SE2|P|32|SE1||Sistemas Embebidos II|754
+TAR|P|32|RCp|RI|Tecnologias Avançadas de Redes|726
