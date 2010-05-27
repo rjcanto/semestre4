@@ -10,28 +10,30 @@ Numero: 31401
 #define LINKEDLIST_H
 #include "Common.h"
 
-typedef struct node_type{
-	struct Node* previous;
-	struct Node* next;
-} Node;
+struct node_type{
+	struct node_type* previous;
+	struct node_type* next;
+};
+typedef struct node_type TNode;
+typedef TNode Node;
 
-#define isEmpty_LL(NODE)				((NODE)->next == (NODE))
-#define getFirst_LL(NODE)				((NODE)->next)
-#define getLast_LL(NODE)				((NODE)->previous)
+#define init_LinkedList(NODE)					((NODE)->previous = (NODE)->next = (NODE))
+#define isEmpty_LinkedList(NODE)				((NODE)->next == (NODE))
+#define getFirst_LinkedList(NODE)				((NODE)->next)
+#define getLast_LinkedList(NODE)				((NODE)->previous)
 
-void init_LL(Node * head);
 
-void insertAfter_LL(Node * head, Node * newNode);
+void insertAfter_LinkedList(Node * head, Node * newNode);
 
-#define insertBefore_LL(NODE_A,NODE_B) 	(insertAfter_LL((NODE_A)->previous,(NODE_B)))
-#define insertFirst_LL(NODE_A,NODE_B)  	(insertAfter_LL((NODE_A),(NODE_B)))
-#define insertLast_LL(NODE_A,NODE_B)	(insertAfter_LL((NODE_A)->previous,(NODE_B)))
+#define insertBefore_LinkedList(NODE_A,NODE_B) 	(insertAfter_LinkedList((NODE_A)->previous,(NODE_B)))
+#define insertFirst_LinkedList(NODE_A,NODE_B)  	(insertAfter_LinkedList((NODE_A),(NODE_B)))
+#define insertLast_LinkedList(NODE_A,NODE_B)	(insertAfter_LinkedList((NODE_A)->previous,(NODE_B)))
 
 void unlink_LinkedList(Node * head);
 
-Node * removeFirst_LL(Node * head);
+Node * removeFirst_LinkedList(Node * head);
 
-#define removeLast_LL(NODE)			(removeFirst_LL((NODE)->previous))
+#define removeLast_LinkedList(NODE)			(removeFirst_LinkedList((NODE)->previous))
 
 #endif
 

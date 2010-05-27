@@ -6,11 +6,12 @@ Numero: 31401
 ----------------------------------------------------------------------
 */
 #include "LinkedList.h"
+/*
 void init_LL(Node * head){
 	head->previous = head->next = head;
 }
-
-void insertAfter_LL(Node * head, Node * newNode){
+*/
+void insertAfter_LinkedList(Node* head, Node* newNode){
 	newNode->next 			= head->next;
 	newNode->previous 		= head;
 	head->next				= newNode;
@@ -23,9 +24,9 @@ void unlink_LinkedList(Node * head){
 	head->previous=head->next=head;
 }
 
-Node * removeFirst_LL(Node * head){
-	Node * tmpNode = getFirst_LL(head);
-	unlink_LinkedLis(tmpNode);
+Node * removeFirst_LinkedList(Node * head){
+	Node * tmpNode = getFirst_LinkedList(head);
+	unlink_LinkedList(tmpNode);
 	return tmpNode;
 }
 
