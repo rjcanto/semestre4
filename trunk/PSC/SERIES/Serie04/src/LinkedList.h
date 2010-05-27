@@ -17,7 +17,7 @@ struct node_type{
 typedef struct node_type TNode;
 typedef TNode Node;
 
-#define init_LinkedList(NODE)					((NODE)->previous = (NODE)->next = (NODE))
+#define init_LinkedList(NODE)					((NODE)->next = (NODE)->previous = (NODE))
 #define isEmpty_LinkedList(NODE)				((NODE)->next == (NODE))
 #define getFirst_LinkedList(NODE)				((NODE)->next)
 #define getLast_LinkedList(NODE)				((NODE)->previous)

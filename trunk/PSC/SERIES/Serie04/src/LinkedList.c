@@ -12,16 +12,16 @@ void init_LL(Node * head){
 }
 */
 void insertAfter_LinkedList(Node* head, Node* newNode){
-	newNode->next 			= head->next;
 	newNode->previous 		= head;
+	newNode->next 			= head->next;
 	head->next				= newNode;
-	head->next->previous 	= newNode;	
+	newNode->next->previous = newNode;	
 }
 
 void unlink_LinkedList(Node * head){
-	head->next->previous = head->previous;
 	head->previous->next = head->next;
-	head->previous=head->next=head;
+	head->next->previous = head->previous;
+	head->next=head->previous=head;
 }
 
 Node * removeFirst_LinkedList(Node * head){
