@@ -1,50 +1,61 @@
 #include "DepList.h"
-void DepList_copyNode(DepList* this,DepList* list){
-
+Node* DepList_new(){
+	Node* head=(Node*)malloc(sizeof(Node));
+	init_LinkedList(head);
+	return head;
 }
 
-void DepList_init(DepList* this,DepListHead* head,char* acronimo){
-
+void DepList_cleanup(Node* head){
+	if(head == NULL) return;
+	
+	while(!isEmpty_LinkedList(head)){
+		DepListNode_destroyer(((DepListNode*)(head->next)));		
+	}	
+	head=NULL;
 }
 
-DepListNode* DepListNode_new(){
+void DepList_destroyer(Node* head){
+	if(head == NULL) return ;
+	DepList_cleanup(head);
+	free(head);
+}
+
+
+
+/*Depende List Nodes*/
+void DepListNode_init(Node* head, DepListNode* depnode, char* acronimo){
+	insertAfter_LinkedList(head,&(depnode->node));
+	
+	if (acronimo == NULL){
+		char* ac=(char*)malloc(strlen(acronimo)+1);
+		strcpy(ac,acronimo);
+		depnode->acronimo=ac;
+	}else{
+		depnode->acronimo=NULL;
+	}
+}
+DepListNode* DepListNode_new(Node* head, char* acronimo){
 	DepListNode* thisnode = (DepListNode*)malloc(sizeof(DepListNode));
-	init_LL(thisnode);
+	DepListNode_init(head, thisnode, acronimo);
 	return thisnode;	
 }
-{
-DepList* DepList_new(char* acronimo){
-	DepList* 
-	
-	
-	
-
-	return this;
-}
-
-
-void DepList_cleanup(DepList* this){
-	if (this == NULL) return;
-	
-	while (&(this->node) != &((Node)this)) {
-		DepList_deleteNode(this));
-		if (this->acronimo != NULL){
-			free(this->acronimo);
-			this->acronimo=NULL;
-		}
-	}	
-}
-
-
-
-void DepList_deleteNode(DepList* this){
-	Node * node = removeFirst_LL(&(this->node));
+void DepListNode_deleteNode(DepListNode* this){
+	Node * node = removeFirst_LinkedList(&(this->node));
 	free(node);
 	node = NULL;
 }
-void DepList_destroyer(DepList* this){
+void DepListNode_cleanup(DepListNode* this){
 	if (this == NULL) return;
-	DepList_cleanup(this);
+	DepListNode_deleteNode(this);
+	if (this->acronimo != NULL){
+		free(this->acronimo);
+		this->acronimo=NULL;
+	}	
+}
+
+void DepListNode_destroyer(DepListNode* this){
+	if (this == NULL) return;
+	DepListNode_cleanup(this);
 	free(this);	
 }
 

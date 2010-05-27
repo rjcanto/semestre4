@@ -11,9 +11,30 @@ void UniCurr_init(	UniCurr* this, char* unidadeCurricular, \
 					char* acronimo, DepList* depFortes, \
 					DepList* depFracas, unsigned short mec_number, \
 					byte type, byte semestre){
-
-	/*Method yet to be implemented*/
-						
+	if (unidadeCurricular != NULL){
+		
+	}else{
+		unidadeCurricular = NULL;
+	}
+	if (acronimo != NULL){
+		
+	}else{
+		acronimo = NULL;
+	}
+	if (depFortes != NULL){
+		
+	}else{
+		depFortes = NULL;
+	}
+	if (depFracas != NULL){
+		
+		
+	}else{
+		depFracas = NULL;
+	}
+	this->mec_number=mec_number;
+	this->type =type;
+	this->semestre =semestre;					
 }
 
 void UniCurr_toString(UniCurr* this){
@@ -31,12 +52,10 @@ void UniCurr_cleanup(UniCurr* this){
 		this->acronimo=NULL;
 	}
 	if (this->DependenciasFortes != NULL){
-		DepList_deleteNode(this->DependenciasFortes);
-		this->DependenciasFortes = NULL;
+		DepList_cleanup(this->DependenciasFortes);
 	}
 	if (this->DependenciasFracas != NULL){
-		DepList_deleteNode(this->DependenciasFracas);
-		this->DependenciasFracas = NULL;
+		DepList_cleanup(this->DependenciasFracas);
 	}	
 }
 

@@ -1,19 +1,22 @@
 #ifndef DEPLIST_H
 #define DEPLIST_H
-
+#include "Common.h"
 #include "LinkedList.h"
 
-#include "Common.h"
+
 
 typedef	struct dependence_list_type{
 	Node node;
 	char* acronimo;	
 }DepListNode;
 
-void DepList_copyNode(DepList* this,DepList* list);
-void DepList_init();
-DepList* DepList_new(char* acronimo);
-void DepList_cleanup();
-void DepList_destroyer();
-void DepList_deleteNode(DepList* list);
+Node* DepList_new();
+void DepList_cleanup(Node* head);
+void DepList_destroyer(Node* head);
+
+void DepListNode_init(Node* head, DepListNode* depnode, char* acronimo);
+DepListNode* DepListNode_new(Node* head, char* acronimo);
+void DepListNode_deleteNode(DepListNode* this);
+void DepListNode_cleanup(DepListNode* this);
+void DepListNode_destroyer(DepListNode* this);
 #endif
