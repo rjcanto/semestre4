@@ -6,6 +6,35 @@ UniCurr* UniCurr_new(char* unidadeCurricular,char* acronimo, DepList* depFortes,
 	UniCurr_init(this,unidadeCurricular, acronimo, depFortes, depFracas, mec_number, type, semestre);
 	return this;						
 }
+UniCurr* UniCurr_new_fromString(char* line){
+	UniCurr* this=(UniCurr*)malloc(sizeof(UniCurr));
+	int field=0;
+	char* cursor=line;
+	char c;
+	
+	while((c=*cursor)){
+		if (c == '|'){
+			switch(field){
+					case 0:
+						*cursor=0;
+						this->unidadeCurricular = (char*)malloc(cursor - line +1);
+						strcpy(this->unidadeCurricular, line);
+						line = cursor+1;
+						break;
+					case 1:
+					case 2:
+					case 3:
+					case 4:
+					case 5: 
+					case 6:
+				
+			}
+			
+		}
+		++cursor;
+	}
+}
+
 					
 void UniCurr_init(	UniCurr* this, char* unidadeCurricular, \
 					char* acronimo, DepList* depFortes, \
