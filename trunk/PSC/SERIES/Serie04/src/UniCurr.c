@@ -27,12 +27,14 @@ UniCurr* UniCurr_new_fromString(char* line){
 					case 4:
 					case 5: 
 					case 6:
+					break;
 				
 			}
 			
 		}
 		++cursor;
 	}
+	return this;
 }
 
 					
