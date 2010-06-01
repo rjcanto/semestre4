@@ -1,6 +1,6 @@
 #ifndef UNICURR_H
 #define UNICURR_H
-#include "DepList.h"
+
 
 #include "Common.h"
 
@@ -9,8 +9,8 @@ typedef Node DepList;
 typedef struct unidadeCurricular_type{
 	char *			unidadeCurricular;
 	char *			acronimo;
-	DepList*		DependenciasFortes;
-	DepList*		DependenciasFracas;
+	char *		DependenciasFortes;
+	char *		DependenciasFracas;
 	unsigned short	mec_number;
 	byte			type;
 	byte			semestre;
@@ -18,13 +18,13 @@ typedef struct unidadeCurricular_type{
 
 
 UniCurr* UniCurr_new(char* unidadeCurricular, \
-					char* acronimo, DepList* depFortes, \
-					DepList* depFracas, unsigned short mec_number, \
+					char* acronimo, char* depFortes, \
+					char* depFracas, unsigned short mec_number, \
 					byte type, byte semestre);
 					
 void UniCurr_init(	UniCurr* this, char* unidadeCurricular, \
-					char* acronimo, DepList* depFortes, \
-					DepList* depFracas, unsigned short mec_number, \
+					char* acronimo, char* depFortes, \
+					char* depFracas, unsigned short mec_number, \
 					byte type, byte semestre);
 
 void UniCurr_toString(UniCurr* this);
