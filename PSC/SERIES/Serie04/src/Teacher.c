@@ -6,59 +6,47 @@ Teacher* Teacher_new(char * name, char * email, unsigned short mec_number){
 	return this;	
 }
 
-char* copy_field(char * src, char * end){
-	char * dst;
-	*(end) = '\0';
-	dst = (char*)malloc(strlen(src) + 1);
-	strcpy(dst, src);
-	return dst;
-}
-char* get_next_field(char * line, const char delimiter){
-	char * myline; 
-
-	char * field;
-	char * cursor;
-	
-	if (line == NULL || *line == 0 || *line == delimiter) return NULL;
-
-	/*
-	 * Copia a string de entrada para poder alterar, sem prejudicar a 
-	 * original
-	 * */
-	myline = (char*)malloc(strlen(line)+1);
-	strcpy(myline, line);
-	field = myline;
-	cursor	= myline; 
-		
-	while (*cursor && (*cursor != delimiter))
-		++cursor;
-
-	field= copy_field(myline,cursor);
-	/*
-	 *Liberta o espaço ocupado anteriormente pela copia da string
-	 * */ 
-	free(myline);
-	return ( cursor - line - 1 == 0)? NULL:field;
-}
-
-
-Teacher* Teacher_new_FromString(char* line, char delimiter){
+Teacher* Teacher_new_FromString(const char* line, char delimiter){
 	Teacher* this = (Teacher*)malloc(sizeof(Teacher));
-	
+
 	int idx=0;
-	char * tmp =line;
+	char * tmp=0;
 	
-	tmp = get_next_field(line,delimiter);
-	
-	 if ( sscanf(tmp, "%hu", &(this->mec_number)) == 0 ) {puts("Not a Number");return NULL;};
-	 
+	tmp=get_next_field(line+idx,delimiter);
+	if (tmp == NULL){
+		this->mec_number=0;
+		idx+=1;
+	}else{
 		idx+=strlen(tmp)+1;
+		if (sscanf(tmp,"%hu",&(this->mec_number)) == 0 )
+		{
+			puts("Not a Number");
+			this->mec_number =0;
+			idx+=1;
+		}
+	}
+	free(tmp);tmp=NULL;
 	
-	this->name=get_next_field(line + idx ,delimiter);
-		idx+=strlen(this->name)+1;
 	
-	this->email=get_next_field(line + idx  ,delimiter);
-		free(tmp);
+	/*Processa o Nome do Docente*/
+	tmp=get_next_field(line+idx,delimiter);
+	if (tmp == NULL){
+		this->name=NULL;
+		idx+=1;
+		free(tmp);tmp=NULL;
+	}else{
+		this->name=tmp;
+		idx+=strlen(tmp)+1;
+	}
+	/*Processa o Email*/
+	tmp=get_next_field(line+idx,delimiter);
+	if (tmp == NULL){
+		this->email=NULL;
+		free(tmp);tmp=NULL;
+	}else{
+		this->email=tmp;
+	}
+	
 	return this;	
 }
 
@@ -81,7 +69,8 @@ void Teacher_init(Teacher* this, char * name, char * email, unsigned short mec_n
 }
 
 void Teacher_toString(Teacher* this){
-	printf ("Number: %5hu\tName: %-40.40s\tEmail: %-40.40s\n",this->mec_number,this->name,this->email);
+	
+	printf ("Number: %5hu\tName: %-40.40s\tEmail: %-40.40s\n",this->mec_number,(this->name==NULL)?"NULL":this->name,(this->email==NULL)?"NULL":this->email);
 }
 
 void Teacher_cleanup(Teacher* this){
@@ -102,19 +91,22 @@ void Teacher_destroy(Teacher * this){
 
 int main()
 {
-	 Teacher * t1 = t1;
-	 Teacher * t2 = t2;
-	 char string[]="819|Acilina Nascimento Caneco|d819@deetc.isel.pt";
+	 static char string[]="819|Acilina Nascimento Caneco|d819@deetc.isel.pt";
+	 Teacher * t1 = 0;
+	 Teacher * t2 = 0;
+	 
 	 
 	 
 	t1 = Teacher_new("Adolfo","Dias",123);
-	t2 = Teacher_new_FromString(string,'|');
-	
 	Teacher_toString(t1);
-	Teacher_toString(t2);
-	
 	Teacher_destroy(t1);
+
+
+	t2 = Teacher_new_FromString(string,'|');
+	Teacher_toString(t2);
 	Teacher_destroy(t2);
+
+	
 
 return 0;	
 }
