@@ -9,11 +9,12 @@ typedef Node DepList;
 typedef struct unidadeCurricular_type{
 	char *			unidadeCurricular;
 	char *			acronimo;
-	char *		DependenciasFortes;
-	char *		DependenciasFracas;
+	char *			DependenciasFortes;
+	char *			DependenciasFracas;
 	unsigned short	mec_number;
 	byte			type;
 	byte			semestre;
+	short			totalsize;
 } UniCurr;
 
 

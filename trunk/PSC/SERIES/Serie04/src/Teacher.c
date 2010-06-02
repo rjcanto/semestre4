@@ -49,6 +49,23 @@ Teacher* Teacher_new_FromString(const char* line, char delimiter){
 	
 	return this;	
 }
+/*	
+Campo	Designação do Campo	Posição	Comprimento		Conteudo	OBS
+ 01		mec_number			   	01	2 bytes			Fixo
+ 02		Tamanho Nome			03	1 byte			Fixo		Indica o tamanho do texto referente ao Nome
+ 03		Nome					04  -----------		Variável	Comprimento dado pelo campo 02
+ 04		Tamanho email			--	1 byte			Variável	Indica o tamanho do texto referente ao Email
+ 05		Email					--	-----------		Variável	Comprimento dado pelo campo 04
+*/
+void Teacher_line2CDB(Teacher* this){
+	printf("%hu%c%s%c%s\n",this->mec_number,\
+							(this->name != NULL)?(char)strlen(this->name):0,\
+							(this->name != NULL)?this->name:"",\
+							(this->email != NULL)?(char)strlen(this->email):0,\
+							(this->email != NULL)?this->email:""\
+							);
+}
+
 
 void Teacher_init(Teacher* this, char * name, char * email, unsigned short mec_number){
 	if (name != NULL){
@@ -88,7 +105,7 @@ void Teacher_destroy(Teacher * this){
 	Teacher_cleanup(this);
 	free(this);
 }
-
+/*
 int main()
 {
 	 static char string[]="819|Acilina Nascimento Caneco|d819@deetc.isel.pt";
@@ -110,3 +127,4 @@ int main()
 
 return 0;	
 }
+*/

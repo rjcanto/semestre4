@@ -4,7 +4,7 @@ char* copy_field(char * src, char * end){
 	if ((end - src) < 1) return NULL;
 	
 	dst = (char*)malloc(end - src + 1);
-	strncpy(dst, src,end - src);
+	strcpy(dst, src);
 	return dst;
 }
 
@@ -27,7 +27,7 @@ char* get_next_field(const char * line, const char delimiter){
 		
 	while (*cursor && (*cursor != delimiter))
 		++cursor;
-	
+	*(cursor) = '\0';
 	field=copy_field(myline,cursor);
 	/*
 	 *Liberta o espaço ocupado anteriormente pela copia da string
