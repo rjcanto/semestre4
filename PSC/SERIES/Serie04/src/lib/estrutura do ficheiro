@@ -1,0 +1,98 @@
+Construa um programa para armazenar em bases de dados constantes a informação presente nos ficheiros de
+texto fornecidos em anexo. 
+
+Os nomes completos das unidade curriculares, 
+bem como os nomes e endereços de correio electrónico dos docentes, 
+devem ser armazenados com a dimensão estritamente necessária para o respectivo comprimento. 
+
+
+Os restantes dados devem ser armazenados com dimensão fixa, 
+em que os semestres de funcionamento de cada unidade curricular ocupam um byte e o 
+número mecanográfico de cada docente ocupa dois.
+File1:
+/*
+Campo	Designação do Campo	Posição	Comprimento		Conteudo	OBS
+ 01		mec_number			   	01	2 bytes			Fixo
+ 02		type				   	03	1 byte			Fixo
+ 03		semestre				04	1 byte			Fixo
+ 04		Tamanho Acronimo		05	1 byte			Fixo		Indica o tamanho do texto referente ao Acronimo
+ 05		Acronimo				06  -----------		Variável	Comprimento dado pelo campo 04
+ 06		Tamanho Uni Curr		--	1 byte			Variável	Indica o tamanho do texto referente à Unidade Curricular
+ 07		Unidade Curricular		--	-----------		Variável	Comprimento dado pelo campo 06
+ 08		Tamanho Dep Fortes		--	1 byte			Variável	Indica o tamanho do texto referente à Dep Fortes
+ 09		Dependencia Fortes		--	-----------		Variável	Comprimento dado pelo campo 08
+ 10		Tamanho Dep Fracas		--	1 byte			Variável	Indica o tamanho do texto referente à Dep Fracas
+ 11		Dependencia Fracas		--	-----------		Variável	Comprimento dado pelo campo 10
+*/
+
+
+File2:
+/*	
+Campo	Designação do Campo	Posição	Comprimento		Conteudo	OBS
+ 01		mec_number			   	01	2 bytes			Fixo
+ 02		Tamanho Nome			03	1 byte			Fixo		Indica o tamanho do texto referente ao Nome
+ 03		Nome					04  -----------		Variável	Comprimento dado pelo campo 02
+ 04		Tamanho email			--	1 byte			Variável	Indica o tamanho do texto referente ao Email
+ 05		Email					--	-----------		Variável	Comprimento dado pelo campo 04
+*/
+	
+
+typedef struct teacher_type{
+	char *			name;
+	char *			email;
+	unsigned short	mec_number;
+} Teacher;
+
+
+typedef struct unidadeCurricular_type{
+	char *			unidadeCurricular;
+	char *			acronimo;
+	char *		DependenciasFortes;
+	char *		DependenciasFracas;
+	unsigned short	mec_number;
+	byte			type;
+	byte			semestre;
+} UniCurr;
+
+
+
+2-617
+1-B
+1-1
+1-
+4-ALGA
+1-&
+38-Álgebra Linear e Geometria Analítica
+---------------------------------------
+2-564
+1-B
+1-2
+1-
+3-LIC
+1-+
+43-Laboratório de Informática e Computadores
+1-
+6-Pg;LSD
+---------------------------------------
+2-697
+1-B
+1-8
+1-
+3-AVE
+1- 
+32-Ambientes Virtuais de Execução
+1-
+7-PSC;AED
+
+2-889
+1-B
+1-8
+1-
+2-LS
+1-
+24-Laboratório de Software
+1
+7-POO;SI1
+1-
+7-PSC;AED
+
