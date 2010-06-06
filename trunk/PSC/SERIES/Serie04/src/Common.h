@@ -6,8 +6,10 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <assert.h>
+
+
 typedef char byte;
-char* copy_field(char * src, char * end);
-char* get_next_field(const char * line, const char delimiter);
+byte* copy_field(const byte * src, const byte * end);
+byte* get_next_field(const byte * line, const char delimiter);
 
 #endif

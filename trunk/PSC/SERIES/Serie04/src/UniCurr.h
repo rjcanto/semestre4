@@ -14,20 +14,14 @@ typedef struct unidadeCurricular_type{
 	unsigned short	mec_number;
 	byte			type;
 	byte			semestre;
-	short			totalsize;
+	short	totalsize;
 } UniCurr;
 
-
-UniCurr* UniCurr_new(char* unidadeCurricular, \
-					char* acronimo, char* depFortes, \
-					char* depFracas, unsigned short mec_number, \
-					byte type, byte semestre);
-					
-void UniCurr_init(	UniCurr* this, char* unidadeCurricular, \
-					char* acronimo, char* depFortes, \
-					char* depFracas, unsigned short mec_number, \
-					byte type, byte semestre);
-
+UniCurr* UniCurr_new(char* unidadeCurricular,char* acronimo, char* depFortes,char* depFracas, unsigned short mec_number,byte type, byte semestre);
+UniCurr* UniCurr_new_fromString(char* line, char delimiter);
+void UniCurr_init(	UniCurr* this, char* unidadeCurricular,	char* acronimo, char* depFortes, char* depFracas, unsigned short mec_number, byte type, byte semestre);
+void UniCurr_line2CDB1(UniCurr* this);
+void UniCurr_toString2(UniCurr* this);
 void UniCurr_toString(UniCurr* this);
 void UniCurr_cleanup(UniCurr* this);
 void UniCurr_destroyer(UniCurr* this);

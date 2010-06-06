@@ -1,14 +1,22 @@
 #include "Common.h"
-char* copy_field(char * src, char * end){
-	char * dst=NULL;
+
+/**
+ * Devolve um ponteiro com o conteudo do campo que começa em src e acaba
+ * em end.
+ * 
+ * */
+byte* copy_field(const byte * src, const byte * end){
+	byte * dst=NULL;
+
 	if ((end - src) < 1) return NULL;
-	
 	dst = (char*)malloc(end - src + 1);
 	strcpy(dst, src);
 	return dst;
 }
-
-char* get_next_field(const char * line, const char delimiter){
+/**
+ * Devolve um ponteiro para com o conteudo do proximo campo da linha. 
+ * */
+byte* get_next_field(const byte * line, const char delimiter){
 	char * myline=NULL; 
 
 	char * field=NULL;

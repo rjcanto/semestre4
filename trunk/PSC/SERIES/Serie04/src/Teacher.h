@@ -6,6 +6,7 @@ typedef struct teacher_type{
 	char *			name;
 	char *			email;
 	unsigned short	mec_number;
+	unsigned short 	totalsize;
 } Teacher;
 
 Teacher* Teacher_new(char * name, char * email, unsigned short mec_number);
@@ -15,4 +16,5 @@ void Teacher_line2CDB(Teacher* this);
 void Teacher_cleanup(Teacher* this);
 void Teacher_destroy(Teacher* this);
 void Teacher_toString(Teacher* this);
+void Teacher_toString_debug(Teacher* this);
 #endif

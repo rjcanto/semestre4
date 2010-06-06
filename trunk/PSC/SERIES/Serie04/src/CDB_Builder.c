@@ -1,0 +1,191 @@
+#include "CDB_Builder.h"
+
+/* compilar com opção -lcdb */
+/**
+ * Preenche os campos da estrutura com os valores necessários para alimentar a base de dados.
+ * Uma vez que é alocado dinamicamente o valor que o campo 'line' irá ter, será necessário 
+ * quem chamar esta função libertar o espaço alocao depois de não ser mais necessário. 
+ * 
+ * */
+void CDB_Teacher_getLine(CDBLF * result, Teacher* this){
+	char* cdb_line;
+	int ret=0;
+	if (this == NULL || result == NULL)  return;
+	
+	cdb_line=(char*)malloc((this->totalsize)+2);/* ???? */
+	if (cdb_line == NULL) return;
+	
+	ret=sprintf(cdb_line,"%hu%c%s%c%s",this->mec_number,\
+							(this->name != NULL)?(char)strlen(this->name):0,\
+							(this->name != NULL)?this->name:"",\
+							(this->email != NULL)?(char)strlen(this->email):0,\
+							(this->email != NULL)?this->email:""\
+							);	
+	result->size=ret;
+	result->line=cdb_line;	
+}
+/*	
+Campo	Designação do Campo	Posição	Comprimento		Conteudo	OBS
+ 01		mec_number			   	01	2 bytes			Fixo
+ 02		Tamanho Nome			03	1 byte			Fixo		Indica o tamanho do texto referente ao Nome
+ 03		Nome					04  -----------		Variável	Comprimento dado pelo campo 02
+ 04		Tamanho email			--	1 byte			Variável	Indica o tamanho do texto referente ao Email
+ 05		Email					--	-----------		Variável	Comprimento dado pelo campo 04
+*/
+void CDB_insert_Teacher (Teacher* this, struct cdb_make* cdbm, void* key, unsigned int key_len, int (*fx)(struct cdb_make *, const void *,unsigned int,  const void *, unsigned int)){
+	CDBLF cdb_line;
+	CDB_Teacher_getLine(&cdb_line,this);
+	
+		fx(cdbm, key, key_len, cdb_line.line, cdb_line.size);
+
+	free(cdb_line.line);
+	cdb_line.line=NULL;
+}
+
+
+void CDB_insert_Teacher_by_mec_Number(Teacher * this,struct cdb_make* cdbm){
+	CDB_insert_Teacher(this,cdbm,&(this->mec_number), sizeof(this->mec_number),&cdb_make_add);	
+}
+/*
+void CDB_insert_Teacher_by_mec_Number(struct cdb_make *cdbmp, Teacher * this){
+	CDBLF cdb_line=NULL;
+	CDB_Teacher_getLine(&cdb_line);
+		cdb_make_add(cdbm, this->mec_number, sizeof(this->mec_number), cdb_line.line, cdb_line.size);
+	free(cdb_line.line);
+	cdb_line=NULL;
+}*/
+
+/*
+Campo	Designação do Campo	Posição	Comprimento		Conteudo	OBS
+ 01		mec_number			   	01	2 bytes			Fixo
+ 02		type				   	03	1 byte			Fixo
+ 03		semestre				04	1 byte			Fixo
+ 04		Tamanho Acronimo		05	1 byte			Fixo		Indica o tamanho do texto referente ao Acronimo
+ 05		Acronimo				06  -----------		Variável	Comprimento dado pelo campo 04
+ 06		Tamanho Uni Curr		--	1 byte			Variável	Indica o tamanho do texto referente à Unidade Curricular
+ 07		Unidade Curricular		--	-----------		Variável	Comprimento dado pelo campo 06
+ 08		Tamanho Dep Fortes		--	1 byte			Variável	Indica o tamanho do texto referente à Dep Fortes
+ 09		Dependencia Fortes		--	-----------		Variável	Comprimento dado pelo campo 08
+ 10		Tamanho Dep Fracas		--	1 byte			Variável	Indica o tamanho do texto referente à Dep Fracas
+ 11		Dependencia Fracas		--	-----------		Variável	Comprimento dado pelo campo 10
+*/
+
+/**
+ * Preenche os campos da estrutura com os valores necessários para alimentar a base de dados.
+ * Uma vez que é alocado dinamicamente o valor que o campo 'line' irá ter, será necessário 
+ * quem chamar esta função libertar o espaço alocao depois de não ser mais necessário. 
+ * 
+ * */
+void CDB_UniCurr_getLine(CDBLF * result,UniCurr* this ){
+	char* cdb_line;
+	int ret=0;
+	
+	if (this == NULL || result == NULL)  return;
+
+	cdb_line=(char*)malloc((this->totalsize)+2); /*????*/
+	if (cdb_line == NULL) return;
+	ret = sprintf(cdb_line,"%hu%c%c%c%s%c%s%c%s%c%s",this->mec_number,this->type,this->semestre,\
+									 (this->acronimo != NULL)?(char)strlen(this->acronimo):0,\
+									 (this->acronimo != NULL)?this->acronimo:"",\
+									 (this->unidadeCurricular != NULL)?(char)strlen(this->unidadeCurricular):0,\
+									 (this->unidadeCurricular != NULL)?this->unidadeCurricular:"",\
+									 (this->DependenciasFortes != NULL)?(char)strlen(this->DependenciasFortes):0,\
+									 (this->DependenciasFortes != NULL)?this->DependenciasFortes:"",\
+									 (this->DependenciasFracas != NULL)?(char)strlen(this->DependenciasFracas):0,\
+									 (this->DependenciasFracas != NULL)?this->DependenciasFracas:""
+	);
+	result->size=ret;
+	result->line=cdb_line;
+}
+/*
+Campo	Designação do Campo	Posição	Comprimento		Conteudo	OBS
+ 01		mec_number			   	01	2 bytes			Fixo
+ 02		type				   	03	1 byte			Fixo
+ 03		semestre				04	1 byte			Fixo
+ 04		Tamanho Acronimo		05	1 byte			Fixo		Indica o tamanho do texto referente ao Acronimo
+ 05		Acronimo				06  -----------		Variável	Comprimento dado pelo campo 04
+ 06		Tamanho Uni Curr		--	1 byte			Variável	Indica o tamanho do texto referente à Unidade Curricular
+ 07		Unidade Curricular		--	-----------		Variável	Comprimento dado pelo campo 06
+ 08		Tamanho Dep Fortes		--	1 byte			Variável	Indica o tamanho do texto referente à Dep Fortes
+ 09		Dependencia Fortes		--	-----------		Variável	Comprimento dado pelo campo 08
+ 10		Tamanho Dep Fracas		--	1 byte			Variável	Indica o tamanho do texto referente à Dep Fracas
+ 11		Dependencia Fracas		--	-----------		Variável	Comprimento dado pelo campo 10
+*/
+void CDB_UniCurr_parseLine(char* line, unsigned int len ){
+/*
+	UniCurr unidadeCurricular;
+	if (line == NULL || len == 0)  return;
+
+	UniCurr unidadeCurricular;
+		if ( sscanf(*line, "%hu", &(unidadeCurricular->mec_number)) == 0 )
+		{
+			puts("Not a Number");
+			this->mec_number =0;
+		}
+	
+*/
+
+}
+
+void CDB_insert_Unicurr ( UniCurr * this, struct cdb_make* cdbm, void* key, unsigned int key_len, int (*fx)(struct cdb_make *, const void *,unsigned int,  const void *, unsigned int)){
+	CDBLF cdb_line;
+	CDB_UniCurr_getLine(&cdb_line,this);
+	
+		fx(cdbm, key, key_len, cdb_line.line, cdb_line.size);
+
+	free(cdb_line.line);
+	cdb_line.line=NULL;
+}
+
+void CDB_insert_UniCurr_by_mec_Number(UniCurr * this,struct cdb_make* cdbm){
+		CDB_insert_Unicurr(this,cdbm,&(this->mec_number), sizeof(this->mec_number),cdb_make_add);
+}
+
+void CDB_insert_UniCurr_by_acronimo(UniCurr * this,struct cdb_make* cdbm){
+		CDB_insert_Unicurr(this,cdbm,this->acronimo, strlen(this->acronimo),cdb_make_add);
+}
+
+void CDB_insert_UniCurr_by_semestre(UniCurr * this,struct cdb_make *cdbm){
+		CDB_insert_Unicurr(this,cdbm,&(this->semestre), sizeof(this->semestre),cdb_make_add);
+}
+void CDB_insert_UniCurr_by_tipo(UniCurr * this,struct cdb_make *cdbm){
+		CDB_insert_Unicurr(this,cdbm,&(this->type), sizeof(this->type),cdb_make_add);
+}
+
+
+
+
+/*
+void CDB_insert_UniCurr_by_mec_Number(struct cdb_make *cdbmp, UniCurr * this){
+	CDBLF cdb_line=NULL;
+	CDB_UniCurr_getLine(&cdb_line);
+	
+		cdb_make_add(cdbm, this->mec_number, sizeof(this->mec_number), cdb_line.line, cdb_line.size);
+
+	free(cdb_line.line);
+	cdb_line=NULL;
+
+}
+
+void CDB_insert_UniCurr_by_acronimo(struct cdb_make *cdbmp, UniCurr * this){
+	CDBLF cdb_line=NULL;
+	CDB_UniCurr_getLine(&cdb_line);
+	
+		cdb_make_add(cdbm, this->acronimo, strlen(this->acronimo), cdb_line.line, cdb_line.size);
+
+	free(cdb_line.line);
+	cdb_line=NULL;							 
+
+
+}
+
+void CDB_insert_UniCurr_by_semestre(struct cdb_make *cdbmp, UniCurr * this){
+	CDBLF cdb_line=NULL;
+	CDB_UniCurr_getLine(&cdb_line);
+	
+		cdb_make_add(cdbm, this->semestre, sizeof(this->semestre), cdb_line.line, cdb_line.size);
+
+	free(cdb_line.line);
+	cdb_line=NULL;									 
+}
+*/
