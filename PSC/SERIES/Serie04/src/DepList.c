@@ -63,7 +63,7 @@ void DepListNode_destroyer(DepListNode* this){
 	free(this);	
 }
 
-
+/*
 int main(){
 	Node* deplist = DepList_new();
 	
@@ -80,3 +80,4 @@ int main(){
 	assert(isEmpty_LinkedList(deplist));
 	return 0;
 }
+*/
