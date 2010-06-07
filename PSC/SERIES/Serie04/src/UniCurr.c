@@ -10,104 +10,69 @@ UniCurr* UniCurr_new(char* unidadeCurricular,char* acronimo, char* depFortes,cha
 }
 
 
+static int UniCurr_equalize(char** field, byte* value, int* idx, int* size){
+	if (value == NULL){
+		*field=NULL;
+		*idx+=1;
+		*size+=1;
+		free(value);
+	}else{
+		int tmpidx=strlen(value)+1;
+		*field=value;
+		*idx+=tmpidx;
+		*size+=tmpidx;
+	}
+	return *idx;
+}
+
+static int UniCurr_equalize_byte(char* field, byte* value, int* idx, int* size){
+	if (value == NULL){
+		*field=0;
+		*idx+=1;
+	}else{
+		int tmpidx=strlen(value)+1;
+		*field=*value;
+		*idx+=tmpidx;
+		*size+=1;
+	}
+	free(value);
+
+	return *idx;
+}
+
 UniCurr* UniCurr_new_fromString(char* line, char delimiter){
 	UniCurr* this=(UniCurr*)malloc(sizeof(UniCurr));
 	int size=0;
-	int tmpidx=0;
 	int idx=0;
 	char* value=line;
-
 	
 	/*Processa o Acronimo*/
 	value=get_next_field(line+idx,delimiter);
+	idx=UniCurr_equalize(&(this->acronimo),value, &idx, &size);
 
+	/*Processa o Tipo, UniCurr_equalize_byte liberta o espaço alocado por
+	 * get_next_field caso value seja NULL.
+	 * */
+	value=get_next_field(line+idx,delimiter);
+	idx=UniCurr_equalize_byte(&(this->type),value,&idx, &size);
 	
-	if (value == NULL){
-		this->acronimo=NULL;
-		idx+=1;
-		size+=1;
-		free(value);
-	}else{
-		tmpidx=strlen(value)+1;
-		this->acronimo=value;
-		
-		idx+=tmpidx;
-		size+=tmpidx;
-	}
-
-	/*Processa o Tipo*/
+	/*Processa o Semestre, UniCurr_equalize_byte liberta o espaço alocado por
+	 * get_next_field caso value seja NULL.
+	 * */
 	value=get_next_field(line+idx,delimiter);
-	if (value == NULL){
-		this->type=0;
-		idx+=1;
-	}else{
-		tmpidx=strlen(value)+1;
-		this->type=*value;
-
-		idx+=tmpidx;
-		size+=sizeof(this->type);
-	}
-	free(value);
-	/*Processa o Semestre*/
-	value=get_next_field(line+idx,delimiter);
-	if (value == NULL){
-		this->semestre=0;
-		idx+=1;
-	}else{
-		tmpidx=strlen(value)+1;
-		this->semestre=*value;
-		
-		idx+=tmpidx;
-		size+=sizeof(this->semestre);
-	}
-	free(value);
+	idx=UniCurr_equalize_byte(&(this->semestre),value,&idx, &size);
 	
 	/*Processa as DepFortes*/
 	value=get_next_field(line+idx,delimiter);
-	
-	if (value == NULL){
-		this->DependenciasFortes=NULL;
-		idx+=1;
-		size+=1;		
-		free(value);		
-	}else{
-		this->DependenciasFortes=value;
-		tmpidx=strlen(value)+1;
-		idx+=tmpidx;
-		size+=tmpidx;
-	}
+	idx=UniCurr_equalize(&(this->DependenciasFortes),value, &idx, &size);
 
 	/*Processa as DepFracas*/
 	value=get_next_field(line+idx,delimiter);
-	
-	if (value == NULL){
-		this->DependenciasFracas=NULL;
-		idx+=1;
-		size+=1;		
-		free(value);		
-	}else{
-		this->DependenciasFracas=value;
-		tmpidx=strlen(value)+1;
-		idx+=tmpidx;
-		size+=tmpidx;
-	}
+	idx=UniCurr_equalize(&(this->DependenciasFracas),value, &idx, &size);
 
 	/*Processa o Nome da Cadeira*/
 	value=get_next_field(line+idx,delimiter);
-
-	if (value == NULL){
-		this->unidadeCurricular=NULL;
-		idx+=1;
-		size+=1;		
-		free(value);		
-	}else{
-		tmpidx=strlen(value)+1;
-		this->unidadeCurricular=value;
-
-		idx+=tmpidx;
-		size+=tmpidx;
-
-	}
+	idx=UniCurr_equalize(&(this->unidadeCurricular),value, &idx, &size);
 
 	/*Processa o numero de Docente*/
 	value=get_next_field(line+idx,delimiter);
@@ -129,51 +94,34 @@ UniCurr* UniCurr_new_fromString(char* line, char delimiter){
 	return this;
 }
 
+static void UniCurr_initiate(char** field, char* value, int* size){
+	if (value != NULL){
+		char* fp;
+		int tmpidx=strlen(value)+1;
+		*size+=tmpidx;
+
+		fp=(char*)malloc(tmpidx);
+		strcpy(fp,value);
+		*field=fp;		
+	}else{ *field = NULL;*size+=1;}
+}
+
 					
 void UniCurr_init(	UniCurr* this, char* unidadeCurricular,	char* acronimo, char* depFortes, char* depFracas, unsigned short mec_number, byte type, byte semestre){
 	int size=0;
 	int tmpidx=0;
+	
+	/*Processa Unidade Curricular*/
+	UniCurr_initiate(&(this->unidadeCurricular),unidadeCurricular, &size);
+	/*Processa Acronimo*/
+	UniCurr_initiate(&(this->acronimo),unidadeCurricular, &size);
+	/*Processa Dependencias Fortes*/
+	UniCurr_initiate(&(this->DependenciasFortes),unidadeCurricular, &size);
+	/*Processa Dependencias Fracas*/
+	UniCurr_initiate(&(this->DependenciasFracas),unidadeCurricular, &size);
+	
+	UniCurr_initiate(&(this->unidadeCurricular),unidadeCurricular, &size);
 
-	if (unidadeCurricular != NULL){
-		char* uc;
-		tmpidx=strlen(unidadeCurricular)+1;
-		size+=tmpidx;
-
-		uc=(char*)malloc(tmpidx);
-		strcpy(uc,unidadeCurricular);
-		this->unidadeCurricular=uc;		
-	}else{ this->unidadeCurricular = NULL;size+=1;}
-	
-	if (acronimo != NULL){
-		char* ac;
-		tmpidx=strlen(acronimo)+1;
-		size+=tmpidx;
-
-		ac=(char*)malloc(tmpidx);
-		strcpy(ac,acronimo);
-		this->acronimo=ac;
-	}else{this->acronimo = NULL;size+=1;}
-	
-	if (depFortes != NULL){
-		char* dF;
-		tmpidx=strlen(depFortes)+1;
-		size+=tmpidx;
-		
-		dF=(char*)malloc(tmpidx);
-		strcpy(dF,depFortes);
-		this->DependenciasFortes = dF;		
-	}else{ depFortes = NULL;size+=1;}
-	
-	if (depFracas != NULL){
-		char* df;
-		tmpidx=strlen(depFracas)+1;
-		size+=tmpidx;
-		
-		df=(char*)malloc(tmpidx);
-		strcpy(df,depFracas);
-		this->DependenciasFracas = df;			
-	}else{this->DependenciasFracas = NULL;size+=1;}
-	
 	this->mec_number=mec_number;
 	size+=sizeof(this->mec_number);
 	
@@ -200,24 +148,8 @@ Campo	Designação do Campo	Posição	Comprimento		Conteudo	OBS
  10		Tamanho Dep Fracas		--	1 byte			Variável	Indica o tamanho do texto referente à Dep Fracas
  11		Dependencia Fracas		--	-----------		Variável	Comprimento dado pelo campo 10
 */
-void UniCurr_line2CDB1(UniCurr* this){
-	printf("%hu%c%c%c%s%c%s%c%s%c%s\n",this->mec_number,\
-									 this->type,\
-									 this->semestre,\
-									 (this->acronimo != NULL)?(char)strlen(this->acronimo):0,\
-									 (this->acronimo != NULL)?this->acronimo:"",\
-									 (this->unidadeCurricular != NULL)?(char)strlen(this->unidadeCurricular):0,\
-									 (this->unidadeCurricular != NULL)?this->unidadeCurricular:"",\
-									 (this->DependenciasFortes != NULL)?(char)strlen(this->DependenciasFortes):0,\
-									 (this->DependenciasFortes != NULL)?this->DependenciasFortes:"",\
-									 (this->DependenciasFracas != NULL)?(char)strlen(this->DependenciasFracas):0,\
-									 (this->DependenciasFracas != NULL)?this->DependenciasFracas:""
-									 
-	);
 
-}
-
-void UniCurr_toString2(UniCurr* this){
+void UniCurr_toString(UniCurr* this){
 	printf("Acronimo: %s\tNome: %s\n",this->acronimo,this->unidadeCurricular);
 	printf("\tDependencias Fortes: %s\n\tDependencias Fracas: %s\n",this->DependenciasFortes,this->DependenciasFracas);
 	printf("\tTipo: %c\tSemestre: %d\n",this->type,this->semestre);
@@ -225,7 +157,7 @@ void UniCurr_toString2(UniCurr* this){
 	printf("\ttotal size: %hu byes\n",this->totalsize);
 }
 
-void UniCurr_toString(UniCurr* this){
+void UniCurr_toString_debug(UniCurr* this){
 	printf("Acronimo: %s (%u)\tNome: %s (%u)\n",this->acronimo,strlen(this->acronimo)+1,this->unidadeCurricular,strlen(this->unidadeCurricular)+1);
 	printf("\tDependencias Fortes: %s (%u)\n\tDependencias Fracas: %s (%u)\n",this->DependenciasFortes,(this->DependenciasFortes!= NULL)?strlen(this->DependenciasFortes)+1:0,this->DependenciasFracas,(this->DependenciasFracas!= NULL)?strlen(this->DependenciasFracas)+1:0);
 	printf("\tTipo: %c (%u)\tSemestre: %d(%u)\n",this->type,sizeof(this->type),this->semestre,sizeof(this->semestre));
@@ -253,7 +185,7 @@ void UniCurr_cleanup(UniCurr* this){
 	}	
 }
 
-void UniCurr_destroyer(UniCurr* this){
+void UniCurr_destroy(UniCurr* this){
 	if (this == NULL) return;
 	UniCurr_cleanup(this);
 	free(this);	
