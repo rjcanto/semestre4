@@ -1,9 +1,4 @@
-#include "Common.h"
-#include "Teacher.h"
-#include "UniCurr.h"
-#include "CDB_Builder.h"
-#include "Command1.h"
-#include <cdb.h>
+#include "FileReader.h"
 #define BUFFER_SIZE 100
 
 void fileparser(char* filename){
@@ -15,16 +10,18 @@ void fileparser(char* filename){
 			fprintf(stderr, "Unable to open the file. Check permition or disk space!\n");
 			exit(2);
 	}
-
+	
+	Command1_createDB();
 	puts("Processing the file!");
 	while (fgets(buffer, BUFFER_SIZE, fp) != NULL ) {
 		/*Aloc de Unidade Curricular*/
 		unicurr = UniCurr_new_fromString(buffer,delimiter);
-		/*insert_UniCurr_by_acronimo_CDB(unicurr);*/
+		Command1_insert_UniCurr_CDB_by_acronimo(unicurr);
 		/*Free de Unidade Curricular*/
 		UniCurr_destroy(unicurr);
+		unicurr=NULL;
 	}
-
+	Command1_destroyDB();
 	fclose(fp);
 
 }
@@ -38,7 +35,7 @@ void dbReader(char* filename,char * key, void (*fx)(struct cdb* , char* , unsign
 	fd = open(filename, O_RDONLY);
 	cdb_init(&cdb, fd);
 
-	fx(&cdb, key, strlen(key));
+		fx(&cdb, key, strlen(key));
 	
 	/*Close Database*/
 	cdb_free(&cdb);
@@ -47,9 +44,10 @@ void dbReader(char* filename,char * key, void (*fx)(struct cdb* , char* , unsign
 
 void dblist(struct cdb* cdb, char* key, unsigned klen){
 	char  *val;
-	unsigned  vlen, vpos;	
+	unsigned  vlen, vpos;
+		
 	if (cdb_find(cdb, key, strlen(key)) > 0) {
-		struct cdb_find cdbf; 
+		struct cdb_find cdbf;
 		cdb_findinit(&cdbf, cdb, key, strlen(key));
 		while(cdb_findnext(&cdbf) > 0) {
 		  vpos = cdb_datapos(cdb);
@@ -60,18 +58,23 @@ void dblist(struct cdb* cdb, char* key, unsigned klen){
 		  CDB_UniCurr_parseLine(val);
 		  free(val);
 		}
+		
 	}
 	else
-	  printf("key=%s not found\n", key);	
+	  printf("key=%s not found\n", key);
+		
 }
 void dblistAll(struct cdb* cdb, char* key, unsigned klen){
 	unsigned cpos;
 	int n;
 	char *data;
+	int view=0; 
 	unsigned datalen;
 	klen=0;datalen=0;n=0;
+	
 	cdb_seqinit( &cpos,cdb);
 	while(cdb_seqnext(&cpos,cdb) > 0) {
+		/*++view;*/
 		klen = cdb_keylen(cdb);
 		key = malloc(klen + 1);
 		cdb_read(cdb, key, klen, cdb_keypos(cdb));
@@ -86,6 +89,12 @@ void dblistAll(struct cdb* cdb, char* key, unsigned klen){
 		printf("record %d: \n", ++n);
 		CDB_UniCurr_parseLine(data);
 		free(data); free(key);
+	
+	/*	if (view == 7){
+			puts("Pause (Enter to continue)") ;
+			getchar();
+			view=0;
+		}*/
 	}
 	printf("total records found: %d\n", n);
 }

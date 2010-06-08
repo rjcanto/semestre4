@@ -147,22 +147,23 @@ byte* CDB_field_equalize(char**  field, char * idx){
 	return idx;
 }
 
+
+
 void CDB_UniCurr_parseLine(char* line){
 	UniCurr* unidadeCurricular;
 	char* idx=line;
-	char* str;
+	char *str;
 
 	if (line == NULL)  return;
-	str=strndup(idx,3);
+	
+	
 	unidadeCurricular=UniCurr_emptyNew(); /*Alloc*/
-	
-	str[0]=*idx++;
-	str[1]=*idx++;
-	str[2]=0;
+	str=(char*)malloc(3);
+	*str	  =*(idx++);
+	*(str + 1)=*(idx++);
+	*(str + 2)=0;
 	unidadeCurricular->mec_number=twoByte2UnsignedShort(&str);
-	
-	
-	/*unidadeCurricular->mec_number=(unsigned short)(a<<8)|b;*/
+	free(str);
 
 	/*obtido de acordo com a descrição dos campos do ficheiro*/
 	/*Processa o Tipo*/
@@ -181,8 +182,7 @@ void CDB_UniCurr_parseLine(char* line){
 
 	/*Processa as Dependencias Fracas*/
 	idx = CDB_field_equalize(&(unidadeCurricular->DependenciasFracas),idx);
-
-	UniCurr_toString(unidadeCurricular);
+	UniCurr_toString_debug(unidadeCurricular);
 	UniCurr_destroy(unidadeCurricular); /*free*/
 	
 }
