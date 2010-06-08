@@ -3,21 +3,23 @@
 #include "Teacher.h"
 #include "CDB_Builder.h"
 #include "FileReader.h"
+#include "Command1.h"
 #include <cdb.h>
 
 int main(int argc,char** argv)
 {
 	char * filename = argv[argc-1];
-	char * dsfilename="UC_DB.cdb";
+	
 	char * str="TAR";
 	puts(filename);
-	fileparser(filename);
+	/*fileparser(filename);*/
 	/*dbReaderAll(dsfilename);*/
 	/*dbReadersingle(dsfilename,"TAR");*/
 	/*dbReaderMultiple(dsfilename,"TAR");*/
-	dbReader(dsfilename,str,dblist);
+	Command1_queryCDB1(str);
 	getchar();
-	dbReader(dsfilename,str,dblistAll);
+	Command1_queryCDB2();
+	/*dbReader(dsfilename,str,dblistAll);*/
 
 
 return 0;	
