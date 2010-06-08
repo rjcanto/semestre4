@@ -26,6 +26,21 @@ void CDB_insert_Teacher (Teacher* this, struct cdb_make* cdbm, void* key, unsign
 	free(cdb_line.line);
 	cdb_line.line=NULL;
 }
+unsigned short twoByte2UnsignedShort(char** twobyte){
+	unsigned char a;
+	unsigned char b;
+	a=**twobyte++;
+	b=**twobyte++;
+	return(unsigned short)(a<<8)|b;
+}
+
+void unsignedShort2TwoBytes(char** dest, const unsigned short ush){
+	unsigned char a,b;
+	a= (ush>>8)&0x00FF;
+	b= ( ush  )&0x00FF;
+	**dest = a;
+	**(dest+1)=b;
+}
 
 
 void CDB_Teacher_getLine(CDBLF * result, Teacher* this){
@@ -135,15 +150,19 @@ byte* CDB_field_equalize(char**  field, char * idx){
 void CDB_UniCurr_parseLine(char* line){
 	UniCurr* unidadeCurricular;
 	char* idx=line;
-	unsigned char a,b;
+	char* str;
 
 	if (line == NULL)  return;
-
+	str=strndup(idx,3);
 	unidadeCurricular=UniCurr_emptyNew(); /*Alloc*/
-
-	a=*idx++;
-	b=*idx++;
-	unidadeCurricular->mec_number=(unsigned short)(a<<8)|b;
+	
+	str[0]=*idx++;
+	str[1]=*idx++;
+	str[2]=0;
+	unidadeCurricular->mec_number=twoByte2UnsignedShort(&str);
+	
+	
+	/*unidadeCurricular->mec_number=(unsigned short)(a<<8)|b;*/
 
 	/*obtido de acordo com a descrição dos campos do ficheiro*/
 	/*Processa o Tipo*/

@@ -11,10 +11,7 @@
 #include "Teacher.h"
 #include "UniCurr.h"
 
-typedef struct cdb_line_fields{
-	unsigned short int size;
-	char * line;
-}CDBLF;
+
 
 void CDB_Teacher_getLine(CDBLF * result, Teacher* this);
 void CDB_insert_Teacher (Teacher* this, struct cdb_make* cdbm, void* key, unsigned int key_len, int (*fx)(struct cdb_make *, const void *,unsigned int,  const void *, unsigned int));
