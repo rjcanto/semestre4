@@ -6,6 +6,34 @@ Teacher* Teacher_new(char * name, char * email, unsigned short mec_number){
 	return this;	
 }
 
+static void Teacher_initiate(char** field, char* value, int* size){
+	if (value != NULL){
+		char* fp;
+		int tmpidx=strlen(value)+1;
+		*size+=tmpidx;
+
+		fp=(char*)malloc(tmpidx);
+		strcpy(fp,value);
+		*field=fp;		
+	}else{ *field = NULL;*size+=1;}
+}
+
+static int Teacher_equalize(char** field, byte* value, int* idx, int* size){
+	if (value == NULL){
+		*field=NULL;
+		*idx+=1;
+		*size+=1;
+		free(value);
+	}else{
+		int tmpidx=strlen(value)+1;
+		*field=value;
+		*idx+=tmpidx;
+		*size+=tmpidx;
+	}
+	return *idx;
+}
+
+
 Teacher* Teacher_new_FromString(const char* line, char delimiter){
 	Teacher* this = (Teacher*)malloc(sizeof(Teacher));
 	int size=0;
@@ -14,7 +42,7 @@ Teacher* Teacher_new_FromString(const char* line, char delimiter){
 	
 	/*Processa o numero de Docente*/
 	value=get_next_field(line+idx,delimiter);
-	
+		
 	if (value == NULL){
 		this->mec_number=0;
 		idx+=1;
@@ -33,93 +61,21 @@ Teacher* Teacher_new_FromString(const char* line, char delimiter){
 	
 	/*Processa o Nome do Docente*/
 	value=get_next_field(line+idx,delimiter);
-	if (value == NULL){
-		this->name=NULL;
-		idx+=1;
-		size+=1;
-		free(value);value=NULL;
-	}else{
-		int tmp_size=strlen(value)+1;
-		this->name=value;
-		idx+=tmp_size;
-		size+=tmp_size;
-	}
+	idx=Teacher_equalize(&(this->name),value, &idx, &size);	
+	
 	/*Processa o Email*/
 	value=get_next_field(line+idx,delimiter);
-	if (value == NULL){
-		this->email=NULL;
-		size+=1;
-		free(value);value=NULL;
-	}else{
-		this->email=value;
-		size+=strlen(value)+1;
-	}
+	idx=Teacher_equalize(&(this->email),value, &idx, &size);	
+
 	this->totalsize=size;
 	return this;	
-}
-/*	
-Campo	Designação do Campo	Posição	Comprimento		Conteudo	OBS
- 01		mec_number			   	01	2 bytes			Fixo
- 02		Tamanho Nome			03	1 byte			Fixo		Indica o tamanho do texto referente ao Nome
- 03		Nome					04  -----------		Variável	Comprimento dado pelo campo 02
- 04		Tamanho email			--	1 byte			Variável	Indica o tamanho do texto referente ao Email
- 05		Email					--	-----------		Variável	Comprimento dado pelo campo 04
-*/
-void Teacher_line2CDB2(Teacher* this){
-	printf("%hu%c%s%c%s\n",this->mec_number,\
-							(this->name != NULL)?(char)strlen(this->name):0,\
-							(this->name != NULL)?this->name:"",\
-							(this->email != NULL)?(char)strlen(this->email):0,\
-							(this->email != NULL)?this->email:""\
-							);
-}
-
-void Teacher_line2CDB(Teacher* this){
-	char* cdb_line=(char*)malloc((this->totalsize)+2);/* ???? */
-	int ret;
-	ret=sprintf(cdb_line,"%hu%c%s%c%s",this->mec_number,\
-							(this->name != NULL)?(char)strlen(this->name):0,\
-							(this->name != NULL)?this->name:"",\
-							(this->email != NULL)?(char)strlen(this->email):0,\
-							(this->email != NULL)?this->email:""\
-							);
-	printf(">>>>>>>> %u >> %u (%u)\n",this->totalsize, ret,strlen(cdb_line) );
-	puts(cdb_line);
-	
-	if (cdb_line != NULL){
-		free(cdb_line);
-		cdb_line=NULL;						
-	}
 }
 
 
 void Teacher_init(Teacher* this, char * name, char * email, unsigned short mec_number){
 	int size=0;
-	int value_size=0;
-	char *n=NULL;
-	
-	if (name != NULL){
-		value_size=strlen(name)+1;
-		n=(char*)malloc(value_size);
-		strcpy(n,name);
-		this->name=n;
-		size+=value_size;
-		n=NULL;
-	}else{
-		this->name=NULL;
-		size+=1;
-	}
-	if (email != NULL){
-		value_size=strlen(email)+1;
-		n =(char*)malloc(value_size);
-		strcpy(n,email);
-		this->email =n;
-		size+=value_size;
-		n=NULL;
-	}else{
-		this->email=NULL;
-		size+=1;
-	}	
+	Teacher_initiate(&(this->name),name, &size);
+	Teacher_initiate(&(this->email),email, &size);
 	this->mec_number = mec_number;
 	size+=sizeof(this->mec_number);
 	this->totalsize=size;
@@ -127,7 +83,7 @@ void Teacher_init(Teacher* this, char * name, char * email, unsigned short mec_n
 
 void Teacher_toString(Teacher* this){
 	
-	printf ("Number: %5hu\tName: %-40.40s\tEmail: %-40.40s\nTotal Size: %hu\n",this->mec_number,(this->name==NULL)?"NULL":this->name,(this->email==NULL)?"NULL":this->email,this->totalsize);
+	printf ("Number: %5hu\tName: %-40.40s\tEmail: %-40.40s\n",this->mec_number,(this->name==NULL)?"NULL":this->name,(this->email==NULL)?"NULL":this->email);
 }
 
 void Teacher_toString_debug(Teacher* this){
@@ -152,26 +108,4 @@ void Teacher_destroy(Teacher * this){
 	Teacher_cleanup(this);
 	free(this);
 }
-/*
-int main()
-{
-	 static char string[]="819|Acilina Nascimento Caneco|d819@deetc.isel.pt";
-	 Teacher * t1 = 0;
-	 Teacher * t2 = 0;
-	 
-	 
-	 
-	t1 = Teacher_new("Adolfo","Dias",123);
-	Teacher_toString(t1);
-	Teacher_destroy(t1);
 
-
-	t2 = Teacher_new_FromString(string,'|');
-	Teacher_toString(t2);
-	Teacher_destroy(t2);
-
-	
-
-return 0;	
-}
-*/
