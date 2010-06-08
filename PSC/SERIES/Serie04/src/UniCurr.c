@@ -109,7 +109,6 @@ static void UniCurr_initiate(char** field, char* value, int* size){
 					
 void UniCurr_init(	UniCurr* this, char* unidadeCurricular,	char* acronimo, char* depFortes, char* depFracas, unsigned short mec_number, byte type, byte semestre){
 	int size=0;
-	int tmpidx=0;
 	
 	/*Processa Unidade Curricular*/
 	UniCurr_initiate(&(this->unidadeCurricular),unidadeCurricular, &size);
@@ -134,27 +133,12 @@ void UniCurr_init(	UniCurr* this, char* unidadeCurricular,	char* acronimo, char*
 	this->totalsize=size;
 }
 
-/*
-Campo	Designação do Campo	Posição	Comprimento		Conteudo	OBS
- 01		mec_number			   	01	2 bytes			Fixo
- 02		type				   	03	1 byte			Fixo
- 03		semestre				04	1 byte			Fixo
- 04		Tamanho Acronimo		05	1 byte			Fixo		Indica o tamanho do texto referente ao Acronimo
- 05		Acronimo				06  -----------		Variável	Comprimento dado pelo campo 04
- 06		Tamanho Uni Curr		--	1 byte			Variável	Indica o tamanho do texto referente à Unidade Curricular
- 07		Unidade Curricular		--	-----------		Variável	Comprimento dado pelo campo 06
- 08		Tamanho Dep Fortes		--	1 byte			Variável	Indica o tamanho do texto referente à Dep Fortes
- 09		Dependencia Fortes		--	-----------		Variável	Comprimento dado pelo campo 08
- 10		Tamanho Dep Fracas		--	1 byte			Variável	Indica o tamanho do texto referente à Dep Fracas
- 11		Dependencia Fracas		--	-----------		Variável	Comprimento dado pelo campo 10
-*/
 
 void UniCurr_toString(UniCurr* this){
 	printf("Acronimo: %s\tNome: %s\n",this->acronimo,this->unidadeCurricular);
 	printf("\tDependencias Fortes: %s\n\tDependencias Fracas: %s\n",this->DependenciasFortes,this->DependenciasFracas);
 	printf("\tTipo: %c\tSemestre: %d\n",this->type,this->semestre);
 	printf("\tDocente Responsável: %hu\n",this->mec_number);
-	printf("\ttotal size: %hu byes\n",this->totalsize);
 }
 
 void UniCurr_toString_debug(UniCurr* this){

@@ -48,6 +48,7 @@ void CDB_Teacher_getLine(CDBLF * result, Teacher* this){
 							);	
 	result->size=ret;
 	result->line=cdb_line;	
+	Teacher_toString_debug(this);
 }
 void CDB_Teacher_parseLine(char* line){
 	Teacher* professor;
