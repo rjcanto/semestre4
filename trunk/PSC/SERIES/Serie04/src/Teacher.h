@@ -9,9 +9,11 @@ typedef struct teacher_type{
 	unsigned short 	totalsize;
 } Teacher;
 
+
 Teacher* Teacher_new(char * name, char * email, unsigned short mec_number);
-#define Teacher_new_empty()  Teacher_new(NULL,NULL,0)
-Teacher* Teacher_new_FromString(const char* line, char delimiter);
+#define Teacher_new_empty()  Teacher_new(NULL,NULL,0);
+Teacher* Teacher_new_fromString(const char* line, char delimiter);
+
 void Teacher_init(Teacher* this, char * name, char * email, unsigned short mec_number);
 void Teacher_line2CDB(Teacher* this);
 void Teacher_cleanup(Teacher* this);
