@@ -1,7 +1,7 @@
 #include "FileReader.h"
 #define BUFFER_SIZE 100
 
-void fileparser(char* filename){
+void fileparserUni(char* filename){
 	FILE* fp= fopen(filename, "rb");
 	UniCurr * unicurr;
 	char buffer[BUFFER_SIZE];
@@ -27,78 +27,27 @@ void fileparser(char* filename){
 }
 
 
-
-void dbReader(char* filename,char * key, void (*fx)(struct cdb* , char* , unsigned )){
-	/*Start Database*/
-	struct cdb cdb;
- 	int fd;
-	fd = open(filename, O_RDONLY);
-	cdb_init(&cdb, fd);
-
-		fx(&cdb, key, strlen(key));
-	
-	/*Close Database*/
-	cdb_free(&cdb);
-	close(fd);
-}
-
-void dblist(struct cdb* cdb, char* key, unsigned klen){
-	char  *val;
-	unsigned  vlen, vpos;
-		
-	if (cdb_find(cdb, key, strlen(key)) > 0) {
-		struct cdb_find cdbf;
-		cdb_findinit(&cdbf, cdb, key, strlen(key));
-		while(cdb_findnext(&cdbf) > 0) {
-		  vpos = cdb_datapos(cdb);
-		  vlen = cdb_datalen(cdb);
-		  val = malloc(vlen);
-		  cdb_read(cdb, val, vlen, vpos);
-		  /* handle the value */
-		  CDB_UniCurr_parseLine(val);
-		  free(val);
-		}
-		
+void fileparser(char* filename){
+	FILE* fp= fopen(filename, "rb");
+	Teacher * teacher;
+	char buffer[BUFFER_SIZE];
+	char delimiter ='|';
+	if (fp == NULL){
+			fprintf(stderr, "Unable to open the file. Check permition or disk space!\n");
+			exit(2);
 	}
-	else
-	  printf("key=%s not found\n", key);
-		
-}
-void dblistAll(struct cdb* cdb, char* key, unsigned klen){
-	unsigned cpos;
-	int n;
-	char *data;
-	int view=0; 
-	unsigned datalen;
-	klen=0;datalen=0;n=0;
 	
-	cdb_seqinit( &cpos,cdb);
-	while(cdb_seqnext(&cpos,cdb) > 0) {
-		/*++view;*/
-		klen = cdb_keylen(cdb);
-		key = malloc(klen + 1);
-		cdb_read(cdb, key, klen, cdb_keypos(cdb));
-		key[klen] = '\0';
-		
-		datalen = cdb_datalen(cdb);
-		data = malloc(datalen + 1);
-		cdb_read(cdb, data, datalen, cdb_datapos(cdb));
-		data[datalen] = '\0';
-		
-		/* handle the value */
-		printf("record %d: \n", ++n);
-		CDB_UniCurr_parseLine(data);
-		free(data); free(key);
-	
-	/*	if (view == 7){
-			puts("Pause (Enter to continue)") ;
-			getchar();
-			view=0;
-		}*/
+	Command3_createDB();
+	puts("Processing the file!");
+	while (fgets(buffer, BUFFER_SIZE, fp) != NULL ) {
+
+		teacher = Teacher_new_fromString(buffer,delimiter);
+		Command3_insert_CDB_by_mec_number(teacher);
+
+		Teacher_destroy(teacher);
+		teacher=NULL;
 	}
-	printf("total records found: %d\n", n);
+	Command3_destroyDB();
+	fclose(fp);
+
 }
-
-
-
-

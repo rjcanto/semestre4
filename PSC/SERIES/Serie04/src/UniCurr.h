@@ -1,10 +1,8 @@
 #ifndef UNICURR_H
 #define UNICURR_H
 
-
 #include "Common.h"
 
-typedef Node DepList;
 
 typedef struct unidadeCurricular_type{
 	char *			unidadeCurricular;

@@ -34,7 +34,7 @@ static int Teacher_equalize(char** field, byte* value, int* idx, int* size){
 }
 
 
-Teacher* Teacher_new_FromString(const char* line, char delimiter){
+Teacher* Teacher_new_fromString(const char* line, char delimiter){
 	Teacher* this = (Teacher*)malloc(sizeof(Teacher));
 	int size=0;
 	int idx=0;
@@ -57,7 +57,6 @@ Teacher* Teacher_new_FromString(const char* line, char delimiter){
 	}
 	size+=sizeof(this->mec_number);
 	free(value);value=NULL;
-	
 	
 	/*Processa o Nome do Docente*/
 	value=get_next_field(line+idx,delimiter);
