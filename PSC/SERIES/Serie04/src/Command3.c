@@ -4,6 +4,9 @@ struct cdb_make Command3_cdbm;
 int fd;
 
 void Command3_createDB(){
+	puts("======================================================================");
+	puts("Criação de Base de Dados de Docentes");
+	puts("======================================================================");
 	fd = open(Command3_filename, O_WRONLY|O_CREAT|O_TRUNC, 0666);
 	if (cdb_make_start(&Command3_cdbm, fd) < 0) {
 		puts("Aconteceu um erro na criação do ficheiro!");
@@ -25,12 +28,11 @@ Campo	Designação do Campo	Posição	Comprimento		Conteudo	OBS
  * quem chamar esta função libertar o espaço alocao depois de não ser mais necessário. 
  * 
  * */
-
-
-void Command3_getLine(CDBLF * result,Teacher* this ){
+void Command3_getLine(CDBLF * result,void* t ){
 	char* cdb_line;
 	unsigned char a,b;
 	int ret=0;
+	Teacher* this = (Teacher*)t;
 	if (this == NULL || result == NULL)  return;
 	
 	cdb_line=(char*)malloc((this->totalsize)+1);
@@ -79,13 +81,13 @@ void Command3_insert_CDB_by_mec_number(void * this){
 		unsigned short u=((Teacher*)this)->mec_number;
 		*(key+2)=0;
 		unsignedShort2TwoBytes(key,u);
-		Command3_insert_CDB(this,key,sizeof(((Teacher*)this)->mec_number),&cdb_make_add);
+		Command3_insert_CDB(this,key,sizeof(((Teacher*)this)->mec_number),&cdb_make_add,Command3_getLine);
 		free (key);
 }
 
-void Command3_insert_CDB(void * this, void* key, unsigned int key_len, int (*fx)(struct cdb_make *, const void *,unsigned int,  const void *, unsigned int)){
+void Command3_insert_CDB(void * this, void* key, unsigned int key_len, int (*fx)(struct cdb_make *, const void *,unsigned int,  const void *, unsigned int),void(*getline)(CDBLF *,void* )){
 	CDBLF cdb_line;
-	Command3_getLine(&cdb_line,(Teacher*)this);
+	getline(&cdb_line,this);
 	
 		fx( &Command3_cdbm, key, key_len, cdb_line.line, cdb_line.size);
 

@@ -18,7 +18,7 @@ void CDB_insert_Teacher (Teacher* this, struct cdb_make* cdbm, void* key, unsign
 #define CDB_insert_Teacher_by_mec_Number(T,C) CDB_insert_Teacher((T),C,&((T)->mec_number), sizeof((T)->mec_number),&cdb_make_add);
 */
 /*void CDB_insert_Teacher_by_mec_Number(Teacher * this,struct cdb_make* cdbm);*/
-byte*  CDB_field_equalize(char** field, char* value);
+
 /*
 void CDB_UniCurr_getLine(CDBLF * result,UniCurr* this );
 void CDB_UniCurr_parseLine(char* line);

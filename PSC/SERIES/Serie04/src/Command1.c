@@ -5,6 +5,9 @@ struct cdb_make Command1_cdbm;
 int fd;
 
 void Command1_createDB(){
+	puts("======================================================================");
+	puts("Criação de Base de Dados da Unidade Curricular");
+	puts("======================================================================");
 	fd = open(Command1_filename, O_WRONLY|O_CREAT|O_TRUNC, 0666);
 	if (cdb_make_start(&Command1_cdbm, fd) < 0) {
 		puts("Aconteceu um erro na criação do ficheiro!");
@@ -19,7 +22,6 @@ void Command1_UniCurr_parseLine(char* line){
 
 	if (line == NULL)  return;
 	
-	
 	unidadeCurricular=UniCurr_emptyNew();
 	str=(char*)malloc(3);
 	*str	  =*(idx++);
@@ -28,35 +30,23 @@ void Command1_UniCurr_parseLine(char* line){
 	unidadeCurricular->mec_number=twoByte2UnsignedShort(&str);
 	free(str);
 
-
-
 	unidadeCurricular->type = *(idx++);
-
 	unidadeCurricular->semestre = *(idx++);
-	
-
 	idx = CDB_field_equalize(&(unidadeCurricular->acronimo),idx);
-	
-
 	idx = CDB_field_equalize(&(unidadeCurricular->unidadeCurricular),idx);
-
-
 	idx = CDB_field_equalize(&(unidadeCurricular->DependenciasFortes),idx);
-
-
 	idx = CDB_field_equalize(&(unidadeCurricular->DependenciasFracas),idx);
-	UniCurr_toString_debug(unidadeCurricular);
+	/*Aqui apresenta o resultado*/
 	UniCurr_destroy(unidadeCurricular); 
-	
 }
 
 
-void Command1_getLine(CDBLF * result,UniCurr* this ){
+void Command1_getLine(CDBLF * result,void* t ){
 	char* cdb_line;
 	char* str;
 	/*unsigned char a,b;*/
 	int ret=0;
-	
+	UniCurr* this=(UniCurr*)t;
 	if (this == NULL || result == NULL)  return;
 
 	cdb_line=(char*)malloc((this->totalsize)+1);
@@ -83,9 +73,9 @@ void Command1_getLine(CDBLF * result,UniCurr* this ){
 }
 
 
-void Command1_insert_CDB(void * this, void* key, unsigned int key_len, int (*fx)(struct cdb_make *, const void *,unsigned int,  const void *, unsigned int)){
+void Command1_insert_CDB(void * this, void* key, unsigned int key_len, int (*fx)(struct cdb_make *, const void *,unsigned int,  const void *, unsigned int),void(*getline)(CDBLF*, void* )){
 	CDBLF cdb_line;
-	Command1_getLine(&cdb_line,(UniCurr*)this);
+	getline(&cdb_line,this);
 
 		fx( &Command1_cdbm, key, key_len, cdb_line.line, cdb_line.size);
 

@@ -5,6 +5,9 @@ struct cdb_make Command2_cdbm;
 int fd;
 
 void Command2_createDB(){
+	puts("======================================================================");
+	puts("Criação de Base de Dados da Unidade Curricular");
+	puts("======================================================================");
 	fd = open(Command2_filename, O_WRONLY|O_CREAT|O_TRUNC, 0666);
 	if (cdb_make_start(&Command2_cdbm, fd) < 0) {
 		puts("Aconteceu um erro na criação do ficheiro!");
@@ -13,18 +16,17 @@ void Command2_createDB(){
 }
 
 
-void Command2_getLine(CDBLF * result,UniCurr* this ){
+void Command2_getLine(CDBLF * result,void* t ){
 	char* cdb_line;
 	unsigned char a,b;
 	int ret=0;
-	
+	UniCurr* this=(UniCurr*)t;
 	if (this == NULL || result == NULL)  return;
 
-	cdb_line=(char*)malloc((this->totalsize)+1); /*????*/
+	cdb_line=(char*)malloc((this->totalsize)+1);
 	if (cdb_line == NULL) return;
 	a= ((this->mec_number)>>8)&0x00FF;
 	b= (this->mec_number)&0x00FF;
-	
 	ret = sprintf(cdb_line,"%c%c%c%c%c%s%c%s%c%s%c%s",a,b,this->type,this->semestre,\
 									 (this->acronimo != NULL)?(char)strlen(this->acronimo):0,\
 									 (this->acronimo != NULL)?this->acronimo:"",\
@@ -47,9 +49,7 @@ void Command2_UniCurr_parseLine(char* line){
 	char *str;
 
 	if (line == NULL)  return;
-	
-	
-	unidadeCurricular=UniCurr_emptyNew(); /*Alloc*/
+	unidadeCurricular=UniCurr_emptyNew();
 	str=(char*)malloc(3);
 	*str	  =*(idx++);
 	*(str + 1)=*(idx++);
@@ -57,34 +57,24 @@ void Command2_UniCurr_parseLine(char* line){
 	unidadeCurricular->mec_number=twoByte2UnsignedShort(&str);
 	free(str);
 
-	/*obtido de acordo com a descrição dos campos do ficheiro*/
-	/*Processa o Tipo*/
 	unidadeCurricular->type = *(idx++);
-	/*Processa o Semestre*/
 	unidadeCurricular->semestre = *(idx++);
-	
-	/*Processa o Acronimo*/
 	idx = CDB_field_equalize(&(unidadeCurricular->acronimo),idx);
-	
-	/*Processa a Unidade Curricular*/
 	idx = CDB_field_equalize(&(unidadeCurricular->unidadeCurricular),idx);
-
-	/*Processa as Dependencias Fortes*/
 	idx = CDB_field_equalize(&(unidadeCurricular->DependenciasFortes),idx);
-
-	/*Processa as Dependencias Fracas*/
 	idx = CDB_field_equalize(&(unidadeCurricular->DependenciasFracas),idx);
-	UniCurr_toString_debug(unidadeCurricular);
-	UniCurr_destroy(unidadeCurricular); /*free*/
+	/*UniCurr_toString_debug(unidadeCurricular);*/
+	/*Aqui apresenta o resultado*/
+	UniCurr_destroy(unidadeCurricular);
 	
 }
 
 
 
 
-void Command2_insert_CDB(void * this, void* key, unsigned int key_len, int (*fx)(struct cdb_make *, const void *,unsigned int,  const void *, unsigned int)){
+void Command2_insert_CDB(void * this, void* key, unsigned int key_len, int (*fx)(struct cdb_make *, const void *,unsigned int,  const void *, unsigned int),void(*getline)(CDBLF *,void* )){
 	CDBLF cdb_line;
-	Command2_getLine(&cdb_line,(UniCurr*)this);
+	getline(&cdb_line,this);
 
 		fx( &Command2_cdbm, key, key_len, cdb_line.line, cdb_line.size);
 
@@ -93,7 +83,8 @@ void Command2_insert_CDB(void * this, void* key, unsigned int key_len, int (*fx)
 }
 
 void Command2_queryCDB1(){
-	Command_dbReader(Command2_filename,"",Command_dblistAll,Command2_UniCurr_parseLine);	
+	Command_dbReader(Command2_filename,"",Command_dblistAll,Command2_UniCurr_parseLine);
+	Command_dbReader("TeacherbyMecNbr.cdb","",Command_dblistAll,Command3_parseLine);	
 }
 
 void Command2_destroyDB(){

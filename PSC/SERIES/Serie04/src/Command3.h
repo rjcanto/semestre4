@@ -1,22 +1,14 @@
 #ifndef COMMAND3_H
 #define COMMAND3_H
-#include "Common.h"
-#include "Teacher.h"
-#include "CDB_Builder.h"
 #include "Command.h"
-#include <cdb.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
 void Command3_createDB();
-void Command3_insert_CDB(void * this, void* key, unsigned int key_len, int (*fx)(struct cdb_make *, const void *,unsigned int,  const void *, unsigned int));
+void Command3_insert_CDB(void * this, void* key, unsigned int key_len, int (*fx)(struct cdb_make *, const void *,unsigned int,  const void *, unsigned int),void(*getline)(CDBLF *,void* ));
 void Command3_destroyDB();
 void Command3_insert_CDB_by_mec_number(void * this);
 
 void Command3_queryCDB1(char* key);
 void Command3_parseLine(char* line);
-void Command3_getLine(CDBLF * result,Teacher* this );
+void Command3_getLine(CDBLF * result,void* this );
 
 /*define   Command3_insert_CDB_by_mec_number(P_UC) 	Command3_insert_CDB( (P_UC) , ( (P_UC)->mec_number )  , sizeof( (P_UC)->mec_number)  , &cdb_make_add )*/
 /*

@@ -17,6 +17,16 @@ void unsignedShort2TwoBytes(char* dest, const unsigned short ush){
 	*(dest+1)=b;
 }
 
+byte* CDB_field_equalize(char**  field, char * idx){
+	if (*idx != 0){
+		*field = strndup(idx+1,*idx);
+		idx = idx + 1 + *idx;
+	}else{
+		*field=NULL;
+		++idx;
+	}
+	return idx;
+}
 
 void Command_dbReader(char* filename,char * key, void (*fx)(struct cdb* , char* , unsigned, void (*parser)(char*) ), void (*parser)(char*) ){
 	/*Start Database*/
@@ -73,10 +83,12 @@ void Command_dblistAll(struct cdb* cdb, char* key, unsigned klen, void (*parser)
 		data = malloc(datalen + 1);
 		cdb_read(cdb, data, datalen, cdb_datapos(cdb));
 		data[datalen] = '\0';
-		
+		++n;
 		/* handle the value */
+		/*
 		printf("record %d: \n", ++n);
-		/*CDB_UniCurr_parseLine(data);*/
+		CDB_UniCurr_parseLine(data);
+		*/
 		parser(data);
 		free(data); free(key);
 	}
