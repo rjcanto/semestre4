@@ -1,0 +1,129 @@
+========================================================================
+Fórmulas Necessárias
+========================================================================
+* Capitalização:
+Capital acumulado ao fim de n periodos iguais a partir de uma anuidade de capital aplicada a uma taxa i.
+Permite projectar no futuro, fluxos de rendimentos actuais
+	Capital*(1+i)^n
+* Actualização:
+Valor inicial de uma unidade de capital que tenha sido aplicada durante n periodos iguais a uma taxa de juro i.
+Permite projectar no presente, fluxos de rendimentos no futuro
+	CF*(1/(1+i)^n)
+* Anuidades:
+Anuidades são fluxos de rendimentos constantes durante um certo periodo de tempo
+Valor presente de uma renda com n termos unitários e descontada á taxa i.
+Como são rendimentos fixos, podemos obter uma série geométrica, para obter a actualização
+	Valor*(1/i - 1/(i*(1+i)^n))
+* Anuidades (Valor Acumulado):
+Valor acumulado de uma renda com n termos unitários capitalizados à taxa i.
+	Valor*(((1+i)^n - 1)/i)
+*Perpetuidades são fluxos constantes durante um periodo de tempo considerado infinito
+	Como n tende para infinito
+	Valor * (1/i)
+*Perpertuidades: fluxos variáveis indexados a taxa G
+	Valor * (1/(i-G))
+* Termo de Renda:
+Valor do termo de uma renda com n termos iguais e cujo o valor presente é a unidade.
+Renda*(((1+i)^n)*i/((1+i)^n - 1))
+* Resumo:
+	* Fluxo constante para periodo finito, usa-se anuidades
+	* Fluxo constante para periodo infinito, usa-se perpetuidades
+	* Fluxo variáveis para periodos finitos actualizam-se os valores ano a ano
+========================================================================
+* Critério do VAL
+	VAL = SUM_(t=0->n)(Cash-Flow/(1+i)^t)
+* Método do Indicie de Rentabilidade ou Retorno do Investimento
+		* igual à Unidade: VAL = 0
+		* Superior à Unidade: VAL > 0
+		* Inferior à Unidade: VAL < 0
+	*ROI= VAL/Investimento
+* Método do Periodo de Recuperação do Capital Investido (Payback)
+
+* Modelo do Cash-Flow Periodico Equivalente (Fluxo Anual Equivalente)
+	VAL = Renda*(1 - (1+i)^(-n))/i
+	a_(n|r) = (1 - (1+i)^(-n))/i
+	Renda = VAL / a_(n|r)
+	* Aplica-se a formula para obter a renda de cada projecto e 
+	compara-se cada renda
+* Modelo do Valor Residual
+	* Actualiza-se os cash-flows para o maior ano do menor projecto
+	* Encontra-se o TIR para o projecto
+	* Encontra-se o valor residual
+		Valor Residual = CF_(n+1)/(1+TIR)¹ + CF_(n+2)/(1+TIR)²...
+	* Critério de Escolha: VAL
+* Modelo do Reinvestimento dos Cash-Flows
+	* Adopta-se o maior investimento
+	* Capitalização dos cash-flows de ambos os investimentos, adoptando
+	uma taxa de capitalização correspondente a um investimento 
+	alternativo.
+	* Quanto maior for a taxa de capitalização, se aproximar da taxa de
+	actualização, maior a probabilidade da a escolha se basear no VAL
+	* Se a taxa de capitalização se aproximar do TIR, a probabilidade de
+	escolha ser o TIR é maior
+* Método da Harmonização
+	* Capitaliza-se:
+		* Projecto menor ao periodo máximo do maior
+		* Projecto extra com a diferença do investimento inicial, para
+		o mesmo periodo
+		* Maior Projecto
+	* Calcula-se o VAL e o TIR
+	* Opta-se pelo maior VAL.
+* Conversão de Taxa Nominal (Preços Correntes) em Taxa a Preços Constantes
+TxPNominal = (1+TxPConstantes)*(1+TxInflação) - 1
+TxPConstantes = (TxPnominal+1)/(TxInflação+1) – 1
+TxPNominal = TxPConstantes, se a TxInflação = 0
+========================================================================
+LER COM ATENÇÃO OS ENUNCIADOS.
+Cuidado com os tempos verbais. 
+	Tempo verbal no futuro implica, normalmente, a capitalização.
+	Tempo verbal no presente implica, normalmente, a actualização.
+========================================================================
+==> Calcular o Valor Actual ('VA') de um valor 'C' daqui a 'N' anos com 
+uma taxa 'I'
+	VA = C * (1/(1+I)^N)						(Actualização)
+==> Investir um valor 'C' no final de cada um dos próximos 'N' anos com
+uma taxa 'I', valor no final (VF)
+	VF = C * (Sum (t=0->N-1) (1 + I)^t)			(Capitalização)
+==> Investimento inicial 'VI' gera um valor final 'VF' em 'N' anos, qual
+ a taxa de juro 'I'
+	VF = VI*(1+I)^N => I = raiz_indicie_N(VI/VF)-1
+==> Anuidade no valor de 'C' durante 'N' tempo, a partir do ano 'X', a 
+uma taxa de 'I', o valor actual 'VA' é:
+	VA1 = C * (1/I - 1/(I*(1+I)^(X+N-1)))		(Anuidade)
+	VA2 = C * (1/I - 1/(I*(1+I)^(X-1)))			(Anuidade)
+	VA = VA1 - VA2
+==> Perpetuidade de 'C' por ano, taxa de 'I', qual o valor de 'VA'
+	Como 'N'-> infinito
+	VA = C * (1/I)								(Perpetuidade)
+==> Valor 'C' a ser pago em 'M' anos, quer ser repartido em pagamentos 
+anuais constantes de 'P', durante 'N' anos, à taxa de 'I'. Qual o valor 
+de P
+	VA1 = C * (1/(1+I)^N)						(Actualização do ano N)
+	P = VA1 / ((1/I - 1/(I*(1+I)^(M)))) ((Actualização do ano N)/(Anuidade))
+==> Valor 'C' constante por ano a pagar durante 'N' anos, sendo a taxa
+ 'I' qual o valor 'VA' a reservar
+	VA = C * (1/I - 1/(I*(1+I)^(X+N-1)))		(Anuidade)
+==> Para identificar valores de Imposto, VAL, Investimento, Volume de 
+Vendas, preço de Venda.
+	VAL = Inv + (((Quantidade)*(Pvenda - Cvariaveis) - CF - Amortizações)*(1-I)+Amortizações)*(Taxa de Anuidade)
+==> Taxa	
+
+==> Materia Colectável
+	Importante este conceito. Se o valor do RAI < não paga impostos, mas
+a materia colectavel do proximo ano lucrativo, será o valor do RAI + os 
+ anos com o RAI negativo.
+==> Taxa nominal = Taxa a preços correntes
+	*Conversão de Taxa Nominal (Preços Correntes) em Taxa a Preços Constantes
+		TxPNominal = (1+TxPConstantes)*(1+TxInflação) - 1
+		TxPConstantes = (TxPnominal+1)/(TxInflação+1) – 1
+		TxPNominal = TxPConstantes, se a TxInflação = 0
+	No Cash-Flow Recalcula-se os valor tendo em conta a inflação.
+	Nomeadamente:
+		* Vendas
+		* Custos
+==> RDI + ISR = Materia Colectavel
+	Materia Colectavel = RDI/(1 - Taxa de ISR)
+==> DADO o TIR, VAL, o N e o I, achar o Investimento e Cash-Flow
+	Sistema de duas Equações
+		* I  = - CF*(Taxa de Anuidade TIR), sendo a taxa a do TIR
+		* CF = VAL /((Taxa de Anuidade VAL) - (Taxa de Anuidade TIR))
