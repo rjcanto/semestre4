@@ -1,0 +1,333 @@
+========================================================================
+Fases de Desenvolvimento de um projecto
+========================================================================
+* Fase de Concepção
+	* Identificação: 
+		Identificação das Oportunidades de Investimento
+	* Preparação: 
+		Formulação das variantes do projecto 
+			(Tecnologia, Localização, Capacidade Produtiva, Layout, 
+			 Estudo de mercado, Publicidade, Rede de Distribuição)
+		Pre-Avaliação
+	*Avaliação:
+		Formulação do Projecto
+		Avaliação
+		Tomada de decisão
+			(Planeamento de Investimento, de Exploração e de 
+			 Financiamento)
+* Fase de Implementação
+	* Planeamento
+	* Execução
+	* Controle
+	* Conclusão do Projecto e ligação a projectos subsequentes
+========================================================================
+Tipos de Avaliação de Projectos
+========================================================================
+* Financeira
+	* Estudo que pondera as despesas e receitas, para aferir a rentabilidade
+* Técnica
+	* Avalia o Requesitos técnicos, design das instalações e equipamento
+	de projecto, estima os custos de investimento e os custos operativos
+	da construção e operação do projecto. Incorporada na avaliação 
+	financeira
+*Comercial
+	* Avalia as condições de compra de bens e serviços necessários para 
+	a implementação e do marketing da fase de projecto. Envolve estudos 
+	de mercado, que identifica clientes e concorrentes.
+*Institucional
+	* Gestão do projecto, sistema de gestão e tipo de organização do 
+	pessoal.
+*Social
+	* Avalia o impacto social do projecto:
+		* Distribuição de rendimentos
+		* Fixação da população do território
+		* Melhoria das condições de vida (nutrição, saude, educação)
+*Ambiental:
+	* Avalia o impacto ambiental
+========================================================================
+Avaliação Financeira do Projectos
+========================================================================
+* Cash-Flow
+	* Resultado Liq + Amortizações + Valor Residual
+* Valor Actual
+	* Qual o valor, no momento presente, de uma receita ou despesa no futuro
+	* Capitalização
+		* Permite projectar no futuro, fluxos de rendimentos actuais
+		VF = CF * (1+i)^n							  <--------- FÓRMULA
+	* Actualização
+		* Permite projectar no presente, fluxos de rendimentos no futuro
+		VA = CF * (1/(1+i)^n)						  <--------- FÓRMULA 
+* Anuidades e Perpetuidades
+	* Anuidades são fluxos de rendimentos constantes durante um certo periodo de tempo
+		Como são rendimentos fixos, podemos obter uma série geométrica, para obter a actualização
+		Sn = CF * ( 1/i - 1/(i*(1+i)^n))			  <--------- FÓRMULA
+	*Perpetuidades são fluxos constantes durante um periodo de tempo considerado infinito
+		Como n tende para infinito
+		Sn = CF * (1/i)								  <--------- FÓRMULA
+	*Perpertuidades: fluxos variáveis indexados a taxa G
+		Sn = CF * (1/(i-G))							  <--------- FÓRMULA
+		
+	* Resumo:
+		* Fluxo constante para periodo finito, usa-se anuidades
+		* Fluxo constante para periodo infinito, usa-se perpetuidades
+		* Fluxo variáveis para periodos finitos actualizam-se os valores ano a ano
+
+* As Amortizações e o Cálculo dos Cash-Flows
+	* Possibilita a reconstrução do montante de fundos iniciais, de 
+	modo a renovar o seu activo e conservar um potencial de produção
+	adequado
+	* As amortizações não estão sujeitas a imposto fiscal. As 
+	amortizações constituiem um custo de exploração, mas não 
+	representa uma saida de dinheiro, reflete o consumo do factor de
+	produção (imobilizado)
+* O Valor Residual		
+	* É estimado em função do periodo do projecto
+	* No fim de vida do projecto, procede-se a uma entrada de fundos que
+	resulta de:
+		* Venda de equipamentos
+			Ter em conta o valor residual do equipamento no fim da 
+			exploração, devendo ser adicionado no último cash-flow do
+			periodo. Deve-se verificar se este valor é passivel de 
+			imposto de mais valia ou não, o que pode afectar 
+			negativamente o último cash-flow
+		* Recuperação da totalidade, ou parte, das necessidades de fundo
+		de maneio que o projecto necessitava
+			Os stocks podem ser liquidados, os créditos recuperados, as
+			dividas de curto prazo regularizada, permitindo uma entrada
+			de dinheiro
+========================================================================
+Critérios de Avaliação do Projectos
+========================================================================
+* Medidas ou indicadores de rentabilidade de um projecto.
+* Critério do VAL
+	* Comparação de Cash-Flows
+	* Rentável quando VAL > 0
+	VAL = SUM_(t=0->n)(Cash-Flow/(1+i)^t)			  <--------- FÓRMULA
+* Critério do TIR
+	* Taxa de actualição talque VAL=0
+* Comparação entre o TIR e o VAL
+	* TIR é a taxa que o investidor obtém em média em cada ano sobre os
+	capitais que se mantem investidos no projecto, enquando o 
+	investimento inicial é recuperado
+	* Dois projectos podem ter o mesmo valor de TIR, mas o VAL é 
+	diferente, optando-se pelo o mais "lucrativo". É possivel optar pelo
+	menos "lucrativo" mas investir a diferença num outro projecto cujo
+	TIR é igual ou Superior.
+	* O valor do TIR pode ser diferentes e o VAL do projecto com menor
+	TIR ser maior. Recorre-se ao cash-flow diferencial
+* Cash-Flow diferencial:
+	* depois de calcular o cash-flow dos projectos, calcula-se para 
+	difença de (Proj1-Proj2) e encontra-se o TIR a partir do qual 
+	podemos investir com o projecto que gera menos TIR e investir noutro
+	projecto com essa taxa
+* Método do Indicie de Rentabilidade ou Retorno do Investimento
+	* Rentabilidade efectiva por unidade de capital investido
+	* Calculo faz-se através da razão entre o valor actual dos cash-flows
+	de exploração e o valor do investimento
+		* igual à Unidade: VAL = 0
+		* Superior à Unidade: VAL > 0
+		* Inferior à Unidade: VAL < 0
+		ROI= VAL/Investimento						  <--------- FÓRMULA
+* Método do Periodo de Recuperação do Capital Investido (Payback)
+	* Periodo que o projecto leva a recuperar o capital investido
+	* É estudado a partir do cash-flow actualizado
+		* Desvantagens:
+			- Não considera o que se passa apos do prazo de recuperação
+			- Não considera o escalonamento dos cash-flows no tempo
+			- Priviligia as disponibilidades em detrimento da 
+			rentabilidade
+========================================================================
+Selecção de Projectos de Investimento
+========================================================================
+* Selecção de Projectos com periodos de vida diferentes
+	* Para determinar um horizonte comum, calcula-se o menor múltiplo do
+	periodo de tempo dos projectos
+* Selecção de Projectos de Substituição
+	* Determinação do periodo de substituição que maximiza a rentabilidade
+* Selecção de Projectos Sob Restrições Financeiras
+	* Quando os projectos ultrapassam os recursos financeiros existentes
+	é necessário definir prioridades na implementação de projectos
+========================================================================
+Financiamento de Projectos de Investimento
+========================================================================
+* Auto-financiamento
+	* Financiamento pela propria empresa. É necessário que a empresa 
+	constitua reservas financeiras.
+* Financiamento exterior à empresa
+	* Cobrir o imobilizado e o fundo de maneio
+	* Cobrir os financiamentos, de acordo com a sua exigibilidade
+		* Operações correntes da empresa, para cobrir parte dos activos
+		* São financiamentos em fundo maneio
+			* Financiamento na integra do activo fixo da empresa
+			* Possui saldo liq positivo para financiar o capital 
+			circulante
+			* Conceito patrimonial, associado ao balanço
+			* Necessidades de fundo de maneio são dados pelas variações
+			do fundo de maneio
+			* Tem que ser financiadas
+========================================================================
+Metodos de Analise de Investimentos com diferente dimensão.
+========================================================================
+*Metodo Diferencial
+	* Pressupõe a admissão da divisibilidade de um projecto de maior 
+	escala,	em dois (ou mais) sub-projectos. Um com a dimensão do menor
+	dos projectos e outro com a diferença.
+* Modelo do Cash-Flow Periodico Equivalente (Fluxo Anual Equivalente)
+	*Pressupõe a possibilidade de repetição das condições de realização 
+	dos investimentos ao longo do tempo. Assenta na determinação do valor
+	de uma renda constante equivalente ao VAL a cada investimento em 
+	confronto
+	VAL = Renda*(1 - (1+i)^(-n))/i					  <--------- FÓRMULA
+	a_(n|r) = (1 - (1+i)^(-n))/i					  <--------- FÓRMULA
+	Renda = VAL / a_(n|r)							  <--------- FÓRMULA
+	* Aplica-se a formula para obter a renda de cada projecto e 
+	compara-se cada renda
+* Modelo do Valor Residual
+	* Adopção de um periodo comum de analise de investimento, que 
+	corresponde ao periodo mais curto, sendos cash-flows excedentários
+	do maior projecto considerados valor residual do prjecto.
+	* Actualiza-se os cash-flows para o maior ano do menor projecto
+	* Encontra-se o TIR para o projecto
+	* Encontra-se o valor residual
+		Valor Residual = CF_(n+1)/(1+TIR)¹ + CF_(n+2)/(1+TIR)²...FÓRMULA
+	* Critério de Escolha: VAL
+* Modelo do Reinvestimento dos Cash-Flows
+	* Adopta-se o maior investimento
+	* Capitalização dos cash-flows de ambos os investimentos, adoptando
+	uma taxa de capitalização correspondente a um investimento 
+	alternativo.
+	* Quanto maior for a taxa de capitalização, se aproximar da taxa de
+	actualização, maior a probabilidade da a escolha se basear no VAL
+	* Se a taxa de capitalização se aproximar do TIR, a probabilidade de
+	escolha ser o TIR é maior
+* Método da Harmonização
+	* Ajuste do montante do investimento no projecto de menor dimensão 
+	de modo a considerar um investimento extra no valor da diferença
+	entre o montante dos investimentos iniciais
+	* Pressupõe o uso do reinvestimento dos fluxos, a estimação do TIR
+	ajustada e de uma medida de VAL que toma em consideração o efeito
+	do reinvestimento
+	* Capitaliza-se:								  <--------- FÓRMULA
+		* Projecto menor ao periodo máximo do maior
+		* Projecto extra com a diferença do investimento inicial, para
+		o mesmo periodo
+		* Maior Projecto
+	* Calcula-se o VAL e o TIR
+	* Opta-se pelo maior VAL.
+========================================================================
+Management
+========================================================================
+* Processo Estratégico de Gestão
+	* Passo 1:
+		Identificar a missão, os objectivos e estratégia da empresa
+	* Passo 2:
+		Fazer um estudo de mercado
+			Identificar oportunidades e ameaças
+	* Passo 3:
+		Realizar uma analise interna
+			Verificar pontos fortes e pontos fracos
+			Verificar capacidade financeira, técnica e mercadorias
+	Passos 2 e 3 são denominados analise SWOT ( Strengths, Weakness, 
+	Oportunities e Threats)
+	* Passo 4:
+		Formulação de estrategias
+			Desenvolver e analisar estrategias alternativas
+			Selecionar as estrategias adequadas a todos os niveis da 
+			 empresa, que garanta alguma vantagem sobre os concorrentes
+			Equipar os pontos fortes com as oportunidades ambientais
+			Corrigir os pontos fracos
+	* Passo 5:
+		Implementação
+			Organizar a estrutura da empresa ao ambiente
+			O ambiente dita a escolha da estrategia
+	* Passo 6:
+		Avaliar os resultados
+* Tipo de Estratégia organizacional
+	* Estrategia Corporativa
+		Gestão de Topo, define estratégia para todas as empresas
+		* Tipos de Estrategia
+			* Crescimento: Expanção para novos produtos e mercados
+				Tipos de Estrategia:
+				* Concentração
+					Foco na linha principal de investimento, com novos
+					produtos
+				* Integração Vertical
+					Tornar-se auto-suficientes, próprio fornecedor 
+					Controlo dos outputs da distribuição e apoio a 
+					 clientes, eliminando intermediários
+				* Integração Horizontal
+					Alianças com Concorrentes compativeis
+				* Diversificação
+					Expanção para mercados compativeis
+					Alianças com concorrentes incompativeis, mas com 
+					taxa de retorno alta				
+			* Estabilidade: Manutenção da Reputação
+			* Renovação: Redireccionamento para novos mercados
+				* Eliminação de pontos fracos
+				* Eliminação de custos de produção
+* Analise Corporativa
+	* Matriz BCG
+		* Considera as quotas de mercado e taxas de crescimento
+		* Classificação
+			* Cash Cows: taxa de crescimento baixo, quota de mercado alta
+			* Start: taxa de crescimento alto, quota de mercado alta
+			* Question Marks: taxa de crescimento alta, quota de mercado
+			baixa
+			* Dogs: taxa de crescimento baixa, quota de mercado baixa
+		* Vantagem Competitiva:
+			* Vantagem distinta da empresa
+		* Qualidade como vantagem competitiva
+			* Diferenciação da empresa dos seus competitores
+			* Criação de sustentabilidade da vantagem
+			* Focus na gestão da qualidade e melhoria continua
+			* Continuação temporal na exploração eficiente dos recursos
+			e desenvolvimento de competencias que permitem a empresa 
+			manter a vantagem.
+* As 5 forças de Porter:
+	* Ameaça da entrada de novos concorrentes:
+		Facilidedade/Dificuldade da entrada de novos concorrentes no 
+		mercado
+	* Ameaça de Produtos Substitutos:
+		A facilidade de produtos semelhantes serem preferencias em 
+		relação ao nosso
+	* Poder de negociação dos Clientes:
+		O grau de poder de negociação que os clientes têm
+	* Poder de negociação dos Fornecedores:
+		O grau de poder de negociação que os fornecedores têm, devido à
+		exclusividade de produtos, ou por causa de produtos alternativos
+	* Rivalidade Current:
+		Rivalidade intensa ocorre quando a taxa de crescimento da 
+		industria diminui, a procura baixa e os preços dos produtos caiem
+* Tipos de Estrategia Competitiva
+	* Liderança Estratégica pelo custo: 
+		ter os custo mais baixos, para forncer um produto mais barato
+	* Estratégia de Diferenciação:
+		criação de produtos/serviços unicos
+	* Estratégia de Focus:
+		Exploração de um determinado segmento do mercado
+========================================================================
+||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+========================================================================
+=====================================
+Funções Das Folhas de Tabelas Colocar 
+LER LINHA 70
+=====================================
+Capitalização:
+Capital acumulado ao fim de n periodos iguais a partir de uma anuidade de capital aplicada a uma taxa i.
+Capital*(1+i)^n
+
+Actualização:
+Valor inicial de uma unidade de capital que tenha sido aplicada durante n periodos iguais a uma taxa de juro i.
+Investimento*(1/(1+i)^n)
+
+Anuidades:
+Valor presente de uma renda com n termos unitários e descontada á taxa i.
+Valor*(1/i -1/(i*(1+i)^n))
+
+Anuidades (Valor Acumulado):
+Valor acumulado de uma renda com n termos unitários capitalizados à taxa i.
+Valor*(((1+i)^n - 1)/i)
+
+Termo de Renda:
+Valor do termo de uma renda com n termos iguais e cujo o valor presente é a unidade.
+Renda*(((1+i)^n)*i/((1+i)^n - 1))
