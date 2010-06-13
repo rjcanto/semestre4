@@ -84,11 +84,6 @@ void Command_dblistAll(struct cdb* cdb, char* key, unsigned klen, void (*parser)
 		cdb_read(cdb, data, datalen, cdb_datapos(cdb));
 		data[datalen] = '\0';
 		++n;
-		/* handle the value */
-		/*
-		printf("record %d: \n", ++n);
-		CDB_UniCurr_parseLine(data);
-		*/
 		parser(data);
 		free(data); free(key);
 	}

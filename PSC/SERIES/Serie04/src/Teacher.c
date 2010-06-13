@@ -82,11 +82,11 @@ void Teacher_init(Teacher* this, char * name, char * email, unsigned short mec_n
 
 void Teacher_toString(Teacher* this){
 	
-	printf ("Number: %5hu\tName: %-40.40s\tEmail: %-40.40s\n",this->mec_number,(this->name==NULL)?"NULL":this->name,(this->email==NULL)?"NULL":this->email);
+	printf ("Number: %5hu\tName: %-60.60s\tEmail: %-60.60s\n",this->mec_number,(this->name==NULL)?"NULL":this->name,(this->email==NULL)?"NULL":this->email);
 }
 
 void Teacher_toString_debug(Teacher* this){
-	printf ("Number: %5hu (%u)\tName: %-40.40s (%u)\tEmail: %-40.40s(%u)\nTotal Size: %hu\n",this->mec_number,sizeof(this->mec_number),\
+	printf ("Number: %5hu (%u)\tName: %-60.60s (%u)\tEmail: %-60.60s(%u)\nTotal Size: %hu\n",this->mec_number,sizeof(this->mec_number),\
 	(this->name==NULL)?"NULL":this->name,(this->name==NULL)?0:strlen(this->name)+1,\
 	(this->email==NULL)?"NULL":this->email,(this->email==NULL)?0:strlen(this->email)+1,\
 	this->totalsize);

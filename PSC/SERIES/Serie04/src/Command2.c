@@ -22,17 +22,20 @@ void Command2_createDB(){
 
 
 void Command2_getLine(CDBLF * result,void* t ){
+/*	
 	char* cdb_line;
-	unsigned char a,b;
+	char* str;
 	int ret=0;
 	UniCurr* this=(UniCurr*)t;
 	if (this == NULL || result == NULL)  return;
 
 	cdb_line=(char*)malloc((this->totalsize)+1);
 	if (cdb_line == NULL) return;
-	a= ((this->mec_number)>>8)&0x00FF;
-	b= (this->mec_number)&0x00FF;
-	ret = sprintf(cdb_line,"%c%c%c%c%c%s%c%s%c%s%c%s",a,b,this->type,this->semestre,\
+	str=(char*)malloc(sizeof(this->mec_number)+1);
+	*(str+2)=0;
+	unsignedShort2TwoBytes(str,this->mec_number);
+
+	ret = sprintf(cdb_line,"%s%c%c%c%s%c%s%c%s%c%s",str,this->type,this->semestre,\
 									 (this->acronimo != NULL)?(char)strlen(this->acronimo):0,\
 									 (this->acronimo != NULL)?this->acronimo:"",\
 									 (this->unidadeCurricular != NULL)?(char)strlen(this->unidadeCurricular):0,\
@@ -42,18 +45,23 @@ void Command2_getLine(CDBLF * result,void* t ){
 									 (this->DependenciasFracas != NULL)?(char)strlen(this->DependenciasFracas):0,\
 									 (this->DependenciasFracas != NULL)?this->DependenciasFracas:""
 	);
+
 	result->size=ret;
 	result->line=cdb_line;
+	free(str);
+*/
 }
 
 
 
 void Command2_UniCurr_parseLine(char* line){
+/*	
 	UniCurr* unidadeCurricular;
 	char* idx=line;
 	char *str;
 
 	if (line == NULL)  return;
+	
 	unidadeCurricular=UniCurr_emptyNew();
 	str=(char*)malloc(3);
 	*str	  =*(idx++);
@@ -68,10 +76,10 @@ void Command2_UniCurr_parseLine(char* line){
 	idx = CDB_field_equalize(&(unidadeCurricular->unidadeCurricular),idx);
 	idx = CDB_field_equalize(&(unidadeCurricular->DependenciasFortes),idx);
 	idx = CDB_field_equalize(&(unidadeCurricular->DependenciasFracas),idx);
-	/*UniCurr_toString_debug(unidadeCurricular);*/
-	/*Aqui apresenta o resultado*/
-	UniCurr_destroy(unidadeCurricular);
 	
+	UniCurr_toString(unidadeCurricular);
+	UniCurr_destroy(unidadeCurricular); 
+*/	
 }
 
 
@@ -88,8 +96,8 @@ void Command2_insert_CDB(void * this, void* key, unsigned int key_len, int (*fx)
 }
 
 void Command2_queryCDB1(){
-	Command_dbReader(Command2_filename,"",Command_dblistAll,Command2_UniCurr_parseLine);
-	Command_dbReader("TeacherbyMecNbr.cdb","",Command_dblistAll,Command3_parseLine);	
+	Command_dbReader("UCbyAcronimo.cdb","",Command_dblistAll,Command1_UniCurr_parseLine);
+	Command_dbReader("TeacherbyMecNbr.cdb","",Command_dblistAll,Command3_parseLine);
 }
 
 void Command2_destroyDB(){
