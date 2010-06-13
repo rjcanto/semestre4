@@ -1,5 +1,9 @@
 #include "Command1.h"
-
+/**
+ * - Criação de Base de Dados com a Informação das Unidade Curriculares
+ * - Pesquisa pela Acronino da UC
+ * 
+ * */
 char* Command1_filename="UCbyAcronimo.cdb";
 struct cdb_make Command1_cdbm;
 int fd;
@@ -37,6 +41,7 @@ void Command1_UniCurr_parseLine(char* line){
 	idx = CDB_field_equalize(&(unidadeCurricular->DependenciasFortes),idx);
 	idx = CDB_field_equalize(&(unidadeCurricular->DependenciasFracas),idx);
 	/*Aqui apresenta o resultado*/
+	/*UniCurr_toString(unidadeCurricular);*/
 	UniCurr_destroy(unidadeCurricular); 
 }
 
@@ -54,9 +59,7 @@ void Command1_getLine(CDBLF * result,void* t ){
 	str=(char*)malloc(sizeof(this->mec_number)+1);
 	*(str+2)=0;
 	unsignedShort2TwoBytes(str,this->mec_number);
-/*	a= ((this->mec_number)>>8)&0x00FF;
-	b= (this->mec_number)&0x00FF;
-*/
+
 	ret = sprintf(cdb_line,"%s%c%c%c%s%c%s%c%s%c%s",str,this->type,this->semestre,\
 									 (this->acronimo != NULL)?(char)strlen(this->acronimo):0,\
 									 (this->acronimo != NULL)?this->acronimo:"",\

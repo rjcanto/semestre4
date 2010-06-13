@@ -4,7 +4,7 @@ COMPILE_ONLY = -c
 CDB_LIBRARY = -lcdb
 
 #all: Command.o DepList.o LinkedList.o Common.o Teacher.o UniCurr.o Command1.o CDB_Builder.o Executavel.o Serie04
-all: Command.o Common.o Teacher.o UniCurr.o Command1.o Command2.o Command3.o FileReader.o Executavel.o Serie04
+all: Command.o Common.o Teacher.o UniCurr.o Command1.o Command2.o Command3.o Command4.o Command5.o FileReader.o Executavel.o Serie04
 
 Command.o: Command.c Command.h
 	$(CC) $(COMPILE_ONLY) $(OPTIONS) $@ $<
@@ -18,6 +18,10 @@ Command2.o: Command2.c Command2.h Command.o
 	$(CC) $(COMPILE_ONLY) $(OPTIONS) $@ $<
 
 Command3.o: Command3.c Command3.h Command.o
+	$(CC) $(COMPILE_ONLY) $(OPTIONS) $@ $<
+Command4.o: Command4.c Command4.h Command.o
+	$(CC) $(COMPILE_ONLY) $(OPTIONS) $@ $<
+Command5.o: Command5.c Command5.h Command.o
 	$(CC) $(COMPILE_ONLY) $(OPTIONS) $@ $<
 
 FileReader.o: FileReader.c FileReader.h
@@ -36,7 +40,7 @@ UniCurr.o: UniCurr.c UniCurr.h
 Executavel.o: executavel.c
 	$(CC) $(COMPILE_ONLY) $(CDB_LIBRARY) $(OPTIONS) $@ $<
 #Serie04: Executavel.o Command.o DepList.o LinkedList.o Teacher.o UniCurr.o Command1.o CDB_Builder.o Common.o
-Serie04: Executavel.o Command.o Teacher.o UniCurr.o Command1.o Command2.o Command3.o  FileReader.o Common.o
+Serie04: Executavel.o Command.o Teacher.o UniCurr.o Command1.o Command2.o Command3.o Command4.o Command5.o FileReader.o Common.o
 	$(CC) $(CDB_LIBRARY) $(OPTIONS)  $@ $^
 
 clean:

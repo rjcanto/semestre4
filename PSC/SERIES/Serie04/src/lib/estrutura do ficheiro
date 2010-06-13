@@ -54,45 +54,46 @@ typedef struct unidadeCurricular_type{
 	byte			semestre;
 } UniCurr;
 
+-> UC_UnidadeCurricularby_acronimo
+	Toda a UC <Done>
+
+-> UC_Dependencias_acronimo
+	acronimo|DependenciasFortes|DependenciasFracas <Done>
+
+-> UC_UnidadeCurricularby_MecNbr
+	mec_nbr|acronimo
 
 
-2-617
-1-B
-1-1
-1-
-4-ALGA
-1-&
-38-Álgebra Linear e Geometria Analítica
----------------------------------------
-2-564
-1-B
-1-2
-1-
-3-LIC
-1-+
-43-Laboratório de Informática e Computadores
-1-
-6-Pg;LSD
----------------------------------------
-2-697
-1-B
-1-8
-1-
-3-AVE
-1- 
-32-Ambientes Virtuais de Execução
-1-
-7-PSC;AED
+-> UC_UnidadeCurricularby_type
 
-2-889
-1-B
-1-8
-1-
-2-LS
-1-
-24-Laboratório de Software
-1
-7-POO;SI1
-1-
-7-PSC;AED
+-> UC_UnidadeCurricularby_semestre
+
+-> Docente_by _mecnbr_ <Done>
+
+
+nome e endereço de email de um docente, dado o seu número <Done><Comando3>
+nome completo, tipo e semestres de funcionamento de uma unidade curricular, dada a sigla <Done><Comando1>
+nome do docente responsável por uma unidade curricular, dada a sigla <Done><Comando5>
+lista de dependências de uma unidade curricular, dada a sigla <Done><Comando4>
+lista de unidades curriculares de que um docente é responsável, dado o seu número
+
+Command1 = UCbyAcronimo.cdb
+Command2 = UCbyAcronimo.cdb
+Command3 = TeacherbyMecNbr.cdb
+Command4 = UCDependenciasbyacronimo.cdb
+
+
+
+-> UC_UnidadeCurricularby_
+-> UC_UnidadeCurricularby_
+-> UC_UnidadeCurricularby_
+-> UC_UnidadeCurricularby_
+-> UC_UnidadeCurricularby_
+-> UC_UnidadeCurricularby_
+-> UC_UnidadeCurricularby_
+-> UC_UnidadeCurricularby_
+-> UC_UnidadeCurricularby_
+
+
+
 

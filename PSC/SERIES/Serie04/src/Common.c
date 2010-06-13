@@ -15,6 +15,7 @@ byte* copy_field(const byte * src, const byte * end){
 }
 /**
  * Devolve um ponteiro para com o conteudo do proximo campo da linha. 
+ * Quem chama a função deve libertar o espaço alocado por esta função.
  * */
 byte* get_next_field(const byte * line, const char delimiter){
 	char * myline=NULL; 

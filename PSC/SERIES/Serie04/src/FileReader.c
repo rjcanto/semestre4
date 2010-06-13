@@ -10,18 +10,24 @@ void fileparserUni(char* filename){
 			fprintf(stderr, "Unable to open the file. Check permition or disk space!\n");
 			exit(2);
 	}
-	
 	Command1_createDB();
+	Command4_createDB();
+	Command5_createDB();
+	
 	puts("Processing the file!");
 	while (fgets(buffer, BUFFER_SIZE, fp) != NULL ) {
 		/*Aloc de Unidade Curricular*/
 		unicurr = UniCurr_new_fromString(buffer,delimiter);
 		Command1_insert_UniCurr_CDB_by_acronimo(unicurr);
+		Command4_insert_CDB_by_Dependencias(unicurr);
+		Command5_insert_CDB_by_MecNbr(unicurr);
 		/*Free de Unidade Curricular*/
 		UniCurr_destroy(unicurr);
 		unicurr=NULL;
 	}
 	Command1_destroyDB();
+	Command4_destroyDB();
+	Command5_destroyDB();
 	fclose(fp);
 
 }

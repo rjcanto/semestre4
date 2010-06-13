@@ -1,4 +1,11 @@
 #include "Command3.h"
+/**
+ * - Criação de Base de Dados com a Informação dos Docentes
+ * - Pesquisa pelo Numero Mecanográfico do Docente
+ * 
+ * */
+
+
 char* Command3_filename="TeacherbyMecNbr.cdb";
 struct cdb_make Command3_cdbm;
 int fd;
