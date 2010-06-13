@@ -56,7 +56,7 @@ void Command_dblist(struct cdb* cdb, char* key, unsigned klen, void (*parser)(ch
 		  cdb_read(cdb, val, vlen, vpos);
 		  /* handle the value */
 		  /*CDB_UniCurr_parseLine(val);*/
-		  parser(val);
+		  if (val != 0) parser(val);
 		  free(val);
 		}
 		

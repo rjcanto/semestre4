@@ -1,4 +1,9 @@
 #include "Command2.h"
+/**
+ * - Criação de Base de Dados com a Informação das Unidade Curriculares
+ * - Lista Todos as entradas da Base de dados
+ * 
+ * */
 
 char* Command2_filename="UCbyAcronimo.cdb";
 struct cdb_make Command2_cdbm;
