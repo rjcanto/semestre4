@@ -60,8 +60,15 @@ UniCurr* UniCurr_new_fromString(char* line, char delimiter){
 	 * get_next_field caso value seja NULL.
 	 * */
 	value=get_next_field(line+idx,delimiter);
-	idx=UniCurr_equalize_byte(&(this->semestre),value,&idx, &size);
 	
+	this->semestre=(unsigned char)atoi(value);
+	idx+=strlen(value)+1;
+	size+=1;
+	free(value);
+	
+	/*idx=UniCurr_equalize_byte(&(this->semestre),value,&idx, &size);*/
+
+
 	/*Processa as DepFortes*/
 	value=get_next_field(line+idx,delimiter);
 	idx=UniCurr_equalize(&(this->DependenciasFortes),value, &idx, &size);
@@ -135,7 +142,7 @@ void UniCurr_init(	UniCurr* this, char* unidadeCurricular,	char* acronimo, char*
 
 
 void UniCurr_toString(UniCurr* this){
-	printf("Acronimo: %s\tNome: %s\n",this->acronimo,this->unidadeCurricular);
+	printf("Acronimo: %s\n\tNome: %s\n",this->acronimo,this->unidadeCurricular);
 	printf("\tDependencias Fortes: %s\n\tDependencias Fracas: %s\n",this->DependenciasFortes,this->DependenciasFracas);
 	printf("\tTipo: %c\tSemestre: %d\n",this->type,this->semestre);
 	printf("\tDocente Responsável: %hu\n",this->mec_number);

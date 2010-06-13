@@ -5,6 +5,12 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <assert.h>
+#include <cdb.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <unistd.h>
+
 
 
 typedef char byte;

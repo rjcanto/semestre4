@@ -77,10 +77,14 @@ nome do docente responsável por uma unidade curricular, dada a sigla <Done><Com
 lista de dependências de uma unidade curricular, dada a sigla <Done><Comando4>
 lista de unidades curriculares de que um docente é responsável, dado o seu número
 
-Command1 = UCbyAcronimo.cdb
-Command2 = UCbyAcronimo.cdb
-Command3 = TeacherbyMecNbr.cdb
-Command4 = UCDependenciasbyacronimo.cdb
+Command1 = AllUniCurr.cdb
+Command2 = AllUniCurr.cdb
+Command3 = AllTeacher.cdb
+Command4 = DependenciasUniCurrbyacronimo.cdb
+Command5 = UniCurrbyMecNbr.cdb
+Command6 = MecNbrUniCurrbyAcronimo.cdb
+Command7 = TypeUniCurrbyAcronimo.cdb
+Command8 = SemesterUniCurrbyAcronimo.cdb
 
 
 
@@ -94,6 +98,13 @@ Command4 = UCDependenciasbyacronimo.cdb
 -> UC_UnidadeCurricularby_
 -> UC_UnidadeCurricularby_
 
+	Comando 1 sem erros/warnings
+	Comando 2 com erros/warnings
+	Comando 3 sem erros/warnings
+==> Comando 4 com erros/warnings <==
+	Comando 5 sem erros/warnings
+	Comando 6 sem erros/warnings
+	Comando 7 sem erros/warnings
 
 
 

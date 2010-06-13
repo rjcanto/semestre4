@@ -13,6 +13,9 @@ void fileparserUni(char* filename){
 	Command1_createDB();
 	Command4_createDB();
 	Command5_createDB();
+	Command6_createDB();
+	Command7_createDB();
+	Command8_createDB();
 	
 	puts("Processing the file!");
 	while (fgets(buffer, BUFFER_SIZE, fp) != NULL ) {
@@ -21,6 +24,9 @@ void fileparserUni(char* filename){
 		Command1_insert_UniCurr_CDB_by_acronimo(unicurr);
 		Command4_insert_CDB_by_Dependencias(unicurr);
 		Command5_insert_CDB_by_MecNbr(unicurr);
+		Command6_insert_CDB_by_MecNbr(unicurr);
+		Command7_insert_CDB_by_MecNbr(unicurr);
+		Command8_insert_CDB_by_MecNbr(unicurr);
 		/*Free de Unidade Curricular*/
 		UniCurr_destroy(unicurr);
 		unicurr=NULL;
@@ -28,6 +34,9 @@ void fileparserUni(char* filename){
 	Command1_destroyDB();
 	Command4_destroyDB();
 	Command5_destroyDB();
+	Command6_destroyDB();
+	Command7_destroyDB();
+	Command8_destroyDB();
 	fclose(fp);
 
 }

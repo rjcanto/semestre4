@@ -1,6 +1,7 @@
 #ifndef COMMAND2_H
 #define COMMAND_H
 #include "Command.h"
+#include "Command1.h"
 #include "Command3.h"
 void Command2_createDB();
 void Command2_insert_CDB(void * this, void* key, unsigned int key_len, int (*fx)(struct cdb_make *, const void *,unsigned int,  const void *, unsigned int),void(*getline)(CDBLF *,void* ));

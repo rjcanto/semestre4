@@ -22,45 +22,42 @@ void Command1_createDB(){
 void Command1_UniCurr_parseLine(char* line){
 	UniCurr* unidadeCurricular;
 	char* idx=line;
-	char *str;
-
+	unsigned char a,b;
 	if (line == NULL)  return;
-	
-	unidadeCurricular=UniCurr_emptyNew();
-	str=(char*)malloc(3);
-	*str	  =*(idx++);
-	*(str + 1)=*(idx++);
-	*(str + 2)=0;
-	unidadeCurricular->mec_number=twoByte2UnsignedShort(&str);
-	free(str);
 
-	unidadeCurricular->type = *(idx++);
-	unidadeCurricular->semestre = *(idx++);
+	unidadeCurricular=UniCurr_emptyNew();
+	a=*idx++;
+	b=*idx++;
+	unidadeCurricular->mec_number=(unsigned short)(a<<8)|b;;
+
+	unidadeCurricular->type = (*idx != 0)?*(idx++):'Z';
+	unidadeCurricular->semestre = (*idx != 0)?*(idx++):'Z';
+	
 	idx = CDB_field_equalize(&(unidadeCurricular->acronimo),idx);
 	idx = CDB_field_equalize(&(unidadeCurricular->unidadeCurricular),idx);
 	idx = CDB_field_equalize(&(unidadeCurricular->DependenciasFortes),idx);
 	idx = CDB_field_equalize(&(unidadeCurricular->DependenciasFracas),idx);
-	/*Aqui apresenta o resultado*/
-	/*UniCurr_toString(unidadeCurricular);*/
+
+	UniCurr_toString(unidadeCurricular);
 	UniCurr_destroy(unidadeCurricular); 
 }
 
 
 void Command1_getLine(CDBLF * result,void* t ){
 	char* cdb_line;
-	char* str;
-	/*unsigned char a,b;*/
+	unsigned char a,b;
 	int ret=0;
 	UniCurr* this=(UniCurr*)t;
 	if (this == NULL || result == NULL)  return;
 
 	cdb_line=(char*)malloc((this->totalsize)+1);
 	if (cdb_line == NULL) return;
-	str=(char*)malloc(sizeof(this->mec_number)+1);
-	*(str+2)=0;
-	unsignedShort2TwoBytes(str,this->mec_number);
+	
+	
+	a= ((this->mec_number)>>8)&0x00FF;
+	b= ( (this->mec_number)  )&0x00FF;
 
-	ret = sprintf(cdb_line,"%s%c%c%c%s%c%s%c%s%c%s",str,this->type,this->semestre,\
+	ret = sprintf(cdb_line,"%c%c%c%c%c%s%c%s%c%s%c%s",a,b,this->type,this->semestre,\
 									 (this->acronimo != NULL)?(char)strlen(this->acronimo):0,\
 									 (this->acronimo != NULL)?this->acronimo:"",\
 									 (this->unidadeCurricular != NULL)?(char)strlen(this->unidadeCurricular):0,\
@@ -72,7 +69,6 @@ void Command1_getLine(CDBLF * result,void* t ){
 	);
 	result->size=ret;
 	result->line=cdb_line;
-	free(str);
 }
 
 

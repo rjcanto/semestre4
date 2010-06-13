@@ -62,12 +62,15 @@ static void blank_print(int nbr){
 }
 static void Command4_parseDependencias (const char * line, char delimiter, char*  text){
 	char * field;
-	int size=strlen(line);
+	int size;
 	if(*line == 0){
+		blank_print(UC_nbr);
+		printf("|>%s: %s\n",text,"Sem Dependencias");
 		return;
 	}
 	
-	line++,size--;
+	line++;
+	size=strlen(line);
 	while ((field = get_next_field(line,delimiter)) != NULL && size >0){
 			blank_print(UC_nbr++);
 			printf("|>%s: %s\n",text,field);
@@ -94,14 +97,16 @@ void Command4_parseLine(char* line){
 
 	/*Parse Dependencias Fortes*/
 	size = *line;
-	newline=strndup(line,size+1);
+	if ((newline=strndup(line,size+1)) == NULL)
+		return;
 	*(newline+size+1)=0;
-	Command4_parseDependencias(newline,delimiter,"Dependencias Fortes ");
+	Command4_parseDependencias(newline,delimiter,"Dependencias Fortes");
 	free(newline);
 		/*Parse Dependencias Fracas*/
 	line = line + size +1;
 	size = *(line);
-	newline=strndup(line,size+1);
+	if ((newline=strndup(line,size+1)) == NULL)
+		return;
 	*(newline+size+1)=0;
 	Command4_parseDependencias(newline,delimiter,"Dependencias Fracas");
 	free(newline);
