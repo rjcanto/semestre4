@@ -35,7 +35,7 @@ Campo	Designação do Campo	Posição	Comprimento		Conteudo	OBS
  * quem chamar esta função libertar o espaço alocao depois de não ser mais necessário. 
  * 
  * */
-void Command3_getLine(CDBLF * result,void* t ){
+static void Command3_getLine(CDBLF * result,void* t ){
 	char* cdb_line;
 	unsigned char a,b;
 	int ret=0;
@@ -83,25 +83,14 @@ void Command3_parseLine(char* line){
 	
 }
 
-void Command3_insert_CDB_by_mec_number(void * this){
+void Command3_insert_CDB(void * this){
 		char* key=(char*)malloc(3);
 		unsigned short u=((Teacher*)this)->mec_number;
 		*(key+2)=0;
 		unsignedShort2TwoBytes(key,u);
-		Command3_insert_CDB(this,key,sizeof(((Teacher*)this)->mec_number),&cdb_make_add,Command3_getLine);
+		Command_insert_CDB(this,&Command3_cdbm,key,sizeof(((Teacher*)this)->mec_number),&cdb_make_add,Command3_getLine);
 		free (key);
 }
-
-void Command3_insert_CDB(void * this, void* key, unsigned int key_len, int (*fx)(struct cdb_make *, const void *,unsigned int,  const void *, unsigned int),void(*getline)(CDBLF *,void* )){
-	CDBLF cdb_line;
-	getline(&cdb_line,this);
-	
-		fx( &Command3_cdbm, key, key_len, cdb_line.line, cdb_line.size);
-
-	free(cdb_line.line);
-	cdb_line.line=NULL;
-}
-
 
 void Command3_queryCDB1(char* key){
 	unsigned short u;

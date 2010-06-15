@@ -34,7 +34,7 @@ Campo	Designação do Campo	Posição	Comprimento		Conteudo	OBS
  * quem chamar esta função libertar o espaço alocao depois de não ser mais necessário. 
  * 
  * */
-void Command5_getLine(CDBLF * result,void* t ){
+static void Command5_getLine(CDBLF * result,void* t ){
 	char* cdb_line;
 	unsigned char a,b;
 	int ret=0;
@@ -52,11 +52,7 @@ void Command5_getLine(CDBLF * result,void* t ){
 	result->line=cdb_line;	
 }
 
-/*
-static void blank_print(int nbr){
-		while(nbr-- > 0)
-*/
-void Command5_parseLine(char* line){
+static void Command5_parseLine(char* line){
 	char* key;
 	unsigned short nbr;
 	unsigned char a,b;
@@ -78,18 +74,8 @@ void Command5_parseLine(char* line){
 
 }
 
-void Command5_insert_CDB_by_MecNbr(void * this){
-		Command5_insert_CDB(this,((UniCurr*)this)->acronimo,strlen(((UniCurr*)this)->acronimo),&cdb_make_add,Command5_getLine);
-}
-
-void Command5_insert_CDB(void * this, void* key, unsigned int key_len, int (*fx)(struct cdb_make *, const void *,unsigned int,  const void *, unsigned int),void(*getline)(CDBLF *,void* )){
-	CDBLF cdb_line;
-	getline(&cdb_line,this);
-	
-		fx( &Command5_cdbm, key, key_len, cdb_line.line, cdb_line.size);
-
-	free(cdb_line.line);
-	cdb_line.line=NULL;
+void Command5_insert_CDB(void* this){
+	Command_insert_CDB(this,&Command5_cdbm,((UniCurr*)this)->acronimo,strlen(((UniCurr*)this)->acronimo),&cdb_make_add,Command5_getLine);
 }
 
 

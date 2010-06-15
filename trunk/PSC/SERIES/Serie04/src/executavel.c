@@ -18,33 +18,29 @@ int main(int argc,char** argv)
 	fileparser(ofilename);
 	fileparserUni(filename);
 	 
-	/*dbReaderAll(dsfilename);*/
-	/*dbReadersingle(dsfilename,"TAR");*/
-	/*dbReaderMultiple(dsfilename,"TAR");*/
-
-	/*Command1_queryCDB1(str);*/
-	/*puts("Press Enter:");getchar();
-	Command2_queryCDB1();
-	puts("Press Enter:");getchar();
-	Command3_queryCDB1(argv[3]);*/
+	puts("Comando 1 (Pesquisa por Unidade Curricular)=> Press Enter:");getchar();
+		Command1_queryCDB1(argv[3]);
 	
-	puts("Press Enter:");getchar();
+	puts("Comando 3 (Pesquisa por Docente)=> Press Enter:");getchar();
+	printf("Pesquisando %s:\n",argv[4]);
+		Command3_queryCDB1(argv[4]);
+	puts("Comando 4 (Pesquisa por Dep Curriculares)=> Press Enter:");getchar();
 	printf("Pesquisando %s:\n",argv[3]);
-	/*Command3_queryCDB1(argv[3]);*/
-		
-	
-	
-	/*Command1_queryCDB1(argv[3]);*/
-	
-	/*Command2_queryCDB1();*/
-	
-	/*Command3_queryCDB1(argv[4]);*/
-	
-	/*Command4_queryCDB1(argv[3]);
-	*/
-	Command8_queryCDB1(argv[3]);
-	/*dbReader(dsfilename,str,dblistAll);*/
-
+		Command4_queryCDB1(argv[3]);
+	puts("Comando 5 (Docente de uma Unidade Curricular)=> Press Enter:");getchar();
+	printf("Pesquisando %s:\n",argv[3]);		
+		Command5_queryCDB1(argv[3]);
+	puts("Comando 6 (Pesquisa por Docentes Responsaveis por Unidade Curricular)=> Press Enter:");getchar();
+	printf("Pesquisando %s:\n",argv[4]);	
+		Command6_queryCDB1(argv[4]);
+	puts("Comando 7 (Pesquisa por Tipo de Unidade Curricular)=> Press Enter:");getchar();
+	printf("Pesquisando %s:\n",argv[5]);	
+		Command7_queryCDB1(argv[5]);
+	puts("Comando 8 (Pesquisa por Semestre)=> Press Enter:");getchar();
+	printf("Pesquisando %s:\n",argv[6]);	
+		Command8_queryCDB1(argv[6]);
+	puts("Comando 2 (Lista Todos)=> Press Enter:");getchar();
+	Command2_queryCDB1(NULL);
 
 return 0;	
 }

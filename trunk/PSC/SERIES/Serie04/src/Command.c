@@ -41,6 +41,15 @@ void Command_dbReader(char* filename,char * key, void (*fx)(struct cdb* , char* 
 	cdb_free(&cdb);
 	close(fd);
 }
+void Command_insert_CDB(void * this,struct cdb_make* cdbm,  void* key, unsigned int key_len, int (*fx)(struct cdb_make *, const void *,unsigned int,  const void *, unsigned int),void(*getline)(CDBLF *,void* )){
+	CDBLF cdb_line;
+	getline(&cdb_line,this);
+	
+		fx( cdbm, key, key_len, cdb_line.line, cdb_line.size);
+
+	free(cdb_line.line);
+	cdb_line.line=NULL;
+}
 
 void Command_dblist(struct cdb* cdb, char* key, unsigned klen, void (*parser)(char*)){
 	char  *val;
