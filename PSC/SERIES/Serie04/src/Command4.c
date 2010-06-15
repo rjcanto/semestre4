@@ -5,11 +5,11 @@
  * 
  * */
 
-
 char* Command4_filename="UCDependenciasbyacronimo.cdb";
 struct cdb_make Command4_cdbm;
 int Command4_fd;
 int UC_nbr=1;
+
 void Command4_createDB(){
 	puts("======================================================================");
 	puts("Criação de Base de Dados de Docentes");
@@ -35,7 +35,7 @@ Campo	Designação do Campo	Posição	Comprimento		Conteudo	OBS
  * quem chamar esta função libertar o espaço alocao depois de não ser mais necessário. 
  * 
  * */
-void Command4_getLine(CDBLF * result,void* t ){
+static void Command4_getLine(CDBLF * result,void* t ){
 	char* cdb_line;
 	int ret=0;
 	unsigned char size;
@@ -71,7 +71,7 @@ static void Command4_parseDependencias (const char * line, char delimiter, char*
 	
 	line++;
 	size=strlen(line);
-	while ((field = get_next_field(line,delimiter)) != NULL && size >0){
+	while (size >0 && (field = get_next_field(line,delimiter)) != NULL ){
 			blank_print(UC_nbr++);
 			printf("|>%s: %s\n",text,field);
 			/*blank_print(UC_nbr++);*/
@@ -89,7 +89,8 @@ static void Command4_parseDependencias (const char * line, char delimiter, char*
 			field=NULL;	
 		}
 }
-void Command4_parseLine(char* line){
+
+static void Command4_parseLine(char* line){
 	char delimiter=';';
 	char *newline;
 	unsigned short size=0;
@@ -99,7 +100,7 @@ void Command4_parseLine(char* line){
 	size = *line;
 	if ((newline=strndup(line,size+1)) == NULL)
 		return;
-	*(newline+size+1)=0;
+
 	Command4_parseDependencias(newline,delimiter,"Dependencias Fortes");
 	free(newline);
 		/*Parse Dependencias Fracas*/
@@ -107,24 +108,16 @@ void Command4_parseLine(char* line){
 	size = *(line);
 	if ((newline=strndup(line,size+1)) == NULL)
 		return;
-	*(newline+size+1)=0;
+
 	Command4_parseDependencias(newline,delimiter,"Dependencias Fracas");
 	free(newline);
 }
 
-void Command4_insert_CDB_by_Dependencias(void * this){
-		Command4_insert_CDB(this,((UniCurr*)this)->acronimo,strlen(((UniCurr*)this)->acronimo),&cdb_make_add,Command4_getLine);
+void Command4_insert_CDB(void * this){
+		Command_insert_CDB(this,&Command4_cdbm,((UniCurr*)this)->acronimo,strlen(((UniCurr*)this)->acronimo),&cdb_make_add,Command4_getLine);
 }
 
-void Command4_insert_CDB(void * this, void* key, unsigned int key_len, int (*fx)(struct cdb_make *, const void *,unsigned int,  const void *, unsigned int),void(*getline)(CDBLF *,void* )){
-	CDBLF cdb_line;
-	getline(&cdb_line,this);
-	
-		fx( &Command4_cdbm, key, key_len, cdb_line.line, cdb_line.size);
 
-	free(cdb_line.line);
-	cdb_line.line=NULL;
-}
 
 
 void Command4_queryCDB1(char* key){

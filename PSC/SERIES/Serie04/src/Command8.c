@@ -34,7 +34,7 @@ Campo	Designação do Campo	Posição	Comprimento		Conteudo	OBS
  * quem chamar esta função libertar o espaço alocao depois de não ser mais necessário. 
  * 
  * */
-void Command8_getLine(CDBLF * result,void* t ){
+static void Command8_getLine(CDBLF * result,void* t ){
 	char* cdb_line;
 	int ret=0;
 	UniCurr* this=(UniCurr*)t;
@@ -48,7 +48,7 @@ void Command8_getLine(CDBLF * result,void* t ){
 	result->line=cdb_line;
 }
 
-void Command8_parseLine(char* line){
+static void Command8_parseLine(char* line){
 	char* key;
 	unsigned short size;
 	if (line == NULL || *line == 0)  return;
@@ -60,18 +60,8 @@ void Command8_parseLine(char* line){
 	free(key);
 }
 
-void Command8_insert_CDB_by_MecNbr(void * this){
-		Command8_insert_CDB(this,&(((UniCurr*)this)->semestre),sizeof(char),&cdb_make_add,Command8_getLine);
-}
-
-void Command8_insert_CDB(void * this, void* key, unsigned int key_len, int (*fx)(struct cdb_make *, const void *,unsigned int,  const void *, unsigned int),void(*getline)(CDBLF *,void* )){
-	CDBLF cdb_line;
-	getline(&cdb_line,this);
-		
-		fx( &Command8_cdbm, key, key_len, cdb_line.line, cdb_line.size);
-
-	free(cdb_line.line);
-	cdb_line.line=NULL;
+void Command8_insert_CDB(void * this){
+		Command_insert_CDB(this,&Command8_cdbm,&(((UniCurr*)this)->semestre),sizeof(char),&cdb_make_add,Command8_getLine);
 }
 
 

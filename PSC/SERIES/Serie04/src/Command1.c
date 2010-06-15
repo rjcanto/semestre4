@@ -19,7 +19,7 @@ void Command1_createDB(){
 	}	
 }
 
-void Command1_UniCurr_parseLine(char* line){
+void Command1_parseLine(char* line){
 	UniCurr* unidadeCurricular;
 	char* idx=line;
 	unsigned char a,b;
@@ -43,7 +43,7 @@ void Command1_UniCurr_parseLine(char* line){
 }
 
 
-void Command1_getLine(CDBLF * result,void* t ){
+static void Command1_getLine(CDBLF * result,void* t ){
 	char* cdb_line;
 	unsigned char a,b;
 	int ret=0;
@@ -72,6 +72,11 @@ void Command1_getLine(CDBLF * result,void* t ){
 }
 
 
+void Command1_insert_CDB(void* this){
+	Command_insert_CDB(this,&Command1_cdbm,((UniCurr*)this)->acronimo,strlen(((UniCurr*)this)->acronimo),&cdb_make_add,Command1_getLine);
+}
+
+/*
 void Command1_insert_CDB(void * this, void* key, unsigned int key_len, int (*fx)(struct cdb_make *, const void *,unsigned int,  const void *, unsigned int),void(*getline)(CDBLF*, void* )){
 	CDBLF cdb_line;
 	getline(&cdb_line,this);
@@ -80,9 +85,9 @@ void Command1_insert_CDB(void * this, void* key, unsigned int key_len, int (*fx)
 
 	free(cdb_line.line);
 	cdb_line.line=NULL;
-}
+}*/
 void Command1_queryCDB1(char* key){
-	Command_dbReader(Command1_filename,key,Command_dblist,Command1_UniCurr_parseLine);	
+	Command_dbReader(Command1_filename,key,Command_dblist,Command1_parseLine);	
 }
 
 void Command1_destroyDB(){

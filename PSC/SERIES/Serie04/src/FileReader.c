@@ -19,14 +19,15 @@ void fileparserUni(char* filename){
 	
 	puts("Processing the file!");
 	while (fgets(buffer, BUFFER_SIZE, fp) != NULL ) {
+		
 		/*Aloc de Unidade Curricular*/
 		unicurr = UniCurr_new_fromString(buffer,delimiter);
-		Command1_insert_UniCurr_CDB_by_acronimo(unicurr);
-		Command4_insert_CDB_by_Dependencias(unicurr);
-		Command5_insert_CDB_by_MecNbr(unicurr);
-		Command6_insert_CDB_by_MecNbr(unicurr);
-		Command7_insert_CDB_by_MecNbr(unicurr);
-		Command8_insert_CDB_by_MecNbr(unicurr);
+		Command1_insert_CDB(unicurr);
+		Command4_insert_CDB(unicurr);
+		Command5_insert_CDB(unicurr);
+		Command6_insert_CDB(unicurr);
+		Command7_insert_CDB(unicurr);
+		Command8_insert_CDB(unicurr);
 		/*Free de Unidade Curricular*/
 		UniCurr_destroy(unicurr);
 		unicurr=NULL;
@@ -57,7 +58,7 @@ void fileparser(char* filename){
 	while (fgets(buffer, BUFFER_SIZE, fp) != NULL ) {
 
 		teacher = Teacher_new_fromString(buffer,delimiter);
-		Command3_insert_CDB_by_mec_number(teacher);
+		Command3_insert_CDB(teacher);
 
 		Teacher_destroy(teacher);
 		teacher=NULL;
