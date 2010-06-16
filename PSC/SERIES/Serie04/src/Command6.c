@@ -1,7 +1,7 @@
 #include "Command6.h"
 /**
- * - Criação de Base de Dados com as Dependencias
- * - Pesquisa pelo Acronimo, e devolve a descrição da UC de todas as Dep
+ * - Criação de Base de Dados com os Acronimos
+ * - Pesquisa pelo Numero Mecanografico do Docente Responsável.
  * 
  * */
 
@@ -50,7 +50,7 @@ static void Command6_getLine(CDBLF * result,void* t ){
 	result->line=cdb_line;
 }
 
-static void Command6_parseLine(char* line){
+void Command6_parseLine(char* line){
 	char* key;
 	unsigned short size;
 	if (line == NULL || *line == 0)  return;
@@ -59,7 +59,7 @@ static void Command6_parseLine(char* line){
 	
 	*(key + size)=0;
 	strncpy(key,line+1,size);
-	Command1_queryCDB1(key);
+	Command1_queryCDB1(NULL,key);/*<<<<<<<<<<<<<*/
 	free(key);
 
 }

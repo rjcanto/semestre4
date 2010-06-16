@@ -7,10 +7,8 @@ void Command3_destroyDB();
 void Command3_insert_CDB(void * this);
 
 
-/*
 void Command3_parseLine(char* line);
-void Command3_getLine(CDBLF * result,void* this );
-*/
+
 /*Para a Query*/
 void Command3_queryCDB1(char* key);
 

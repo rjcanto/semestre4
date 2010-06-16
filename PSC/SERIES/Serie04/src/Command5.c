@@ -1,8 +1,7 @@
 #include "Command5.h"
 /**
- * - Criação de Base de Dados com as Dependencias
- * - Pesquisa pelo Acronimo, e devolve a descrição da UC de todas as Dep
- * 
+ * - Criação de Base de Dados com os Numeros Mecanograficos
+ * - Pesquisa pelo Acronimo
  * */
 
 
@@ -11,7 +10,7 @@ struct cdb_make Command5_cdbm;
 int Command5_fd;
 void Command5_createDB(){
 	puts("======================================================================");
-	puts("Criação de Base de Dados de Docentes");
+	puts("Criação de Base de Dados com os Numeros Mecanograficos (Pesq Acronimo)");
 	puts("======================================================================");
 	Command5_fd = open(Command5_filename, O_WRONLY|O_CREAT|O_TRUNC, 0666);
 	if (cdb_make_start(&Command5_cdbm, Command5_fd) < 0) {
@@ -52,7 +51,7 @@ static void Command5_getLine(CDBLF * result,void* t ){
 	result->line=cdb_line;	
 }
 
-static void Command5_parseLine(char* line){
+void Command5_parseLine(char* line){
 	char* key;
 	unsigned short nbr;
 	unsigned char a,b;
