@@ -3,17 +3,24 @@
  * - Criação de Base de Dados com os Numeros Mecanograficos
  * - Pesquisa pelo Acronimo
  * */
+void Command5_clear(Command5* this){
+	this->filename=NULL;
+	this->fd=0;
+}
+
+void Command5_dtor(Command5* this){
+	if(this != NULL)
+		Command5_clear(this);
+	free(this);
+}
 
 
-char* Command5_filename="UCbyMecNbr.cdb";
-struct cdb_make Command5_cdbm;
-int Command5_fd;
-void Command5_createDB(){
+void Command5_createDB(Command5* this){
 	puts("======================================================================");
-	puts("Criação de Base de Dados com os Numeros Mecanograficos (Pesq Acronimo)");
+	puts("Criação de Base de Dados de Acronimos e Dependencias");
 	puts("======================================================================");
-	Command5_fd = open(Command5_filename, O_WRONLY|O_CREAT|O_TRUNC, 0666);
-	if (cdb_make_start(&Command5_cdbm, Command5_fd) < 0) {
+	this->fd = open(this->filename, O_WRONLY|O_CREAT|O_TRUNC, 0666);
+	if (cdb_make_start(&(this->cdbm), this->fd) < 0) {
 		puts("Aconteceu um erro na criação do ficheiro!");
 		exit(-1);
 	}	
@@ -55,8 +62,9 @@ void Command5_parseLine(char* line){
 	char* key;
 	unsigned short nbr;
 	unsigned char a,b;
+	Command3* c3;
 	if (line == NULL )  return;
-	
+	c3=Command3_ctor();
 	key = (char*)malloc(6) ;/*Numero de Caracteres que identificam maximo do short*/
 	*(key + 5)=0;
 	
@@ -68,23 +76,44 @@ void Command5_parseLine(char* line){
 	{
 		puts("Not a Number");
 	}	;
-	Command3_queryCDB1(key);
+	c3->super.vptr->queryDB(c3,key);
+	c3->super.vptr->dtor(c3);
 	free(key);
 
 }
 
-void Command5_insert_CDB(void* this){
-	Command_insert_CDB(this,&Command5_cdbm,((UniCurr*)this)->acronimo,strlen(((UniCurr*)this)->acronimo),&cdb_make_add,Command5_getLine);
+void Command5_insert_CDB(Command5* this,void* t){
+		Command_insert_CDB(t,&(this->cdbm),((UniCurr*)t)->acronimo,strlen(((UniCurr*)t)->acronimo),&cdb_make_add,Command5_getLine);
+}
+void Command5_queryCDB1(Command5* this,char* key){
+	Command_dbReader( this->filename,key,Command_dblist,this->super.vptr->lineParser);	
 }
 
+void Command5_destroyDB(Command5* this){
+    if (cdb_make_finish(&(this->cdbm)) == -1)
+		puts("cdb_make_finish failed");
+    close(this->fd);
+}
+const Command_Methods Command5_vtable = {
+	(void (*)(void*)) Command5_dtor,
+	(void (*)(void*)) Command5_createDB,
+	(void (*)(void*)) Command5_destroyDB,
+	(void (*)(void*,void*)) Command5_insert_CDB,
+	(void (*)(char*)) Command5_parseLine,
+	(void (*)(void*, char*) )Command5_queryCDB1,
+	"Criação de Base de Dados com a Informação dos Docentes. Pesquisa pelo Numero Mecanográfico do Docente",
+	'b'
+};
 
-void Command5_queryCDB1(char* key){
-	Command_dbReader(Command5_filename,key,Command_dblist,Command5_parseLine);		
+
+Command5* Command5_ctor(){
+	Command5* this=(Command5*)malloc(sizeof(Command5));
+	Command5_init(this);
+	return this;
 }
 
-void Command5_destroyDB(){
-    if (cdb_make_finish(&Command5_cdbm) == -1)
-		puts("Command5_cdb_make_finish failed");
-    close(Command5_fd);
-	
+void Command5_init(Command5* this){
+	(this->super).vptr = &Command5_vtable;
+	this->filename = "UniCurrbyMecNbr.cdb";	
 }
+

@@ -4,16 +4,10 @@
  * - Pesquisa pela Acronino da UC
  * 
  * */
-/*
-char* Command1_filename="UCbyAcronimo.cdb";
-struct cdb_make Command1_cdbm;
-int fd;*/
 
 void Command1_clear(Command1* this){
-	this->vptr=NULL;
 	this->filename=NULL;
 	this->fd=0;
-	
 }
 
 void Command1_dtor(Command1* this){
@@ -92,7 +86,7 @@ void Command1_insert_CDB(Command1* this, void* t){
 }
 
 void Command1_queryCDB1(Command1* this,char* key){
-	Command_dbReader(this->filename,key,Command_dblist,this->vptr->lineParser);	
+	Command_dbReader(this->filename,key,Command_dblist,this->super.vptr->lineParser);	
 }
 
 void Command1_destroyDB(Command1* this){
@@ -120,7 +114,7 @@ Command1* Command1_ctor(){
 }
 
 void Command1_init(Command1* this){
-	this->vptr= &Command1_vtable;
+	this->super.vptr = &Command1_vtable;
 	this->filename = "UCbyAcronimo.cdb";	
 }
 

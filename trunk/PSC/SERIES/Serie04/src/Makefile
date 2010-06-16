@@ -3,7 +3,7 @@ OPTIONS 		= -Wall -pedantic -o
 COMPILE_ONLY 	= -c 
 CDB_LIBRARY 	= -lcdb
 #COMMAND_FILES 	=  Command.o  Command1.o Command2.o Command3.o Command4.o Command5.o Command6.o Command7.o Command8.o
-COMMAND_FILES 	=  Command.o  Command1.o Command3.o
+COMMAND_FILES 	=  Command.o  Command1.o Command2.o Command3.o Command4.o Command5.o Command6.o Command7.o
 
 #all: Command.o DepList.o LinkedList.o Common.o Teacher.o UniCurr.o Command1.o CDB_Builder.o Executavel.o Serie04
 all: Common.o Teacher.o UniCurr.o $(COMMAND_FILES)  Executavel.o Serie04 FileReader.o
