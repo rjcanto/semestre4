@@ -1,8 +1,7 @@
 #include "Command7.h"
 /**
- * - Criação de Base de Dados com as Dependencias
- * - Pesquisa pelo Acronimo, e devolve a descrição da UC de todas as Dep
- * 
+ * - Criação de Base de Dados com os Acronimos
+ * - Pesquisa pelo Tipo de cadeira
  * */
 
 
@@ -11,7 +10,7 @@ struct cdb_make Command7_cdbm;
 int Command7_fd;
 void Command7_createDB(){
 	puts("======================================================================");
-	puts("Criação de Base de Dados de Docentes");
+	puts("Criação de Base de Dados de Tipos de Cadeira");
 	puts("======================================================================");
 	Command7_fd = open(Command7_filename, O_WRONLY|O_CREAT|O_TRUNC, 0666);
 	if (cdb_make_start(&Command7_cdbm, Command7_fd) < 0) {
@@ -50,7 +49,7 @@ static void Command7_getLine(CDBLF * result,void* t ){
 	result->line=cdb_line;
 }
 
-static void Command7_parseLine(char* line){
+void Command7_parseLine(char* line){
 	char* key;
 	unsigned short size;
 	if (line == NULL || *line == 0)  return;
@@ -59,7 +58,7 @@ static void Command7_parseLine(char* line){
 	
 	*(key + size)=0;
 	strncpy(key,line+1,size);
-	Command1_queryCDB1(key);
+	Command1_queryCDB1(NULL,key);/*<<<<<<<<<<<<<*/
 	free(key);
 
 }

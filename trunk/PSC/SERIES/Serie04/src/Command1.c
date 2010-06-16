@@ -4,16 +4,31 @@
  * - Pesquisa pela Acronino da UC
  * 
  * */
+/*
 char* Command1_filename="UCbyAcronimo.cdb";
 struct cdb_make Command1_cdbm;
-int fd;
+int fd;*/
 
-void Command1_createDB(){
+void Command1_clear(Command1* this){
+	this->vptr=NULL;
+	this->filename=NULL;
+	this->fd=0;
+	
+}
+
+void Command1_dtor(Command1* this){
+	if(this != NULL)
+		Command1_clear(this);
+	free(this);
+}
+
+
+void Command1_createDB(Command1* this){
 	puts("======================================================================");
 	puts("Criação de Base de Dados da Unidade Curricular");
 	puts("======================================================================");
-	fd = open(Command1_filename, O_WRONLY|O_CREAT|O_TRUNC, 0666);
-	if (cdb_make_start(&Command1_cdbm, fd) < 0) {
+	this->fd = open(this->filename, O_WRONLY|O_CREAT|O_TRUNC, 0666);
+	if (cdb_make_start(&(this->cdbm), this->fd) < 0) {
 		puts("Aconteceu um erro na criação do ficheiro!");
 		exit(-1);
 	}	
@@ -72,27 +87,41 @@ static void Command1_getLine(CDBLF * result,void* t ){
 }
 
 
-void Command1_insert_CDB(void* this){
-	Command_insert_CDB(this,&Command1_cdbm,((UniCurr*)this)->acronimo,strlen(((UniCurr*)this)->acronimo),&cdb_make_add,Command1_getLine);
+void Command1_insert_CDB(Command1* this, void* t){
+	Command_insert_CDB(t,&(this->cdbm),((UniCurr*)t)->acronimo,strlen(((UniCurr*)t)->acronimo),&cdb_make_add,Command1_getLine);
 }
 
-/*
-void Command1_insert_CDB(void * this, void* key, unsigned int key_len, int (*fx)(struct cdb_make *, const void *,unsigned int,  const void *, unsigned int),void(*getline)(CDBLF*, void* )){
-	CDBLF cdb_line;
-	getline(&cdb_line,this);
-
-		fx( &Command1_cdbm, key, key_len, cdb_line.line, cdb_line.size);
-
-	free(cdb_line.line);
-	cdb_line.line=NULL;
-}*/
-void Command1_queryCDB1(char* key){
-	Command_dbReader(Command1_filename,key,Command_dblist,Command1_parseLine);	
+void Command1_queryCDB1(Command1* this,char* key){
+	Command_dbReader(this->filename,key,Command_dblist,this->vptr->lineParser);	
 }
 
-void Command1_destroyDB(){
-    if (cdb_make_finish(&Command1_cdbm) == -1)
+void Command1_destroyDB(Command1* this){
+    if (cdb_make_finish(&(this->cdbm)) == -1)
 		puts("cdb_make_finish failed");
-    close(fd);
-	
+    close(this->fd);
 }
+
+const Command_Methods Command1_vtable = {
+	(void (*)(void*)) Command1_dtor,
+	(void (*)(void*)) Command1_createDB,
+	(void (*)(void*)) Command1_destroyDB,
+	(void (*)(void*,void*)) Command1_insert_CDB,
+	(void (*)(char*)) Command1_parseLine,
+	(void (*)(void*, char*) )Command1_queryCDB1,
+	"Criação de Base de Dados com a Informação das Unidade Curriculares, pesquisa pela Acronino da UC!",
+	'a'
+};
+
+
+Command1* Command1_ctor(){
+	Command1* this=(Command1*)malloc(sizeof(Command1));
+	Command1_init(this);
+	return this;
+}
+
+void Command1_init(Command1* this){
+	this->vptr= &Command1_vtable;
+	this->filename = "UCbyAcronimo.cdb";	
+}
+
+

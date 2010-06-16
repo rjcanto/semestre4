@@ -12,7 +12,7 @@ int UC_nbr=1;
 
 void Command4_createDB(){
 	puts("======================================================================");
-	puts("Criação de Base de Dados de Docentes");
+	puts("Criação de Base de Dados de Acronimos e Dependencias");
 	puts("======================================================================");
 	Command4_fd = open(Command4_filename, O_WRONLY|O_CREAT|O_TRUNC, 0666);
 	if (cdb_make_start(&Command4_cdbm, Command4_fd) < 0) {
@@ -90,7 +90,7 @@ static void Command4_parseDependencias (const char * line, char delimiter, char*
 		}
 }
 
-static void Command4_parseLine(char* line){
+void Command4_parseLine(char* line){
 	char delimiter=';';
 	char *newline;
 	unsigned short size=0;
