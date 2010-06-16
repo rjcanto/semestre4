@@ -1,13 +1,28 @@
 #ifndef COMMAND2_H
-#define COMMAND_H
+#define COMMAND2_H
 #include "Command.h"
-#include "Command1.h"
-#include "Command3.h"
+#include "Commands.h"
+
+typedef struct com2 {
+	Command super;
+	char* 	filename;
+	int 	fd;
+	struct cdb_make cdbm;
+} Command2;
+
+Command2* Command2_ctor();
+void Command2_init(Command2* this);
+void Command2_clear(Command2* this);
+void Command2_dtor(Command2* this);
+
 /*Para a Construção da Base de Dados*/
-void Command2_createDB();
-void Command2_destroyDB();
-void Command2_insert_CDB(void * this);
+void Command2_createDB(Command2* this);
+void Command2_destroyDB(Command2* this);
+void Command2_insert_CDB(Command2* this,void* t);
+
+void Command2_parseLine(char* line);
 
 /*Para a Query*/
-void Command2_queryCDB1(char* key);
+void Command2_queryCDB1(Command2* this,char* key);
+
 #endif

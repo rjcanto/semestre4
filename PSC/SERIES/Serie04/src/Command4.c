@@ -5,17 +5,26 @@
  * 
  * */
 
-char* Command4_filename="UCDependenciasbyacronimo.cdb";
-struct cdb_make Command4_cdbm;
-int Command4_fd;
-int UC_nbr=1;
 
-void Command4_createDB(){
+void Command4_clear(Command4* this){
+	this->filename=NULL;
+	this->fd=0;
+}
+
+void Command4_dtor(Command4* this){
+	if(this != NULL)
+		Command4_clear(this);
+	free(this);
+}
+
+static int UC_nbr=1;
+
+void Command4_createDB(Command4* this){
 	puts("======================================================================");
 	puts("Criação de Base de Dados de Acronimos e Dependencias");
 	puts("======================================================================");
-	Command4_fd = open(Command4_filename, O_WRONLY|O_CREAT|O_TRUNC, 0666);
-	if (cdb_make_start(&Command4_cdbm, Command4_fd) < 0) {
+	this->fd = open(this->filename, O_WRONLY|O_CREAT|O_TRUNC, 0666);
+	if (cdb_make_start(&(this->cdbm), this->fd) < 0) {
 		puts("Aconteceu um erro na criação do ficheiro!");
 		exit(-1);
 	}	
@@ -62,21 +71,22 @@ static void blank_print(int nbr){
 }
 static void Command4_parseDependencias (const char * line, char delimiter, char*  text){
 	char * field;
+	Command4* c4;
 	int size;
 	if(*line == 0){
 		blank_print(UC_nbr);
 		printf("|>%s: %s\n",text,"Sem Dependencias");
 		return;
 	}
-	
+	c4=Command4_ctor();
 	line++;
 	size=strlen(line);
 	while (size >0 && (field = get_next_field(line,delimiter)) != NULL ){
 			blank_print(UC_nbr++);
 			printf("|>%s: %s\n",text,field);
 			/*blank_print(UC_nbr++);*/
-			Command4_queryCDB1(field);
-			
+			/*Command4_queryCDB1(field);*/
+			c4->super.vptr->queryDB(c4, field);
 			UC_nbr-=1;
 			/*Command1_queryCDB1(field);*/
 			line=line + strlen(field)+1;
@@ -88,6 +98,7 @@ static void Command4_parseDependencias (const char * line, char delimiter, char*
 			free(field);
 			field=NULL;	
 		}
+		c4->super.vptr->dtor(c4);
 }
 
 void Command4_parseLine(char* line){
@@ -113,20 +124,42 @@ void Command4_parseLine(char* line){
 	free(newline);
 }
 
-void Command4_insert_CDB(void * this){
-		Command_insert_CDB(this,&Command4_cdbm,((UniCurr*)this)->acronimo,strlen(((UniCurr*)this)->acronimo),&cdb_make_add,Command4_getLine);
+void Command4_insert_CDB(Command4* this,void* t){
+		Command_insert_CDB(t,&(this->cdbm),((UniCurr*)t)->acronimo,strlen(((UniCurr*)t)->acronimo),&cdb_make_add,Command4_getLine);
 }
 
 
 
 
-void Command4_queryCDB1(char* key){
-	Command_dbReader(Command4_filename,key,Command_dblist,Command4_parseLine);		
+void Command4_queryCDB1(Command4* this,char* key){
+	Command_dbReader( this->filename,key,Command_dblist,this->super.vptr->lineParser);	
 }
 
-void Command4_destroyDB(){
-    if (cdb_make_finish(&Command4_cdbm) == -1)
-		puts("Command4_cdb_make_finish failed");
-    close(Command4_fd);
-	
+void Command4_destroyDB(Command4* this){
+    if (cdb_make_finish(&(this->cdbm)) == -1)
+		puts("cdb_make_finish failed");
+    close(this->fd);
 }
+const Command_Methods Command4_vtable = {
+	(void (*)(void*)) Command4_dtor,
+	(void (*)(void*)) Command4_createDB,
+	(void (*)(void*)) Command4_destroyDB,
+	(void (*)(void*,void*)) Command4_insert_CDB,
+	(void (*)(char*)) Command4_parseLine,
+	(void (*)(void*, char*) )Command4_queryCDB1,
+	"Criação de Base de Dados com a Informação dos Docentes. Pesquisa pelo Numero Mecanográfico do Docente",
+	'b'
+};
+
+
+Command4* Command4_ctor(){
+	Command4* this=(Command4*)malloc(sizeof(Command4));
+	Command4_init(this);
+	return this;
+}
+
+void Command4_init(Command4* this){
+	(this->super).vptr = &Command4_vtable;
+	this->filename = "UCDependenciasbyacronimo.cdb";	
+}
+

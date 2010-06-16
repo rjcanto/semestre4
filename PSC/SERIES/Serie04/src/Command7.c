@@ -3,17 +3,24 @@
  * - Criação de Base de Dados com os Acronimos
  * - Pesquisa pelo Tipo de cadeira
  * */
+void Command7_clear(Command7* this){
+	this->filename=NULL;
+	this->fd=0;
+}
+
+void Command7_dtor(Command7* this){
+	if(this != NULL)
+		Command7_clear(this);
+	free(this);
+}
 
 
-char* Command7_filename="TypeUniCurrbyAcronimo.cdb";
-struct cdb_make Command7_cdbm;
-int Command7_fd;
-void Command7_createDB(){
+void Command7_createDB(Command7* this){
 	puts("======================================================================");
-	puts("Criação de Base de Dados de Tipos de Cadeira");
+	puts("Criação de Base de Dados de Acronimos e Dependencias");
 	puts("======================================================================");
-	Command7_fd = open(Command7_filename, O_WRONLY|O_CREAT|O_TRUNC, 0666);
-	if (cdb_make_start(&Command7_cdbm, Command7_fd) < 0) {
+	this->fd = open(this->filename, O_WRONLY|O_CREAT|O_TRUNC, 0666);
+	if (cdb_make_start(&(this->cdbm), this->fd) < 0) {
 		puts("Aconteceu um erro na criação do ficheiro!");
 		exit(-1);
 	}	
@@ -52,30 +59,58 @@ static void Command7_getLine(CDBLF * result,void* t ){
 void Command7_parseLine(char* line){
 	char* key;
 	unsigned short size;
+	Command1* c1;
 	if (line == NULL || *line == 0)  return;
+	c1=Command1_ctor();
+	
 	size=*line;
 	key = (char*)malloc(size+1) ;
 	
 	*(key + size)=0;
 	strncpy(key,line+1,size);
-	Command1_queryCDB1(NULL,key);/*<<<<<<<<<<<<<*/
+	c1->super.vptr->queryDB(c1,key);
+	c1->super.vptr->dtor(c1);
 	free(key);
 
 }
 
-void Command7_insert_CDB(void* this){
-		Command_insert_CDB(this,&Command7_cdbm,&(((UniCurr*)this)->type),sizeof(char),&cdb_make_add,Command7_getLine);
+void Command7_insert_CDB(Command7* this,void* t){
+		Command_insert_CDB(t,&(this->cdbm),&(((UniCurr*)t)->type),sizeof(char),&cdb_make_add,Command7_getLine);
 }
 
-void Command7_queryCDB1(char* key){
-	Command_dbReader(Command7_filename,key,Command_dblist,Command7_parseLine);	
-
+void Command7_queryCDB1(Command7* this,char* key){
+	Command_dbReader( this->filename,key,Command_dblist,this->super.vptr->lineParser);	
 }
 
-void Command7_destroyDB(){
-    if (cdb_make_finish(&Command7_cdbm) == -1)
-		puts("Command7_cdb_make_finish failed");
-    close(Command7_fd);
-	
+void Command7_destroyDB(Command7* this){
+    if (cdb_make_finish(&(this->cdbm)) == -1)
+		puts("cdb_make_finish failed");
+    close(this->fd);
 }
+
+
+const Command_Methods Command7_vtable = {
+	(void (*)(void*)) Command7_dtor,
+	(void (*)(void*)) Command7_createDB,
+	(void (*)(void*)) Command7_destroyDB,
+	(void (*)(void*,void*)) Command7_insert_CDB,
+	(void (*)(char*)) Command7_parseLine,
+	(void (*)(void*, char*) )Command7_queryCDB1,
+	"Criação de Base de Dados com a Informação dos Docentes. Pesquisa pelo Numero Mecanográfico do Docente",
+	'b'
+};
+
+
+Command7* Command7_ctor(){
+	Command7* this=(Command7*)malloc(sizeof(Command7));
+	Command7_init(this);
+	return this;
+}
+
+void Command7_init(Command7* this){
+	(this->super).vptr = &Command7_vtable;
+	this->filename = "TypeUniCurrbyAcronimo.cdb";	
+}
+
+
 

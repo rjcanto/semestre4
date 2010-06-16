@@ -23,11 +23,11 @@ typedef struct met_com {
 	char 	opcao;	
 } Command_Methods;
 
-/*
+
 typedef struct comando{
 	Command_Methods* vptr;
 } Command;
-*/
+
 unsigned short twoByte2UnsignedShort(char** twobyte);
 byte*  CDB_field_equalize(char** field, char* value);
 void unsignedShort2TwoBytes(char* dest, const unsigned short ush);

@@ -3,8 +3,8 @@
 #include "Common.h"
 #include "Teacher.h"
 #include "UniCurr.h"
-#include "Command1.h"
-#include "Command3.h"
+#include "Commands.h"
+
 
 #include <cdb.h>
 void fileparser(char* filename);

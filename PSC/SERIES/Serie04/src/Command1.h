@@ -1,10 +1,10 @@
 #ifndef COMMAND1_H
 #define COMMAND1_H
 #include "Command.h"
-
+#include "Commands.h"
 
 typedef struct com1 {
-	Command_Methods* vptr;
+	Command super;
 	char* 	filename;
 	int 	fd;
 	struct cdb_make cdbm;
