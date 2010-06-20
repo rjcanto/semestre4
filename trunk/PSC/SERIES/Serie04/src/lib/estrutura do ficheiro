@@ -98,13 +98,17 @@ Command8 = SemesterUniCurrbyAcronimo.cdb
 -> UC_UnidadeCurricularby_
 -> UC_UnidadeCurricularby_
 
-	Comando 1 sem erros/warnings
-	Comando 2 com erros/warnings
-	Comando 3 sem erros/warnings
-==> Comando 4 com erros/warnings <==
-	Comando 5 sem erros/warnings
-	Comando 6 sem erros/warnings
-	Comando 7 sem erros/warnings
+	
+	Comando 2 com erros/warnings -a Lista Todos as entradas da Base de dados de Unidades Curriculares e Professores.
+	Comando 3 sem erros/warnings -b Criação de Base de Dados com a Informação dos Docentes. Pesquisa pelo Numero Mecanográfico do Docente
+	Comando 1 sem erros/warnings -c Criação de Base de Dados com a Informação das Unidade Curriculares. Pesquisa pelo Acronino da UC!
+	Comando 4 com erros/warnings -d Criação de Base de Dados com as Dependencias. Pesquisa pelo Acronimo, e devolve a descrição da UC de todas as Dep
+	Comando 5 sem erros/warnings -e Criação de Base de Dados com os Numeros Mecanograficos. Pesquisa pelo Acronimo
+	Comando 6 sem erros/warnings -f Criação de Base de Dados com os Acronimos. Pesquisa pelo Numero Mecanografico do Docente Responsável.
+	Comando 7 sem erros/warnings -g Criação de Base de Dados com os Acronimos. Pesquisa pelo Tipo de cadeira.
+	Comando 8 sem erros/warnings -h Criação de Base de Dados com os Acronimos. Pesquisa pelo Semestre
+	Comando 9						Processa Ficheiro Unidade Curricular
+	Comando 10						Processa Ficheiro Docentes
 
 
 

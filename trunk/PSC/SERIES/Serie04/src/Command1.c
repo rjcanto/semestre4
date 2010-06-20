@@ -1,9 +1,15 @@
 #include "Command1.h"
-/**
- * - Criação de Base de Dados com a Informação das Unidade Curriculares
- * - Pesquisa pela Acronino da UC
- * 
- * */
+
+static const Command_Methods Command1_vtable = {
+	(void (*)(void*)) Command1_dtor,
+	(void (*)(void*)) Command1_createDB,
+	(void (*)(void*)) Command1_destroyDB,
+	(void (*)(void*,void*)) Command1_insert_CDB,
+	(void (*)(char*)) Command1_parseLine,
+	(void (*)(void*, char*) )Command1_queryCDB1,
+	"Pesquisa pelo Acronino da UC, devolve a sua descrição.",
+	'c'
+};
 
 void Command1_clear(Command1* this){
 	this->filename=NULL;
@@ -18,9 +24,6 @@ void Command1_dtor(Command1* this){
 
 
 void Command1_createDB(Command1* this){
-	puts("======================================================================");
-	puts("Criação de Base de Dados da Unidade Curricular");
-	puts("======================================================================");
 	this->fd = open(this->filename, O_WRONLY|O_CREAT|O_TRUNC, 0666);
 	if (cdb_make_start(&(this->cdbm), this->fd) < 0) {
 		puts("Aconteceu um erro na criação do ficheiro!");
@@ -86,6 +89,13 @@ void Command1_insert_CDB(Command1* this, void* t){
 }
 
 void Command1_queryCDB1(Command1* this,char* key){
+	FILE* fp= fopen(this->filename, "rb");
+	if (fp == NULL){
+		fprintf(stderr, "Unable to open the file. Please check the file, or build de database again!\n");
+		exit(2);	
+	}
+	fclose(fp);
+	printf("Processing:%s\n",key);
 	Command_dbReader(this->filename,key,Command_dblist,this->super.vptr->lineParser);	
 }
 
@@ -95,16 +105,6 @@ void Command1_destroyDB(Command1* this){
     close(this->fd);
 }
 
-const Command_Methods Command1_vtable = {
-	(void (*)(void*)) Command1_dtor,
-	(void (*)(void*)) Command1_createDB,
-	(void (*)(void*)) Command1_destroyDB,
-	(void (*)(void*,void*)) Command1_insert_CDB,
-	(void (*)(char*)) Command1_parseLine,
-	(void (*)(void*, char*) )Command1_queryCDB1,
-	"Criação de Base de Dados com a Informação das Unidade Curriculares, pesquisa pela Acronino da UC!",
-	'a'
-};
 
 
 Command1* Command1_ctor(){
@@ -114,7 +114,7 @@ Command1* Command1_ctor(){
 }
 
 void Command1_init(Command1* this){
-	this->super.vptr = &Command1_vtable;
+	this->super.vptr =&Command1_vtable;
 	this->filename = "UCbyAcronimo.cdb";	
 }
 

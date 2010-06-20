@@ -8,4 +8,6 @@
 #include "Command6.h"
 #include "Command7.h"
 #include "Command8.h"
+#include "Command9.h"
+#include "Command10.h"
 #endif

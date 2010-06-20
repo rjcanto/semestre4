@@ -1,45 +1,20 @@
 #include "Command7.h"
-/**
- * - Criação de Base de Dados com os Acronimos
- * - Pesquisa pelo Tipo de cadeira
- * */
 void Command7_clear(Command7* this){
 	this->filename=NULL;
 	this->fd=0;
 }
-
 void Command7_dtor(Command7* this){
 	if(this != NULL)
 		Command7_clear(this);
 	free(this);
 }
-
-
 void Command7_createDB(Command7* this){
-	puts("======================================================================");
-	puts("Criação de Base de Dados de Acronimos e Dependencias");
-	puts("======================================================================");
 	this->fd = open(this->filename, O_WRONLY|O_CREAT|O_TRUNC, 0666);
 	if (cdb_make_start(&(this->cdbm), this->fd) < 0) {
 		puts("Aconteceu um erro na criação do ficheiro!");
 		exit(-1);
 	}	
 }
-
-/*	
-Campo	Designação do Campo	Posição	Comprimento		Conteudo	OBS
- 01		mec_number			   	01	2 bytes			Fixo
- 02		Tamanho Nome			03	1 byte			Fixo		Indica o tamanho do texto referente ao Nome
- 03		Nome					04  -----------		Variável	Comprimento dado pelo campo 02
- 04		Tamanho email			--	1 byte			Variável	Indica o tamanho do texto referente ao Email
- 05		Email					--	-----------		Variável	Comprimento dado pelo campo 04
-*/
-/**
- * Preenche os campos da estrutura com os valores necessários para alimentar a base de dados.
- * Uma vez que é alocado dinamicamente o valor que o campo 'line' irá ter, será necessário 
- * quem chamar esta função libertar o espaço alocao depois de não ser mais necessário. 
- * 
- * */
 static void Command7_getLine(CDBLF * result,void* t ){
 	char* cdb_line;
 	int ret=0;
@@ -68,7 +43,7 @@ void Command7_parseLine(char* line){
 	
 	*(key + size)=0;
 	strncpy(key,line+1,size);
-	c1->super.vptr->queryDB(c1,key);
+	c1->super.vptr->execute(c1,key);
 	c1->super.vptr->dtor(c1);
 	free(key);
 
@@ -79,6 +54,13 @@ void Command7_insert_CDB(Command7* this,void* t){
 }
 
 void Command7_queryCDB1(Command7* this,char* key){
+	FILE* fp= fopen(this->filename, "rb");
+	if (fp == NULL){
+		fprintf(stderr, "Unable to open the file. Please check the file, or build de database again!\n");
+		exit(2);	
+	}
+	fclose(fp);
+	printf("Processing:%s\n",key);
 	Command_dbReader( this->filename,key,Command_dblist,this->super.vptr->lineParser);	
 }
 
@@ -96,8 +78,8 @@ const Command_Methods Command7_vtable = {
 	(void (*)(void*,void*)) Command7_insert_CDB,
 	(void (*)(char*)) Command7_parseLine,
 	(void (*)(void*, char*) )Command7_queryCDB1,
-	"Criação de Base de Dados com a Informação dos Docentes. Pesquisa pelo Numero Mecanográfico do Docente",
-	'b'
+	"Pesquisa pelo Tipo de Unidade Curricular (B- Obrigatória, C- Complementar, P- Optativa).",
+	'g'
 };
 
 

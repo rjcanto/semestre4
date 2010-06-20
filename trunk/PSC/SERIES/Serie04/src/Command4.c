@@ -1,11 +1,4 @@
 #include "Command4.h"
-/**
- * - Criação de Base de Dados com as Dependencias
- * - Pesquisa pelo Acronimo, e devolve a descrição da UC de todas as Dep
- * 
- * */
-
-
 void Command4_clear(Command4* this){
 	this->filename=NULL;
 	this->fd=0;
@@ -20,30 +13,12 @@ void Command4_dtor(Command4* this){
 static int UC_nbr=1;
 
 void Command4_createDB(Command4* this){
-	puts("======================================================================");
-	puts("Criação de Base de Dados de Acronimos e Dependencias");
-	puts("======================================================================");
 	this->fd = open(this->filename, O_WRONLY|O_CREAT|O_TRUNC, 0666);
 	if (cdb_make_start(&(this->cdbm), this->fd) < 0) {
 		puts("Aconteceu um erro na criação do ficheiro!");
 		exit(-1);
 	}	
 }
-
-/*	
-Campo	Designação do Campo	Posição	Comprimento		Conteudo	OBS
- 01		mec_number			   	01	2 bytes			Fixo
- 02		Tamanho Nome			03	1 byte			Fixo		Indica o tamanho do texto referente ao Nome
- 03		Nome					04  -----------		Variável	Comprimento dado pelo campo 02
- 04		Tamanho email			--	1 byte			Variável	Indica o tamanho do texto referente ao Email
- 05		Email					--	-----------		Variável	Comprimento dado pelo campo 04
-*/
-/**
- * Preenche os campos da estrutura com os valores necessários para alimentar a base de dados.
- * Uma vez que é alocado dinamicamente o valor que o campo 'line' irá ter, será necessário 
- * quem chamar esta função libertar o espaço alocao depois de não ser mais necessário. 
- * 
- * */
 static void Command4_getLine(CDBLF * result,void* t ){
 	char* cdb_line;
 	int ret=0;
@@ -84,11 +59,8 @@ static void Command4_parseDependencias (const char * line, char delimiter, char*
 	while (size >0 && (field = get_next_field(line,delimiter)) != NULL ){
 			blank_print(UC_nbr++);
 			printf("|>%s: %s\n",text,field);
-			/*blank_print(UC_nbr++);*/
-			/*Command4_queryCDB1(field);*/
-			c4->super.vptr->queryDB(c4, field);
+			c4->super.vptr->execute(c4, field);
 			UC_nbr-=1;
-			/*Command1_queryCDB1(field);*/
 			line=line + strlen(field)+1;
 			size-=strlen(field)+1;
 			free(field);
@@ -132,6 +104,13 @@ void Command4_insert_CDB(Command4* this,void* t){
 
 
 void Command4_queryCDB1(Command4* this,char* key){
+	FILE* fp= fopen(this->filename, "rb");
+	if (fp == NULL){
+		fprintf(stderr, "Unable to open the file. Please check the file, or build de database again!\n");
+		exit(2);	
+	}
+	fclose(fp);
+	printf("Processing:%s\n",key);
 	Command_dbReader( this->filename,key,Command_dblist,this->super.vptr->lineParser);	
 }
 
@@ -140,15 +119,15 @@ void Command4_destroyDB(Command4* this){
 		puts("cdb_make_finish failed");
     close(this->fd);
 }
-const Command_Methods Command4_vtable = {
+static const Command_Methods Command4_vtable = {
 	(void (*)(void*)) Command4_dtor,
 	(void (*)(void*)) Command4_createDB,
 	(void (*)(void*)) Command4_destroyDB,
 	(void (*)(void*,void*)) Command4_insert_CDB,
 	(void (*)(char*)) Command4_parseLine,
 	(void (*)(void*, char*) )Command4_queryCDB1,
-	"Criação de Base de Dados com a Informação dos Docentes. Pesquisa pelo Numero Mecanográfico do Docente",
-	'b'
+	"Pesquisa pelo Acronimo, devolve a descrição da Unidade Curricular (de todas as suas Dependencias)",
+	'd'
 };
 
 

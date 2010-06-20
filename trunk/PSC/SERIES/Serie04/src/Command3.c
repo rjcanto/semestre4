@@ -1,16 +1,4 @@
 #include "Command3.h"
-/**
- * - Criação de Base de Dados com a Informação dos Docentes
- * - Pesquisa pelo Numero Mecanográfico do Docente
- * 
- * */
-
-/*
-char* Command3_filename="TeacherbyMecNbr.cdb";
-struct cdb_make Command3_cdbm;
-int fd;
-*/
-
 
 void Command3_clear(Command3* this){
 	this->filename=NULL;
@@ -25,9 +13,6 @@ void Command3_dtor(Command3* this){
 
 
 void Command3_createDB(Command3* this){
-	puts("======================================================================");
-	puts("Criação de Base de Dados da Unidade Curricular");
-	puts("======================================================================");
 	this->fd = open(this->filename, O_WRONLY|O_CREAT|O_TRUNC, 0666);
 	if (cdb_make_start(&(this->cdbm), this->fd) < 0) {
 		puts("Aconteceu um erro na criação do ficheiro!");
@@ -47,34 +32,14 @@ void Command3_parseLine(char* line){
 	a=*idx++;
 	b=*idx++;
 	professor->mec_number=(unsigned short)(a<<8)|b;
-
-	/*obtido de acordo com a descrição dos campos do ficheiro*/
-	/*Processa o Nome*/
 	idx = CDB_field_equalize(&(professor->name),idx);
 	
-	/*Processa o Email*/
 	idx = CDB_field_equalize(&(professor->email),idx);
 
 	Teacher_toString(professor);
 	Teacher_destroy(professor); /*free*/
 	
 }
-
-
-/*	
-Campo	Designação do Campo	Posição	Comprimento		Conteudo	OBS
- 01		mec_number			   	01	2 bytes			Fixo
- 02		Tamanho Nome			03	1 byte			Fixo		Indica o tamanho do texto referente ao Nome
- 03		Nome					04  -----------		Variável	Comprimento dado pelo campo 02
- 04		Tamanho email			--	1 byte			Variável	Indica o tamanho do texto referente ao Email
- 05		Email					--	-----------		Variável	Comprimento dado pelo campo 04
-*/
-/**
- * Preenche os campos da estrutura com os valores necessários para alimentar a base de dados.
- * Uma vez que é alocado dinamicamente o valor que o campo 'line' irá ter, será necessário 
- * quem chamar esta função libertar o espaço alocao depois de não ser mais necessário. 
- * 
- * */
 static void Command3_getLine(CDBLF * result,void* t ){
 	char* cdb_line;
 	unsigned char a,b;
@@ -108,13 +73,22 @@ void Command3_insert_CDB(Command3* this,void* t){
 }
 
 void Command3_queryCDB1(Command3* this,char* key){
-	
 	unsigned short u;
 	char *str=(char*)malloc(sizeof(unsigned short)+1);
+	FILE* fp= fopen(this->filename, "rb");
 	if (sscanf(key,"%hu",&u) == 0 )
 			puts(">>Not a Number<<");
 	*(str+2)=0;
+	if (fp == NULL){
+		fprintf(stderr, "Unable to open the file. Please check the file, or build de database again!\n");
+		free(str);
+		exit(2);	
+	}
+	fclose(fp);
+
+
 	unsignedShort2TwoBytes(str,u);
+	printf("Processing:%s\n",key);
 	Command_dbReader( this->filename,str,Command_dblist,this->super.vptr->lineParser);	
 	free(str);
 }
@@ -125,14 +99,14 @@ void Command3_destroyDB(Command3* this){
     close(this->fd);
 }
 
-const Command_Methods Command3_vtable = {
+static const Command_Methods Command3_vtable = {
 	(void (*)(void*)) Command3_dtor,
 	(void (*)(void*)) Command3_createDB,
 	(void (*)(void*)) Command3_destroyDB,
 	(void (*)(void*,void*)) Command3_insert_CDB,
 	(void (*)(char*)) Command3_parseLine,
 	(void (*)(void*, char*) )Command3_queryCDB1,
-	"Criação de Base de Dados com a Informação dos Docentes. Pesquisa pelo Numero Mecanográfico do Docente",
+	"Pesquisa pelo Numero Mecanográfico do Docente, devolve a sua identificação",
 	'b'
 };
 

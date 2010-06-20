@@ -18,14 +18,14 @@ typedef struct met_com {
 	void (*destroyDB)(void*);
 	void (*insertDB)(void*,void*);
 	void (*lineParser)(char*);
-	void (*queryDB)(void*, char*);
-	char* 	tipoComando;	
+	void (*execute)(void*, char*);
+	char* 	descricao;	
 	char 	opcao;	
 } Command_Methods;
 
 
 typedef struct comando{
-	Command_Methods* vptr;
+	const Command_Methods* vptr;
 } Command;
 
 unsigned short twoByte2UnsignedShort(char** twobyte);
