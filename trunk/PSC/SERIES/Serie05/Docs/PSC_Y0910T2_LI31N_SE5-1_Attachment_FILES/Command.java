@@ -2,7 +2,7 @@ import java.io.*;
 
 public abstract class Command {
 	public abstract char prefix();
-	public String syntax() { return ""; }
+	public String syntax() { return "";}
 	public abstract void exec(String line);
 	public abstract void help();
 
