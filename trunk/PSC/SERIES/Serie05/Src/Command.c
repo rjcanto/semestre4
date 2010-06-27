@@ -1,92 +1,131 @@
 #include "Command.h"
 
-/*const Command cmds[];*/
 
-const Cmds this;
 
 const static Command_Methods cmd_vtable={
-	Command_dtor,
-	Command_prefix,
-	Command_exec,
-	Command_help,
-	Command_syntax
+	(const void (*) (Command*)) Command_cleanup,
+	(const char (*) ())Command_prefix,
+	(const void (*) (char*))Command_exec,
+	(const void (*) ())Command_help,
+	(const char*(*) ())Command_syntax
 };
 
-	char 	Command_prefix(){
-		puts("Method not yet implemeted!");
-	}
-	char* 	Command_syntax(){
-		return ""; 
-	}
-	void 	Command_exec(char* line){
-		puts("Method not yet implemeted!");	
-	}
-	void 	Command_help(){
-		puts("Method not yet implemeted!");
-	}
+char 	Command_prefix(){
+	puts("Method not yet implemeted!");
+	return 0;
+}
+char* 	Command_syntax(){
+	return ""; 
 
+}
+void 	Command_exec(char* line){
+	puts("Method not yet implemeted!");	
+}
+void 	Command_help(){
+	puts("Method not yet implemeted!");
+}
 
+static boolean Command_newInstance(char* libName,Command* t){
+	void* hp;
+	Command* (*newCommand)();
+	
+	hp = dlopen(libName,RTLD_NOW);
+	
+	if (!hp) return false;
+	*(void**)&newCommand = dlsym(hp,"newInstance");
+	if(!newCommand){ dlclose(hp);return false;}
+	t = newCommand();
+	t->handler =  hp;
+	return true;
+}
 
-	boolean Command_load(char* cfgFile){
-		int nLines;
-		BufferedReader fin;
-		
-		TRY {
-			fin = new BufferedReader( new FileReader(cfgFile) );
-			fin.mark(1024);
-			for (nLines=0 ; fin.readLine()!=null ; ++nLines) ;
-			fin.reset();
-			cmds = new Command[nLines];
-			for(int i=0; i< nLines ; ++i)
-				cmds[i] = (Command) Class.forName(fin.readLine()+"Cmd").newInstance();
-			fin.close();
-		} CATCH (Exception e) {
-			System.err.println("Error reading file "+cfgFile+". "+e.getMessage()); return false;
-		}
-		return true;		
-	}
+void Command_unload(Command* t){
+	void* hp = t->handler;
+	(t)->vptr->dtor(t);
+	dlclose(hp);	
+}
 
+boolean Command_load(char* cfgFile){
+	int nLines;
+	FILE* fin=NULL;
+	char buffer[BUFFER];
+	
+	TRY {
+		assert ((fin = fopen(cfgFile,"rb"))== NULL);
+		fseek(fin,BUFFER,SEEK_SET);
 
-	void 	Command_execute(char* line){
-		if (line == NULL || *line == 0) return;
-		char prefix = toupper(*line);
-		
-		for(int i=0 ; i< this.cmds.length ; ++i)
-			if (this.cmds[i].prefix() == prefix) {
-				this.cmds[i].exec(line+1);
-				return;
+		for (nLines=0 ; fgets(buffer,BUFFER,fin) != NULL ; ++nLines) ;
+
+		rewind(fin);
+		Commands_Array.length=nLines;
+
+		if ((Commands_Array.cmds = (Command*)calloc(sizeof(Command),nLines)) == NULL){
+			THROW(UNABLE_TO_READ_FILE_EXCEPTION);
+		}else{
+			int i;
+			for(i=0; i< nLines ; ++i){
+				fgets(buffer,BUFFER,fin);
+				sprintf(buffer,"%sCmd.so",buffer);
+				if (!Command_newInstance(buffer,(Commands_Array.cmds+i*sizeof(Command)))){
+					THROW(UNABLE_TO_LOAD_LIBRARY_EXCEPTION) ;
+				}
 			}
-		printf("Invalid command %c",prefix);		
-	}
-	
-	
-	const int Command_parseLine(char* txt){
-		int val=0;
-		char c;
-		while(*txt && !(*txt >= '0' && *txt<='9')){
-			++txt;
+			fclose(fin);
 		}
-		while(*txt && (*txt >= '0' && *txt<='9')){
-			c=*txt;
-			val*=10; val+=c-'0';			
+	}CATCH (UNABLE_TO_READ_FILE_EXCEPTION){
+		printf("Error reading file %s.\n",cfgFile); 
+		fclose(fin);
+		return false;
+	}CATCH (UNABLE_TO_LOAD_LIBRARY_EXCEPTION){
+		printf("Error loading library %s.\n",buffer); 
+		fclose(fin);
+		return false;
+	}TRY_END;
+	return true;		
+}
+
+
+void 	Command_execute(char* line){
+	if (line == NULL || *line == 0) return;
+	else{
+	char prefix = toupper(*line);
+	int i;
+	for(i=0 ; i< Commands_Array.length ; ++i)
+		if (Commands_Array.cmds[i].vptr->prefix() == prefix) {
+			Commands_Array.cmds[i].vptr->exec(line+1);
+			return;
 		}
-		return val-1;		
+		printf("Invalid command %c",prefix);	
+	}	
+}
+
+
+const int Command_parseLine(char* txt){
+	int val=0;
+	char c;
+	while(*txt && !(*txt >= '0' && *txt<='9')){
+		++txt;
 	}
-
-	const int Command_parseCol(char* txt){
-		int val=0;
-		char c;
-		while (*txt && !((*txt >= 'A' && *txt<='Z')|| (*txt >= 'a' && *txt<='z')))
-			++txt;
-		
-		if (*txt && ((*txt >= 'A' && *txt<='Z')|| (*txt >= 'a' && *txt<='z')) ) {c=*txt;t val+=toupper(c)-'A'; }
-		return val;	
+	while(*txt && (*txt >= '0' && *txt<='9')){
+		c=*txt;
+		val*=10; val+=c-'0';			
 	}
+	return val-1;		
+}
 
-
-
+const int Command_parseCol(char* txt){
+	int val=0;
+	char c;
+	while (*txt && !((*txt >= 'A' && *txt<='Z')|| (*txt >= 'a' && *txt<='z')))
+		++txt;
 	
-	void Command_dtor(void* this);
-	Command* Command_ctor();
-	void Command_init(void* this);
-	void Command_clean(void* this);
+	if (*txt && ((*txt >= 'A' && *txt<='Z')|| (*txt >= 'a' && *txt<='z')) ) {c=*txt; val+=toupper(c)-'A'; }
+	return val;	
+}
+
+void Command_init(Command* t){
+	t->vptr= &cmd_vtable;
+}
+void Command_cleanup(Command* t){
+	t->vptr = NULL;
+}
