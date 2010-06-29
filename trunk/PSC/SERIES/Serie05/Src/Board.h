@@ -1,29 +1,28 @@
 #ifndef BOARD_H
 #define BOARD_H
-	public static final int LINES=6, COLS=6, BOMBS=5;
+#include <stdio.h>
+#include <stdlib.h>
+#include "newtypes.h"
+#include "Exception.h"
 
-	private final Cell[][] cells = new Cell[LINES][COLS];
+struct board_t;
+typedef struct board_t Board;
+
+typedef struct board_methods{
 	
-	private int bombs; // number of bombs not flagged. 
-	private int hides; // number of cells not touched.
-
-	public boolean isSolved();
-
-	public Board();
 	
-	private void putBomb(int n);
-	
-	private static void printLine();
+}Board_Methods;
 
-	public void print() ;
-	
-	public static boolean isValid(int l, int c);
-	public boolean isBomb(int l, int c);
 
-	public void touch(int l, int c);
-
-	public void showAll();
-
-	public void flag(int l, int c);
+struct board_t{
+	Board_Methods* vptr;
+};
+boolean isSolved(Board* this);
+void Board_print(Board* this);
+boolean Board_isValid(Board* this, int l, int c);
+boolean Board_isBomb(Board* this, int l, int c);
+void Board_touch(Board* this, int l, int c);
+void Board_showAll(Board* this);
+void Board_flag(Board* this, int l, int c);
 
 #endif
