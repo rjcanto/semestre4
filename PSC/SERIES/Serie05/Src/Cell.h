@@ -5,39 +5,48 @@
 #include "newtypes.h"
 #include "Exception.h"
 
+#define CELL_VOID_CAST    void (*)(Cell*)
+#define CELL_BOOLEAN_CAST boolean (*)(Cell*)
+#define CELL_CHAR_CAST	char 	(*)(Cell*)
+
+
+
 struct cell_t;
 typedef struct cell_t Cell;
+enum status {NONE='*', FLAG='X', VIEW=' '};
+typedef enum status Stat;
+
+#define CELL_ISSHOWN(T)		((T)->stat == VIEW)
+#define CELL_ISFLAGGED(T)	((T)->stat == FLAG)
+
 
 typedef struct cell_methods{
-	const void 	(*dtor)();
-	const char 	(*getView)();
-	const void 	(*touch)();
-	const boolean (*isBomb)();	
+	void 	(*dtor)(Cell*);
+	char 	(*getView)(Cell*);
+	void 	(*touch)(Cell*);
+	boolean (*isBomb)(Cell*);	
 }Cell_Methods;
 
 
 typedef struct final_cell_methods{
-  const void 	(*print)();
-  const boolean (*isShown)();
-  const boolean (*isFlagged)();
-  const void 	(*show)();
-  const void 	(*toggleFlag)();
+  const void 	(*print)(Cell*);
+  const void 	(*show)(Cell*);
+  const void 	(*toggleFlag)(Cell*);
 }Cell_Methods_Final;
 
-struct cell{
+struct cell_t{
 	Cell_Methods* vptr;
-	Cell_Methods_Final* fvptr;
+	const Cell_Methods_Final* fvptr;
+	Stat stat;
 };
+  char Cell_getView(Cell*);
+  void Cell_touch(Cell*);
+  boolean Cell_isBomb(Cell*);
 
-
-
-  char getView();
-  void touch();
-  boolean isBomb();
-
-  void print();
-  const boolean isShown();
-  const boolean isFlagged();
-  void show();
-  void toggleFlag();
+  void Cell_print(Cell*);
+  void Cell_show(Cell*);
+  void Cell_toggleFlag(Cell*);
+  
+  void Cell_init(Cell* this);
+  void Cell_cleanup(Cell* this);
 #endif
