@@ -1,14 +1,25 @@
 #ifndef EMPTYCELL_H
 #define EMPTYCELL_H
-  private final static int[] difLin = {-1,-1,-1, 0, 0, 1, 1, 1 },
-                             difCol = {-1, 0, 1,-1, 1,-1, 0, 1 }; 
-  private final int lin, col;
-  private int number;
-  
-  public EmptyCell(int l, int c);
-  
-  protected char EmptyCell_getView();
+#include "Cell.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include "newtypes.h"
+#include "Minesweeper.h"
 
-  public void EmptyCell_touch();
-}
+struct emptycell_t{
+	Cell super;
+};
+
+typedef struct emptycell_t EmptyCell;
+
+
+
+char EmptyCell_getView(EmptyCell* this);
+void EmptyCell_touch(EmptyCell* this);
+void EmptyCell_cleanup(EmptyCell* this);
+void EmptyCell_delete(EmptyCell* this);
+void EmptyCell_init(EmptyCell* this,int l, int c);
+EmptyCell* EmptyCell_new(int l, int c);
+
 #endif

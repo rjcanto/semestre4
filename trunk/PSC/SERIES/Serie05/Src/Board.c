@@ -1,23 +1,17 @@
 #include "Board.h"
-
-const extern int LINES=6;
-const extern int COLS=6;
-const extern int BOMBS=5;
-
-static Cell* cells[LINES][COLS];
-static int bombs;
-static int hides;
-
-boolean isSolved(Board* this){return hides==bombs;}
-
+#include "BombCell.h"
+#include "EmptyCell.h"
+/*
+ * Métodos privados
+ * */
 static void Board_putBomb(Board* this,int n){
 	int l,c;
 	assert(n<0);
-	for(int l=0 ; l<LINES ; ++l)
-		for(int c=0; c<COLS ; ++c)
-			if (cells[l][c]==null) {
+	for(l=0 ; l<LINES ; ++l)
+		for(c=0; c<COLS ; ++c)
+			if (this->cells[l][c] == NULL) {
 				if (n==0) { 
-				  cells[l][c]=BombCell_new();
+				  this->cells[l][c]=(Cell*)BombCell_new();
 				  return; 
 				}
 			--n;
@@ -28,52 +22,92 @@ static void Board_putBomb(Board* this,int n){
 static void Board_printLine(Board* this){
 		int c;
 		printf("   +");
-		for(c =0;c<COLS;++c) printf("--");
+		for(c =0;c < COLS;++c) printf("--");
 		puts("-+");
 }
-void Board_print(Board* this){
+/*Substituidos por Macros*/
+/*boolean Board_isValid(Board* this, int l, int c){return ( l >= 0 && l < this->LINES && c >=0 &&  c< this->COLS);}*/
+/*boolean Board_isSolved(Board* this){return hides==bombs;}*/
+/*boolean Board_isBomb(Board* this, int l, int c){return Board_isValid(this, l, c) && cells[l][c]->vptr->isBomb(cells[l][c]);}*/
+
+/*
+ * Métodos Públicos
+ * */
+extern void Board_print(Board* this){
 	int c,l;
-	printf("%02d  ",bombs);
-	for(c=0; c<COLS ; ++c) printf(" %c", 'A'+c);
-	printf("   %02d\n", hides);
+	printf("%02d  ",this->bombs);
+	for(c=0; c < COLS ; ++c) printf(" %c", 'A'+c);
+	printf("   %02d\n", this->hides);
 	Board_printLine(this);
 	for(l=0 ; l<LINES ; ++l) {
 		printf("%2d |",l+1);
 		for(c=0; c<COLS ; ++c) {
-			printf(' ');
-			cells[l][c].fvptr->print();
+			printf(" ");
+			this->cells[l][c]->fvptr->print(this->cells[l][c]);
 		}
 		puts(" |");
 	}
 	Board_printLine(this);
 }
-boolean Board_isValid(Board* this, int l, int c){
-	return ( l >= 0 && l < LINES && c >=0 && c< COLS);
-}
-boolean Board_isBomb(Board* this, int l, int c){
-	return this->vptr->isValid(this, l, c) && cells[l][c].vptr->isBomb();
-}
-void Board_touch(Board* this, int l, int c){
-	if (this->vptr->isValid(this, l, c)){
-		Cell c = cells[l][c];
-		if (c.fvptr->isShown() || c.fvptr->isFlagged()) return;
-		c.vptr->touch();
-		--hides;
+extern void Board_touch(Board* this, int l, int c){
+	if (Board_isValid(this, l, c)){
+		Cell* cel = this->cells[l][c];
+		if (CELL_ISSHOWN(cel) || CELL_ISFLAGGED(cel)) return;
+		cel->vptr->touch(cel);
+		--this->hides;
 	}
 }
-void Board_showAll(Board* this){
+extern void Board_showAll(Board* this){
 	int l,c;
-	for (l=0;l<LINES;++l)
-		for(c=0;c<COLS;++c)
-			cells[l][c].fvptr->show();
-	hides=0;
+	for (l=0;l< LINES;++l)
+		for(c=0;c< COLS;++c)
+			this->cells[l][c]->fvptr->show(this->cells[l][c]);
+	this->hides=0;
 }
-void Board_flag(Board* this, int l, int c){
+extern void Board_flag(Board* this, int l, int c){
 	if (Board_isValid(this,l,c)){
-		Cell c = cells[l][c];
-		if (c.fvptr->isShown()) return
-		c.fvptr->toggleFlag();
-		if (c.fvptr->isFlagged()){--bombs;--hides;}
-		else{++bombs;++hides;}
+		Cell* cel = this->cells[l][c];
+		if (CELL_ISSHOWN(cel)) return;
+		cel->fvptr->toggleFlag(cel);
+		if (CELL_ISFLAGGED(cel)){--this->bombs;--this->hides;}
+		else{++this->bombs;++this->hides;}
 	}
+}
+
+
+/*
+ * (Des)Construtores e (Des)Iniciadores
+ * */
+void Board_Cleanup(Board* this){
+	if (this == NULL){ return;
+	}else{
+	int c,l;	
+	for(l=0 ; l<LINES ; ++l)
+		for(c=0; c<COLS ; ++c)
+			this->cells[l][c]->vptr->dtor(this->cells[l][c]);
+	}
+}
+void Board_delete(Board* this){
+	if (this == NULL) return;
+	Board_Cleanup(this);
+	free(this);
+}
+void Board_init(Board* this){
+	int l,c;
+	if (this == NULL) return;
+	this->hides=LINES*COLS;
+	this->bombs=0;
+    for( ; this->bombs < BOMBS ; ++this->bombs)
+		Board_putBomb(this,(int)(rand()*(this->hides - this->bombs)));
+	  for(l=0 ; l<LINES ; ++l)
+	    for(c=0; c<COLS ; ++c)
+	   	  if ((this->cells + l*c + c)==NULL)
+	   		this->cells[l][c]=(Cell*)EmptyCell_new(l,c);
+}
+
+Board* Board_new(){
+	Board* this=(Board*)calloc(1,sizeof(Board));
+	assert(this == NULL);
+	Board_init(this);
+	return this;
 }

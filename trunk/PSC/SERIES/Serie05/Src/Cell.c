@@ -1,31 +1,48 @@
 #include "Cell.h"
-enum status {NONE='*', FLAG='X', VIEW=' '};
-typedef enum status Status;
-typedef struct Tstat{
-	Status view;	
-}Stat;
 
-Stat stat;
+/*Métodos Abstractos*/
+char Cell_getView(Cell* this){
+	puts ("Method not yet implemented."); return 0;
+}
+void Cell_touch(Cell* this){
+	puts("Method not yet implemented.");
+}
+boolean Cell_isBomb(Cell* this){return false;}
 
-	char getView(){
-		puts ("Method not yet implemented."); return 0;
-	}
-	void touch(){
-		puts("Method not yet implemented.");
-	}
-	boolean isBomb(){return false;}
 
-	void print(){
-		printf("%c",(stat.view == VIEW)? getView(): stat.view);
-	}
-	const boolean isShown(){return stat.view == VIEW;}
-	const boolean isFlagged(){return stat.view == FLAG;}
-	void show(){stat.view= VIEW;}
-	void toggleFlag(){
-		if ( stat.view == FLAG ) stat.view=NONE;
-		else
-		if ( stat.view == NONE ) stat.view=FLAG;
-	}
-	void Cell_init(){
-		stat.view=NONE;
-	}
+
+/*Métodos Final que não poderão ser redefinidos*/
+void Cell_print(Cell* this){
+	printf("%c",(this->stat == VIEW)? this->vptr->getView(this): this->stat);
+}
+void Cell_show(Cell* this){this->stat = VIEW;}
+void Cell_toggleFlag(Cell* this){
+	if ( this->stat == FLAG ) this->stat = NONE;
+	else
+	if ( this->stat == NONE ) this->stat = FLAG;
+}
+
+/*(Des)Inicializador e Tabelas de Métodos virtuais*/
+void Cell_cleanup(Cell* this){
+	if (this == NULL) return;
+	this->vptr = NULL;
+	this->fvptr = NULL;
+	this->stat = 0;
+}
+static Cell_Methods cell_vtable={
+	(CELL_VOID_CAST) 	Cell_cleanup,
+	(CELL_CHAR_CAST)	Cell_getView,
+	(CELL_VOID_CAST)	Cell_touch,
+	(CELL_BOOLEAN_CAST) Cell_isBomb
+};
+static const Cell_Methods_Final cell_fvtable={
+	(const CELL_VOID_CAST)		Cell_print,
+	(const CELL_VOID_CAST)		Cell_show,
+	(const CELL_VOID_CAST)		Cell_toggleFlag
+};
+void Cell_init(Cell* this){
+	if (this == NULL) return;
+	this->vptr  = &cell_vtable;
+	this->fvptr = &cell_fvtable;
+	this->stat = NONE;
+}

@@ -1,7 +1,5 @@
 #include "Command.h"
 
-
-
 const static Command_Methods cmd_vtable={
 	(const void (*) (Command*)) Command_cleanup,
 	(const char (*) ())Command_prefix,
@@ -59,7 +57,7 @@ boolean Command_load(char* cfgFile){
 		rewind(fin);
 		Commands_Array.length=nLines;
 
-		if ((Commands_Array.cmds = (Command*)calloc(sizeof(Command),nLines)) == NULL){
+		if ((Commands_Array.cmds = (Command*)calloc(nLines,sizeof(Command))) == NULL){
 			THROW(UNABLE_TO_READ_FILE_EXCEPTION);
 		}else{
 			int i;

@@ -32,7 +32,7 @@ typedef struct cmds_array{
 	int length;
 }Cmds;
 /*Variável Global que terá um array com os comandos	*/
-extern  Cmds Commands_Array;
+extern Cmds Commands_Array;
 
 	/*Comandos da Tabela de Metodos*/
 	char 	Command_prefix();
