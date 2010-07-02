@@ -1,6 +1,11 @@
 #include "ExitCmd.h"
+#include "Command_UP_Interface.h"
+
 void  ExitCmd_exec(ExitCmd* this,char* txt){
 		puts("Bye.");
+		puts(txt);
+		
+		
 		/*
 		Minesweeper.exit=true;
 		*/
@@ -12,10 +17,10 @@ char  ExitCmd_prefix(ExitCmd* this){return this->prefix;}
 
 const static Command_Methods exitcmd_vTable={
 	(const void (*) (Command*)) ExitCmd_cleanup,
-	(const char (*) ())			ExitCmd_prefix,
-	(const void (*) (char*))	ExitCmd_exec,
-	(const void (*) ())			ExitCmd_help,
-	(const char*(*) ())			Command_syntax
+	(const char (*) (Command*))			ExitCmd_prefix,
+	(const void (*) (Command*,char*))	ExitCmd_exec,
+	(const void (*) (Command*))			ExitCmd_help,
+	(const char*(*) (Command*))			Command_syntax
 };
 
 

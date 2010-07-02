@@ -7,9 +7,9 @@ typedef struct flagcmd FlagCmd;
 struct flagcmd{
 	Command super;
 	char* 	description;
-	char	prefix;
 	char*	syntax;
 	char*	help;
+	char	prefix;
 };
 	char 	FlagCmd_prefix(FlagCmd* this);
 	char* 	FlagCmd_syntax(FlagCmd* this);

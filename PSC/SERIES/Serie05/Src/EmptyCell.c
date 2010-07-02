@@ -12,15 +12,15 @@ char EmptyCell_getView(EmptyCell* this){
 void EmptyCell_touch(EmptyCell* this){
 	int i;
 	if (CELL_ISSHOWN(&(this->super))) return;
-	this->super.fvptr->show(&(this->super));
+	Cell_show(&(this->super));
 	/*Board b = Minesweeper.board;*/
 	for (i=0; i< dL_size; ++i){
-		if (Board_isBomb(&(MineSweeper.board),lin + difLin[i], col + difCol[i]))
+		if (Board_isBomb(Board_getpointer(),lin + difLin[i], col + difCol[i]))
 			++number;
 	}
 	if (number == 0)
 		for(i=0; i< dL_size ; ++i)
-			Board_touch(&(MineSweeper.board),lin + difLin[i], col + difCol[i]);
+			Board_touch(Board_getpointer(),lin + difLin[i], col + difCol[i]);
 }
 
 void EmptyCell_cleanup(EmptyCell* this){
@@ -45,12 +45,11 @@ void EmptyCell_init(EmptyCell* this,int l, int c){
 	Cell_init(&(this->super));
 	this->super.vptr=&emptycell_vtable;
 	lin=l; 
-	lin=c;
+	col=c;
 }
 
 EmptyCell* EmptyCell_new(int l, int c){
 	EmptyCell* this;
-	assert(l < 1 && c < 1);
 	this =(EmptyCell*)calloc(1,sizeof(EmptyCell));
 	EmptyCell_init(this,l,c);
 	return this;

@@ -5,16 +5,15 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "newtypes.h"
-#include "Exception.h"
-#include "Minesweeper.h"
+#include "Board.h"
+
+
 
 struct bomcell_t{
 	Cell super;
 	boolean exploded;	
 };
 typedef struct bomcell_t BombCell;
-
-
 
 char BombCell_getView(BombCell* this);
 void BombCell_touch(BombCell* this);

@@ -36,16 +36,15 @@ typedef struct final_cell_methods{
 
 struct cell_t{
 	Cell_Methods* vptr;
-	const Cell_Methods_Final* fvptr;
 	Stat stat;
 };
   char Cell_getView(Cell*);
   void Cell_touch(Cell*);
   boolean Cell_isBomb(Cell*);
 
-  void Cell_print(Cell*);
-  void Cell_show(Cell*);
-  void Cell_toggleFlag(Cell*);
+  extern void Cell_print(Cell*);
+  extern void Cell_show(Cell*);
+  extern void Cell_toggleFlag(Cell*);
   
   void Cell_init(Cell* this);
   void Cell_cleanup(Cell* this);

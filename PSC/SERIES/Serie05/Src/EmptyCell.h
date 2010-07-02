@@ -5,15 +5,12 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "newtypes.h"
-#include "Minesweeper.h"
-
+#include "Board.h"
 struct emptycell_t{
 	Cell super;
 };
 
 typedef struct emptycell_t EmptyCell;
-
-
 
 char EmptyCell_getView(EmptyCell* this);
 void EmptyCell_touch(EmptyCell* this);

@@ -24,10 +24,10 @@ void NewCmd_delete(NewCmd* this){
 
 const static Command_Methods touchcmd_vTable={
 	(const void (*) (Command*)) NewCmd_cleanup,
-	(const char (*) ())			NewCmd_prefix,
-	(const void (*) (char*))	NewCmd_exec,
-	(const void (*) ())			NewCmd_help,
-	(const char*(*) ())			Command_syntax
+	(const char (*) (Command*))			NewCmd_prefix,
+	(const void (*) (Command*,char*))	NewCmd_exec,
+	(const void (*) (Command*))			NewCmd_help,
+	(const char*(*) (Command*))			Command_syntax
 };
 
 
