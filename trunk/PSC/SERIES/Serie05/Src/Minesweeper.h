@@ -3,10 +3,11 @@
 #include "Board.h"
 #include "newtypes.h"
 #include "Command.h"
+#include "Command_UP_Interface.h"
 #include <stdio.h>
 #include <stdlib.h>
 #define MAX_COMMAND_INPUT 20
-struct Board;
+
 struct miner{
 	Board board;
 	boolean exit;	
@@ -14,5 +15,8 @@ struct miner{
 typedef struct miner Miner;
 
 extern Miner MineSweeper;
+
+
+
 
 #endif

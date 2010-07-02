@@ -11,10 +11,10 @@ struct newcmd{
 	char*	syntax;
 	char*	help;
 };
-	char 	HelpCmd_prefix(NewCmd* this);
-	char* 	HelpCmd_syntax(NewCmd* this);
-	void 	HelpCmd_exec(NewCmd* this,char* line);
-	void 	HelpCmd_help(NewCmd* this);
-	void 	HelpCmd_cleanup(NewCmd* this);
+	char 	NewCmd_prefix(NewCmd* this);
+	char* 	NewCmd_syntax(NewCmd* this);
+	void 	NewCmd_exec(NewCmd* this,char* line);
+	void 	NewCmd_help(NewCmd* this);
+	void 	NewCmd_cleanup(NewCmd* this);
 
 #endif

@@ -4,9 +4,9 @@ void  HelpCmd_exec(HelpCmd* this,char* txt){
 	Command* c;
 	int i;
 	for (i=0;i< Commands_Array.length;++i){
-		c = (Commands_Array.cmds + i*(sizeof(Command)));
-		printf("%c%s :\n",c->vptr->prefix() ,c->vptr->syntax());
-		c->vptr->help();
+		c = Commands_Array.cmds[i];
+		printf("%c%s :\n",c->vptr->prefix(c) ,c->vptr->syntax(c));
+		c->vptr->help(c);
 	}
 }
 
@@ -29,10 +29,10 @@ void HelpCmd_delete(HelpCmd* this){
 
 const static Command_Methods touchcmd_vTable={
 	(const void (*) (Command*)) HelpCmd_cleanup,
-	(const char (*) ())			HelpCmd_prefix,
-	(const void (*) (char*))	HelpCmd_exec,
-	(const void (*) ())			HelpCmd_help,
-	(const char*(*) ())			Command_syntax
+	(const char (*) (Command*))			HelpCmd_prefix,
+	(const void (*) (Command*,char*))	HelpCmd_exec,
+	(const void (*) (Command*))			HelpCmd_help,
+	(const char*(*) (Command*))			Command_syntax
 };
 
 

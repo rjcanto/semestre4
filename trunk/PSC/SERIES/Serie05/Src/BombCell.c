@@ -4,10 +4,10 @@ char BombCell_getView(BombCell* this){
 	return ((this->exploded) ? '@' : '+'); 
 }
 void BombCell_touch(BombCell* this){
-	this->super.fvptr->show(&(this->super));
+	Cell_show(&(this->super));
 	this->exploded = true;
 	puts("BUMMMM.");
-	Board_showAll(&(MineSweeper.board));
+	Board_showAll(Board_getpointer());
 }
 
 boolean BombCell_isBomb(BombCell* this){return true;}
@@ -38,7 +38,7 @@ void BombCell_init(BombCell* this){
 }
 BombCell* BombCell_new(){
 	BombCell* this =(BombCell*)calloc(1,sizeof(BombCell));
-	assert(this == NULL);
+	assert(this != NULL);
 	BombCell_init(this);
 	return this;
 }

@@ -9,17 +9,17 @@
 #include <ctype.h>
 #include <string.h>
 #define BUFFER 1024
-
-
+#include "Minesweeper.h"
 struct command;
 typedef struct command Command;
 
+
 typedef struct command_methods{
 	const void		(*dtor)		(Command* this);
-	const char 		(*prefix)	();
-	const void 		(*exec)		(char* line);
-	const void 		(*help)		();
-	const char* 	(*syntax)	();
+	const char 		(*prefix)	(Command* this);
+	const void 		(*exec)		(Command*, char* line);
+	const void 		(*help)		(Command* this);
+	const char* 	(*syntax)	(Command* this);
 }Command_Methods;
 
 struct command{
@@ -28,23 +28,26 @@ struct command{
 };
 
 typedef struct cmds_array{
-	Command* cmds;
+	Command** cmds;
 	int length;
 }Cmds;
+	/*Métodos 'static' do java, que não precisam de objecto instanciado para serem chamado*/
+	int Command_parseCol(char* txt);
+	boolean Command_load(char* cfgFile);
+	void Command_execute(char* line);
+	int Command_parseLine(char* txt);
+
+
+
 /*Variável Global que terá um array com os comandos	*/
 extern Cmds Commands_Array;
 
 	/*Comandos da Tabela de Metodos*/
-	char 	Command_prefix();
-	char* 	Command_syntax();
-	void 	Command_exec(char* line);
-	void 	Command_help();
+	char 	Command_prefix(Command* this);
+	char* 	Command_syntax(Command* this);
+	void 	Command_exec(Command* this,char* line);
+	void 	Command_help(Command* this);
 
-	/*Métodos 'static' do java, que não precisam de objecto instanciado para serem chamado*/
-	boolean Command_load(char* cfgFile);
-	void 	Command_execute(char* line);
-	const int Command_parseLine(char* txt);
-	const int Command_parseCol(char* txt);
 	
 	/*Métodos para inicialização e 'desinicialização' de variáveis*/
 	void Command_init(Command* this);

@@ -7,9 +7,9 @@ typedef struct touchcmd TouchCmd;
 struct touchcmd{
 	Command super;
 	char* 	description;
-	char	prefix;
 	char*	syntax;
 	char*	help;
+	char	prefix;
 };
 	char 	TouchCmd_prefix(TouchCmd* this);
 	char* 	TouchCmd_syntax(TouchCmd* this);

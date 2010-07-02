@@ -21,10 +21,10 @@ char  FlagCmd_prefix(FlagCmd* this){return this->prefix;}
 
 const static Command_Methods touchcmd_vTable={
 	(const void (*) (Command*)) FlagCmd_cleanup,
-	(const char (*) ())			FlagCmd_prefix,
-	(const void (*) (char*))	FlagCmd_exec,
-	(const void (*) ())			FlagCmd_help,
-	(const char*(*) ())		FlagCmd_syntax
+	(const char (*) (Command*))			FlagCmd_prefix,
+	(const void (*) (Command*,char*))	FlagCmd_exec,
+	(const void (*) (Command*))			FlagCmd_help,
+	(const char*(*) (Command*))		FlagCmd_syntax
 };
 
 

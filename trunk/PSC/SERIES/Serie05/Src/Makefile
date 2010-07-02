@@ -22,36 +22,36 @@ CELL			= EmptyCell.o Cell.o BombCell.o
 #=======================================================================
 #Geração de Todos os ficheiros
 #=======================================================================
-all:  ${BIBLIOTECAS} Command.o  ${CELL} Board.o   Minesweeper.o
+all:  ${BIBLIOTECAS} Command.o  ${CELL} Board.o   Minesweeper.o MineSweeper
 #=======================================================================
 #Bibliotecas de Carregamento Dinâmico
 #=======================================================================
-HelpCmd.so: HelpCmd.o
-	${CC} ${SHARED_LYBRARY} ${WARINIGS} ${OUTPUT}  $@ $<
+HelpCmd.so: HelpCmd.o Command.o
+	${CC} ${SHARED_LYBRARY} ${WARINIGS} ${OUTPUT}  $@ $^
 
 HelpCmd.o: HelpCmd.c HelpCmd.h Command.h
 	${CC} ${POS_INDEPENDENT} ${WARINIGS} ${COMPILE_ONLY} ${OUTPUT} $@ $< 
 
-TouchCmd.so: TouchCmd.o
-	${CC} ${SHARED_LYBRARY} ${WARINIGS} ${OUTPUT}  $@ $<
+TouchCmd.so: TouchCmd.o Command.o
+	${CC} ${SHARED_LYBRARY} ${WARINIGS} ${OUTPUT}  $@ $^
 
 TouchCmd.o: TouchCmd.c TouchCmd.h Command.h
 	${CC} ${POS_INDEPENDENT} ${WARINIGS} ${COMPILE_ONLY} ${OUTPUT} $@ $< 
 
-NewCmd.so: NewCmd.o
-	${CC} ${SHARED_LYBRARY} ${WARINIGS} ${OUTPUT}  $@ $<
+NewCmd.so: NewCmd.o Command.o
+	${CC} ${SHARED_LYBRARY} ${WARINIGS} ${OUTPUT}  $@ $^
 
 NewCmd.o: NewCmd.c NewCmd.h Command.h
 	${CC} ${POS_INDEPENDENT} ${WARINIGS} ${COMPILE_ONLY} ${OUTPUT} $@ $< 
 
-FlagCmd.so: FlagCmd.o
-	${CC} ${SHARED_LYBRARY} ${WARINIGS} ${OUTPUT}  $@ $<
+FlagCmd.so: FlagCmd.o Command.o
+	${CC} ${SHARED_LYBRARY} ${WARINIGS} ${OUTPUT}  $@ $^
 
 FlagCmd.o: FlagCmd.c FlagCmd.h Command.h
 	${CC} ${POS_INDEPENDENT} ${WARINIGS} ${COMPILE_ONLY} ${OUTPUT} $@ $< 
 
-ExitCmd.so: ExitCmd.o
-	${CC} ${SHARED_LYBRARY} ${WARINIGS} ${OUTPUT}  $@ $<
+ExitCmd.so: ExitCmd.o Command.o
+	${CC} ${SHARED_LYBRARY} ${WARINIGS} ${OUTPUT}  $@ $^
 
 ExitCmd.o: ExitCmd.c ExitCmd.h Command.h
 	${CC} ${POS_INDEPENDENT} ${WARINIGS} ${COMPILE_ONLY} ${OUTPUT} $@ $< 
@@ -59,23 +59,22 @@ ExitCmd.o: ExitCmd.c ExitCmd.h Command.h
 #
 #=======================================================================
 Command.o: Command.c Command.h
-	${CC} ${WARINIGS} ${COMPILE_ONLY} ${OUTPUT} $@ $<
+	${CC} ${WARINIGS}  ${COMPILE_ONLY} ${OUTPUT} $@ $<
 Minesweeper.o: Minesweeper.c Minesweeper.h Command.o  Board.o
 	${CC} ${WARINIGS} ${COMPILE_ONLY} ${OUTPUT} $@ $<
 Board.o: Board.c Board.h Cell.o EmptyCell.o BombCell.o
 	${CC} ${WARINIGS} ${COMPILE_ONLY} ${OUTPUT} $@ $<
-
 Cell.o: Cell.c Cell.h
 	${CC} ${WARINIGS} ${COMPILE_ONLY} ${OUTPUT} $@ $<
 BombCell.o: BombCell.c BombCell.h Cell.o
 	${CC} ${WARINIGS} ${COMPILE_ONLY} ${OUTPUT} $@ $<
 EmptyCell.o: EmptyCell.c EmptyCell.h Cell.o
 	${CC} ${WARINIGS} ${COMPILE_ONLY} ${OUTPUT} $@ $<
-
 #=======================================================================
 #Geração do Executável
 #=======================================================================
-
+MineSweeper: Minesweeper.o Cell.o BombCell.o EmptyCell.o Board.o Command.o
+	${CC} -ldl ${WARINIGS}  ${OUTPUT} $@ $^
 #=======================================================================
 #Clean
 #=======================================================================
