@@ -1,5 +1,6 @@
 #ifndef HELPCMD_H
 #define HELPCMD_H
+#include "CommandInterface.h"
 #include "Command.h"
 struct helpcmd;
 typedef struct helpcmd HelpCmd;

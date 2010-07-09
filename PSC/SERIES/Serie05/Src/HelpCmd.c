@@ -1,8 +1,11 @@
 #include "HelpCmd.h"
+extern Cmds Commands_Array;
 
 void  HelpCmd_exec(HelpCmd* this,char* txt){
 	Command* c;
 	int i;
+	puts(this->description);
+	printf(":::%d\n",Commands_Array.length);
 	for (i=0;i< Commands_Array.length;++i){
 		c = Commands_Array.cmds[i];
 		printf("%c%s :\n",c->vptr->prefix(c) ,c->vptr->syntax(c));
@@ -15,10 +18,9 @@ char  HelpCmd_prefix(HelpCmd* this){return this->prefix;}
 
 void HelpCmd_cleanup(HelpCmd* this){
 	if (this == NULL) return;
-	free(this->help);
-	free(this->syntax);
-	free(this->description);
 	Command_cleanup(&(this->super));
+	free(this->help);
+	free(this->description);
 	this->prefix=0;
 }
 void HelpCmd_delete(HelpCmd* this){
@@ -28,7 +30,7 @@ void HelpCmd_delete(HelpCmd* this){
 }
 
 const static Command_Methods touchcmd_vTable={
-	(const void (*) (Command*)) HelpCmd_cleanup,
+	(const void (*) (Command*)) HelpCmd_delete,
 	(const char (*) (Command*))			HelpCmd_prefix,
 	(const void (*) (Command*,char*))	HelpCmd_exec,
 	(const void (*) (Command*))			HelpCmd_help,
@@ -36,8 +38,8 @@ const static Command_Methods touchcmd_vTable={
 };
 
 
-void HelpCmd_init(HelpCmd* this){
-	Command_init(&(this->super));
+void HelpCmd_init(HelpCmd* this,Game_Methods* gvptr){
+	Command_init(&(this->super),gvptr);
 	this->super.vptr=&touchcmd_vTable;
 	this->description = (char*)malloc(strlen("The Help Command!")+1);
 	strcpy(this->description,"The Help Command!");
@@ -47,14 +49,14 @@ void HelpCmd_init(HelpCmd* this){
 
 	this->prefix		= 'H';
 }
-HelpCmd* HelpCmd_new(){
+HelpCmd* HelpCmd_new(Game_Methods* gvptr){
 	HelpCmd* this = (HelpCmd*)malloc(sizeof(HelpCmd));
-	HelpCmd_init(this);
+	HelpCmd_init(this,gvptr);
 	return this;
 }
 
 
-Command* newInstance(void) {return (Command*) HelpCmd_new();}
+Command* newInstance(Game_Methods* gvptr) {return (Command*) HelpCmd_new(gvptr);}
 
 
 

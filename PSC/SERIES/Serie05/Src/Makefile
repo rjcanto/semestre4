@@ -14,7 +14,7 @@ CC 				= gcc
 WARINIGS		= -Wall -pedantic
 OUTPUT 			= -o
 COMPILE_ONLY 	= -c 
-DINAMIC_LYBRARY = -ldl
+DINAMIC_LYBRARY = -ldl -rdynamic
 POS_INDEPENDENT = -fPIC
 SHARED_LYBRARY  = -shared
 BIBLIOTECAS		= HelpCmd.so TouchCmd.so NewCmd.so FlagCmd.so ExitCmd.so
@@ -23,6 +23,7 @@ CELL			= EmptyCell.o Cell.o BombCell.o
 #Geração de Todos os ficheiros
 #=======================================================================
 all:  ${BIBLIOTECAS} Command.o  ${CELL} Board.o   Minesweeper.o MineSweeper
+#CommandTest
 #=======================================================================
 #Bibliotecas de Carregamento Dinâmico
 #=======================================================================
@@ -71,10 +72,17 @@ BombCell.o: BombCell.c BombCell.h Cell.o
 EmptyCell.o: EmptyCell.c EmptyCell.h Cell.o
 	${CC} ${WARINIGS} ${COMPILE_ONLY} ${OUTPUT} $@ $<
 #=======================================================================
+#DEBUG
+#=======================================================================
+#CommandTest.o: CommandTest.c CommandTest.h
+#	${CC} ${WARINIGS}  ${COMPILE_ONLY} ${OUTPUT} $@ $<
+#CommandTest: CommandTest.o Command.o
+#	${CC} -ldl ${WARINIGS}  ${OUTPUT} $@ $^
+#=======================================================================
 #Geração do Executável
 #=======================================================================
-MineSweeper: Minesweeper.o Cell.o BombCell.o EmptyCell.o Board.o Command.o
-	${CC} -ldl ${WARINIGS}  ${OUTPUT} $@ $^
+#MineSweeper: Minesweeper.o Cell.o BombCell.o EmptyCell.o Board.o Command.o
+#	${CC} -ldl ${WARINIGS}  ${OUTPUT} $@ $^
 #=======================================================================
 #Clean
 #=======================================================================

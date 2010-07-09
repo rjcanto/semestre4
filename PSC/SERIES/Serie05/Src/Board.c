@@ -1,9 +1,8 @@
 #include "Board.h"
 
 #include <time.h>
-static Board* cellboard;
 
-Board* Board_getpointer(){return cellboard;}
+
 /*
  * Métodos privados
  * */
@@ -14,7 +13,7 @@ static void Board_putBomb(Board* this,int n){
 		for(c=0; c<COLS ; ++c){
 			if (this->cells[l][c] == NULL) {
 				if (n==0) { 
-				  this->cells[l][c]=(Cell*)BombCell_new();
+				  this->cells[l][c]=(Cell*)BombCell_new(this);
 				  return; 
 				}
 			--n;
@@ -38,7 +37,7 @@ boolean Board_isBomb(Board* this, int l, int c){return Board_isValid(this, l, c)
 /*
  * Métodos Públicos
  * */
-extern void Board_print(Board* this){
+void Board_print(Board* this){
 	int c,l;
 	printf("%02d  ",this->bombs);
 	for(c=0; c < COLS ; ++c) printf(" %c", 'A'+c);
@@ -54,7 +53,8 @@ extern void Board_print(Board* this){
 	}
 	Board_printLine(this);
 }
-extern void Board_touch(Board* this, int l, int c){
+void Board_touch(Board* this, int l, int c){
+	printf("L:%d C:%d",l,c);
 	if (Board_isValid(this, l, c)){
 		Cell* cel = this->cells[l][c];
 		if (CELL_ISSHOWN(cel) || CELL_ISFLAGGED(cel)) return;
@@ -62,14 +62,14 @@ extern void Board_touch(Board* this, int l, int c){
 		--this->hides;
 	}
 }
-extern void Board_showAll(Board* this){
+void Board_showAll(Board* this){
 	int l,c;
 	for (l=0;l< LINES;++l)
 		for(c=0;c< COLS;++c)
 			Cell_show(this->cells[l][c]);
 	this->hides=0;
 }
-extern void Board_flag(Board* this, int l, int c){
+void Board_flag(Board* this, int l, int c){
 	if (Board_isValid(this,l,c)){
 		Cell* cel = this->cells[l][c];
 		if (CELL_ISSHOWN(cel)) return;
@@ -78,7 +78,6 @@ extern void Board_flag(Board* this, int l, int c){
 		else{++this->bombs;++this->hides;}
 	}
 }
-
 
 /*
  * (Des)Construtores e (Des)Iniciadores
@@ -122,10 +121,10 @@ void Board_init(Board* this){
 	for(l=0 ; l<LINES ; ++l){
 		for(c=0; c<COLS ; ++c)
 			if ((this->cells[l][c])==NULL){
-				this->cells[l][c]=(Cell*)EmptyCell_new(l,c);
+				this->cells[l][c]=(Cell*)EmptyCell_new(this,l,c);
 			}
 	}
-	cellboard=this;
+
 }
 
 Board* Board_new(){

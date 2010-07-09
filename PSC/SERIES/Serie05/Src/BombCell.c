@@ -7,7 +7,7 @@ void BombCell_touch(BombCell* this){
 	Cell_show(&(this->super));
 	this->exploded = true;
 	puts("BUMMMM.");
-	Board_showAll(Board_getpointer());
+	Board_showAll(this->super.board);
 }
 
 boolean BombCell_isBomb(BombCell* this){return true;}
@@ -31,15 +31,15 @@ static Cell_Methods bombcell_vtable={
 };
 
 
-void BombCell_init(BombCell* this){
-	Cell_init(&(this->super));
+void BombCell_init(BombCell* this,Board * b){
+	Cell_init(&(this->super),b);
 	this->super.vptr = &bombcell_vtable;
 	this->exploded = false;
 }
-BombCell* BombCell_new(){
+BombCell* BombCell_new(Board * b){
 	BombCell* this =(BombCell*)calloc(1,sizeof(BombCell));
 	assert(this != NULL);
-	BombCell_init(this);
+	BombCell_init(this,b);
 	return this;
 }
 

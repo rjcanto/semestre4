@@ -26,7 +26,6 @@ void Cell_toggleFlag(Cell* this){
 void Cell_cleanup(Cell* this){
 	if (this == NULL) return;
 	this->vptr = NULL;
-	/*this->fvptr = NULL;*/
 	this->stat = 0;
 }
 static Cell_Methods cell_vtable={
@@ -40,9 +39,9 @@ static const Cell_Methods_Final cell_fvtable={
 	(const CELL_VOID_CAST)		Cell_show,
 	(const CELL_VOID_CAST)		Cell_toggleFlag
 };
-void Cell_init(Cell* this){
+void Cell_init(Cell* this,Board* b){
 	if (this == NULL) return;
 	this->vptr  = &cell_vtable;
-	/*this->fvptr = &cell_fvtable;*/
+	this->board		= b;
 	this->stat = NONE;
 }

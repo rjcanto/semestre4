@@ -1,5 +1,6 @@
 #ifndef NEWCMD_H
 #define NEWCMD_H
+#include "CommandInterface.h"
 #include "Command.h"
 struct newcmd;
 typedef struct newcmd NewCmd;
