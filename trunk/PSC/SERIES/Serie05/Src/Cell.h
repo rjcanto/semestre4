@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include "newtypes.h"
 #include "Exception.h"
+#include "BoardInterface.h"
 
 #define CELL_VOID_CAST    void (*)(Cell*)
 #define CELL_BOOLEAN_CAST boolean (*)(Cell*)
@@ -36,6 +37,7 @@ typedef struct final_cell_methods{
 
 struct cell_t{
 	Cell_Methods* vptr;
+	Board*	board;
 	Stat stat;
 };
   char Cell_getView(Cell*);
@@ -46,6 +48,6 @@ struct cell_t{
   extern void Cell_show(Cell*);
   extern void Cell_toggleFlag(Cell*);
   
-  void Cell_init(Cell* this);
+  void Cell_init(Cell* this,Board* b);
   void Cell_cleanup(Cell* this);
 #endif

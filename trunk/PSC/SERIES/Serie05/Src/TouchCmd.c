@@ -1,11 +1,17 @@
 #include "TouchCmd.h"
-Miner* mine;
+
 void  TouchCmd_exec(TouchCmd* this,char* txt){
 		int l = Command_parseLine(txt);
 		int c = Command_parseCol(txt);
 		printf("%d < - > %d\n", l, c);
 		
-		Board_touch(&(mine->board),l,c);
+		this->super.gvptr->touch(l,c);
+		if (this->super.gvptr->isSolved()){
+			puts("You Win");
+			this->super.gvptr->showAll();
+		}else{
+			puts("Keep Trying");
+		}
 		/*
 		Minesweeper.board.touch(l, c);
 		if (Minesweeper.board.isSolved()) {
@@ -17,35 +23,6 @@ void  TouchCmd_exec(TouchCmd* this,char* txt){
 char* TouchCmd_syntax(TouchCmd* this){return this->syntax;}
 void  TouchCmd_help(TouchCmd* this){puts(this->help);}
 char  TouchCmd_prefix(TouchCmd* this){return this->prefix;}
-
-
-const static Command_Methods touchcmd_vTable={
-	(const void (*) (Command*)) TouchCmd_cleanup,
-	(const char (*) (Command*))			TouchCmd_prefix,
-	(const void (*) (Command*,char*))	TouchCmd_exec,
-	(const void (*) (Command*))			TouchCmd_help,
-	(const char*(*) (Command*))			TouchCmd_syntax
-};
-
-
-void TouchCmd_init(TouchCmd* this){
-	Command_init(&(this->super));
-	this->super.vptr = &touchcmd_vTable;
-	this->description = (char*)malloc(strlen("The Touch Command!")+1);
-	strcpy(this->description,"The Touch Command!");
-	
-	this->syntax = (char*)malloc(strlen("<lin><col>")+1);
-	strcpy(this->syntax,"<lin><col>");
-	this->help = (char*)malloc(strlen("Touch a cell. BUMMM on bomb.")+1);
-	strcpy(this->help,"Touch a cell. BUMMM on bomb.");
-	this->prefix		= 'T';
-
-}
-TouchCmd* TouchCmd_new(){
-	TouchCmd* this = (TouchCmd*)malloc(sizeof(TouchCmd));
-	TouchCmd_init(this);
-	return this;
-}
 
 void TouchCmd_cleanup(TouchCmd* this){
 	if (this == NULL) return;
@@ -60,7 +37,36 @@ void TouchCmd_delete(TouchCmd* this){
 	TouchCmd_cleanup(this);
 	free(this);
 }
+const static Command_Methods touchcmd_vTable={
+	(const void (*) (Command*)) TouchCmd_delete,
+	(const char (*) (Command*))			TouchCmd_prefix,
+	(const void (*) (Command*,char*))	TouchCmd_exec,
+	(const void (*) (Command*))			TouchCmd_help,
+	(const char*(*) (Command*))			TouchCmd_syntax
+};
 
-Command* newInstance(void) {return (Command*) TouchCmd_new();}
+
+void TouchCmd_init(TouchCmd* this,Game_Methods* gvptr){
+	Command_init(&(this->super),gvptr);
+	this->super.vptr = &touchcmd_vTable;
+	this->description = (char*)malloc(strlen("The Touch Command!")+1);
+	strcpy(this->description,"The Touch Command!");
+	
+	this->syntax = (char*)malloc(strlen("<lin><col>")+1);
+	strcpy(this->syntax,"<lin><col>");
+	this->help = (char*)malloc(strlen("Touch a cell. BUMMM on bomb.")+1);
+	strcpy(this->help,"Touch a cell. BUMMM on bomb.");
+	this->prefix		= 'T';
+
+}
+TouchCmd* TouchCmd_new(Game_Methods* gvptr){
+	TouchCmd* this = (TouchCmd*)malloc(sizeof(TouchCmd));
+	TouchCmd_init(this,gvptr);
+	return this;
+}
+
+
+
+Command* newInstance(Game_Methods* gvptr) {return (Command*) TouchCmd_new(gvptr);}
 
 

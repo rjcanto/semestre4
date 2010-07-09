@@ -1,6 +1,7 @@
 #include "NewCmd.h"
 
 void  NewCmd_exec(NewCmd* this,char* txt){
+	this->super.gvptr->newGame();
 	/*Minesweeper.board=new Board();*/
 }
 
@@ -9,10 +10,9 @@ char  NewCmd_prefix(NewCmd* this){return this->prefix;}
 
 void NewCmd_cleanup(NewCmd* this){
 	if (this == NULL) return;
-	free(this->help);
-	free(this->syntax);
-	free(this->description);
 	Command_cleanup(&(this->super));
+	free(this->help);
+	free(this->description);
 	this->prefix=0;
 }
 void NewCmd_delete(NewCmd* this){
@@ -23,7 +23,7 @@ void NewCmd_delete(NewCmd* this){
 
 
 const static Command_Methods touchcmd_vTable={
-	(const void (*) (Command*)) NewCmd_cleanup,
+	(const void (*) (Command*)) NewCmd_delete,
 	(const char (*) (Command*))			NewCmd_prefix,
 	(const void (*) (Command*,char*))	NewCmd_exec,
 	(const void (*) (Command*))			NewCmd_help,
@@ -31,8 +31,8 @@ const static Command_Methods touchcmd_vTable={
 };
 
 
-void NewCmd_init(NewCmd* this){
-	Command_init(&(this->super));
+void NewCmd_init(NewCmd* this,Game_Methods* gvptr){
+	Command_init(&(this->super),gvptr);
 	this->super.vptr=&touchcmd_vTable;
 	this->description = (char*)malloc(strlen("The New Command!")+1);
 	strcpy(this->description,"The New Command!");
@@ -42,13 +42,13 @@ void NewCmd_init(NewCmd* this){
 
 	this->prefix		= 'N';
 }
-NewCmd* NewCmd_new(){
+NewCmd* NewCmd_new(Game_Methods* gvptr){
 	NewCmd* this = (NewCmd*)malloc(sizeof(NewCmd));
-	NewCmd_init(this);
+	NewCmd_init(this,gvptr);
 	return this;
 }
 
-Command* newInstance(void) {return (Command*) NewCmd_new();}
+Command* newInstance(Game_Methods* gvptr) {return (Command*) NewCmd_new(gvptr);}
 
 
 

@@ -1,6 +1,8 @@
 #ifndef TOUCHCMD_H
 #define TOUCHCMD_H
+#include "CommandInterface.h"
 #include "Command.h"
+
 struct touchcmd;
 typedef struct touchcmd TouchCmd;
 

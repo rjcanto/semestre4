@@ -16,7 +16,7 @@ char EmptyCell_getView(EmptyCell* this);
 void EmptyCell_touch(EmptyCell* this);
 void EmptyCell_cleanup(EmptyCell* this);
 void EmptyCell_delete(EmptyCell* this);
-void EmptyCell_init(EmptyCell* this,int l, int c);
-EmptyCell* EmptyCell_new(int l, int c);
+void EmptyCell_init(EmptyCell* this,Board * b,int l, int c);
+EmptyCell* EmptyCell_new(Board * b,int l, int c);
 
 #endif

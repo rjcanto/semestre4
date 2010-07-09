@@ -1,6 +1,5 @@
 #include "Command.h"
 Cmds Commands_Array;
-Miner* mine;
 const static Command_Methods cmd_vtable={
 	(const void (*) (Command*)) Command_cleanup,
 	(const char (*) (Command*))Command_prefix,
@@ -24,9 +23,9 @@ void 	Command_help(Command* this){
 	puts("Method Command_help not yet implemeted!");
 }
 
-static Command* Command_newInstance(const char* libName){
+static Command* Command_newInstance(const char* libName,Game_Methods* gvptr){
 	void* hp;
-	Command* (*newCommand)();
+	Command* (*newCommand)(Game_Methods*);
 	Command* t;
 	char tmp[50];
 	
@@ -39,18 +38,14 @@ static Command* Command_newInstance(const char* libName){
 	*(void**)&newCommand = dlsym(hp,"newInstance");
 			
 	if(newCommand == NULL){dlclose(hp);return NULL;}
-	t = newCommand();
+	t = newCommand(gvptr);
 	t->handler =  hp;
 	return t;
 }
 
-void Command_unload(Command* t){
-	void* hp = t->handler;
-	(t)->vptr->dtor(t);
-	dlclose(hp);	
-}
+
 static char * removeNL(char * str) {
-	while( (*str != ' ') && (*str != '\r') && (*str != '\n') && (*str != 0) )str++;
+	while( (*str != ' ') && (*str != '\r') && (*str != '\n') && (*str != 0) && (*str != EOF))str++;
 		*str = 0;
 	return str;
 }
@@ -59,20 +54,39 @@ static Command** Commands_Array_new(int nbr_commands){
 	assert (arr != NULL);
 	return arr;
 }
-boolean Command_load(char* cfgFile){
+
+static void Commands_Array_delete(Command** this){
+	if (this == NULL) return;
+	free(this);
+
+}
+
+static void Command_unloading(Command* t){
+	void* hp = t->handler;
+	(t)->vptr->dtor(t);
+	/*free(t);*/
+	dlclose(hp);
+}
+void Command_unload(){
+	int i;
+	for (i=0;i< Commands_Array.length ; ++i){
+		Command_unloading(Commands_Array.cmds[i]);
+	}
+	Commands_Array_delete(Commands_Array.cmds);
+}
+
+boolean Command_load(Game_Methods* gvptr,char* cfgFile){
 	int nLines;
 	FILE* fin=NULL;
 	char buffer[BUFFER];
 
 	
 	TRY {
-		mine=&MineSweeper;
 		assert ((fin = fopen(cfgFile,"rb"))!= NULL);
 		fseek(fin,0,SEEK_CUR);
 		
 		for (nLines=0 ; fgets(buffer,sizeof(buffer),fin) != NULL ; ++nLines) ;
 		rewind(fin);
-
 		Commands_Array.length=nLines;
 		
 		if (((Commands_Array.cmds) = Commands_Array_new(nLines)) == NULL){
@@ -85,7 +99,7 @@ boolean Command_load(char* cfgFile){
 			for(i=0; i< nLines ; ++i){
 				fgets(buffer,BUFFER,fin);
 				removeNL(buffer);
-				if ((com  = Command_newInstance(buffer)) == NULL){
+				if ((com  = Command_newInstance(buffer,gvptr)) == NULL){
 					THROW(UNABLE_TO_LOAD_LIBRARY_EXCEPTION) ;
 				}
 				(Commands_Array.cmds[i])=com;
@@ -93,6 +107,7 @@ boolean Command_load(char* cfgFile){
 			
 			fclose(fin);
 		}
+		
 	}CATCH (UNABLE_TO_READ_FILE_EXCEPTION){
 		printf("Error reading file %s.\n",cfgFile); 
 		fclose(fin);
@@ -102,49 +117,52 @@ boolean Command_load(char* cfgFile){
 		fclose(fin);
 		return false;
 	}TRY_END;
-
+	printf(">>%d\n",nLines);
 	return true;		
 }
 
 
 void 	Command_execute(char* line){
-	
-	if (line == NULL || *line == 0){ return;
+	if (line == NULL || *line == 0){ 
+		return;
 	}else{
-	char prefix = toupper(*line);
-	char* tmp = (char*)calloc(50,1);
-	int i;
-	tmp=removeNL(line);
-	
-	
-	for(i=0 ; i< Commands_Array.length ; ++i)
+		char prefix = toupper(*line);
+		char* tmp;
+		int i;
+		tmp=removeNL(line);
 		
-		if ((Commands_Array.cmds[i])->vptr->prefix((Commands_Array.cmds[i])) == prefix) {
-			(Commands_Array.cmds[i])->vptr->exec((Commands_Array.cmds[i]),tmp+1);
-			return;
+		for(i=0 ; i< Commands_Array.length ; ++i){
+			
+			if ((Commands_Array.cmds[i])->vptr->prefix((Commands_Array.cmds[i])) == prefix) {
+				(Commands_Array.cmds[i])->vptr->exec((Commands_Array.cmds[i]),line+1);
+				return;
+			}
+			
 		}
 		printf("Invalid command %c\n",prefix);	
 	}
-		
+	
 }
 
 int Command_parseCol(char* txt){
 	int val=0;
 	char c;
-	while (*txt && !((*txt >= 'A' && *txt<='Z')|| (*txt >= 'a' && *txt<='z')))
+
+	while (*txt && (toupper(*txt) < 'A' || toupper(*txt)>'Z'))
 		++txt;
 	
-	if (*txt && ((*txt >= 'A' && *txt<='Z')|| (*txt >= 'a' && *txt<='z')) ) {c=*txt; val+=toupper(c)-'A'; }
+	if (*txt && toupper(*txt) >= 'A' && toupper(*txt)<='Z' ) {c=toupper(*txt); val+=c-'A'; }
 	return val;	
 }
 int Command_parseLine(char* txt){
 	int val=0;
 	char c;
-	while(*txt && !(*txt >= '0' && *txt<='9')){
+
+	while(*txt && (*txt <= '0' || *txt>='9'))
 		++txt;
-	}
-	while(*txt && (*txt >= '0' && *txt<='9')){
-		c=*txt;
+	
+	while(*txt && *txt >= '0' && *txt<='9'){
+		c=*(txt++);
 		val*=10; val+=c-'0';			
 	}
 	return val-1;		
@@ -152,9 +170,11 @@ int Command_parseLine(char* txt){
 
 
 
-void Command_init(Command* t){
+void Command_init(Command* t,Game_Methods* gvptr){
 	t->vptr= &cmd_vtable;
+	t->gvptr=gvptr;
 }
 void Command_cleanup(Command* t){
 	t->vptr = NULL;
+	
 }
