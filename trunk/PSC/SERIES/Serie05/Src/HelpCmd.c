@@ -1,8 +1,6 @@
 #include "HelpCmd.h"
-extern Cmds Commands_Array;
-
 void  HelpCmd_exec(HelpCmd* this,char* txt){
-	Command* c;
+/*	Command* c;
 	int i;
 	puts(this->description);
 	printf(":::%d\n",Commands_Array.length);
@@ -10,7 +8,8 @@ void  HelpCmd_exec(HelpCmd* this,char* txt){
 		c = Commands_Array.cmds[i];
 		printf("%c%s :\n",c->vptr->prefix(c) ,c->vptr->syntax(c));
 		c->vptr->help(c);
-	}
+	}*/
+	puts(this->description);
 }
 
 void  HelpCmd_help(HelpCmd* this){puts(this->help);}

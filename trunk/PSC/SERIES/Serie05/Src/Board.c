@@ -30,10 +30,12 @@ static void Board_printLine(Board* this){
 		puts("-+");
 }
 /*Substituidos por Macros*/
-/*boolean Board_isValid(Board* this, int l, int c){return ( l >= 0 && l < this->LINES && c >=0 &&  c< this->COLS);}*/
-/*boolean Board_isSolved(Board* this){return hides==bombs;}*/
-/*boolean Board_isBomb(Board* this, int l, int c){return Board_isValid(this, l, c) && cells[l][c]->vptr->isBomb(cells[l][c]);}*/
-boolean Board_isBomb(Board* this, int l, int c){return Board_isValid(this, l, c) && this->cells[l][c]->vptr->isBomb(this->cells[l][c]);}
+boolean Board_isValid(Board* this, int l, int c){return ( l >= 0 && l < LINES && c >=0 &&  c < COLS)?true:false;}
+boolean Board_isSolved(Board* this){return this->hides == this->bombs?true:false;}
+boolean Board_isBomb(Board* this, int l, int c){
+	return (Board_isValid(this, l, c) && this->cells[l][c]->vptr->isBomb(this->cells[l][c]))?true:false;
+}
+
 /*
  * Métodos Públicos
  * */
@@ -54,41 +56,48 @@ void Board_print(Board* this){
 	Board_printLine(this);
 }
 void Board_touch(Board* this, int l, int c){
-	printf("L:%d C:%d",l,c);
 	if (Board_isValid(this, l, c)){
 		Cell* cel = this->cells[l][c];
-		if (CELL_ISSHOWN(cel) || CELL_ISFLAGGED(cel)) return;
+		if (Cell_isShown(cel) || Cell_isFlagged(cel)){ return;}
 		cel->vptr->touch(cel);
-		--this->hides;
+		--(this->hides);
 	}
 }
 void Board_showAll(Board* this){
 	int l,c;
-	for (l=0;l< LINES;++l)
-		for(c=0;c< COLS;++c)
+	for (l=0;l< LINES;++l){
+		for(c=0;c< COLS;++c){
 			Cell_show(this->cells[l][c]);
+		}
+	}
 	this->hides=0;
 }
 void Board_flag(Board* this, int l, int c){
 	if (Board_isValid(this,l,c)){
 		Cell* cel = this->cells[l][c];
-		if (CELL_ISSHOWN(cel)) return;
+		if (Cell_isShown(cel)) return;
 		Cell_toggleFlag(cel);
-		if (CELL_ISFLAGGED(cel)){--this->bombs;--this->hides;}
-		else{++this->bombs;++this->hides;}
+		if (Cell_isFlagged(cel)){(this->bombs)--;(this->hides)--;}
+		else{(this->bombs)++;(this->hides)++;}
 	}
 }
 
 /*
  * (Des)Construtores e (Des)Iniciadores
  * */
-void Board_Cleanup(Board* this){
-	if (this == NULL){ return;
-	}else{
-	int c,l;	
-	for(l=0 ; l<LINES ; ++l)
+static void Board_delete_array(Board* this){
+	int l,c;
+	for(l=0 ; l<LINES ; ++l){
 		for(c=0; c<COLS ; ++c)
 			this->cells[l][c]->vptr->dtor(this->cells[l][c]);
+	
+	}
+}
+void Board_Cleanup(Board* this){
+	if (this == NULL){ 
+		return;
+	}else{
+		Board_delete_array(this);
 	}
 }
 void Board_delete(Board* this){
@@ -100,10 +109,11 @@ static void Board_init_array(Board* this){
 	int l,c;
 	for(l=0 ; l<LINES ; ++l){
 		for(c=0; c<COLS ; ++c)
-					this->cells[l][c]=NULL;
+			this->cells[l][c]=NULL;
 	
 	}
 }
+
 void Board_init(Board* this){
 	int l,c;
 	unsigned int r;

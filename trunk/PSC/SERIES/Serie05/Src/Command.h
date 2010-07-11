@@ -31,8 +31,6 @@ typedef struct cmds_array{
 	int Command_parseLine(char* txt);
 
 
-/*Variável Global que terá um array com os comandos	*/
-/*Cmds Commands_Array;*/
 
 	/*Comandos da Tabela de Metodos*/
 	char 	Command_prefix(Command* this);

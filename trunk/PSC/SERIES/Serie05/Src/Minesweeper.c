@@ -54,10 +54,11 @@ int main(int argc, char** argv){
 	while(!MineSweeper.exit){
 		Board_print(&(MineSweeper.board));
 		printf("> ");
-		if (fgets(input,MAX_COMMAND_INPUT,stdin))
+		if (fgets(input,MAX_COMMAND_INPUT,stdin));
 			Command_execute(input);
-		
+			
 	}
-	/*MineSweeper_cleanup(&MineSweeper);*/
+	Command_unload();
+	MineSweeper_cleanup(&MineSweeper);
 	return EXIT_SUCCESS;
 }
