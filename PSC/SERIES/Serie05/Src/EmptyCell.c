@@ -1,32 +1,32 @@
 #include "EmptyCell.h"
-
+#include "Board.h"
 static const  int difLin[] = {-1,-1,-1, 0, 0, 1, 1, 1 }, difCol[] = {-1, 0, 1,-1, 1,-1, 0, 1 };
 static int dL_size = 8; 
-static int lin, col;
-static int number;
 
 char EmptyCell_getView(EmptyCell* this){
-	return number==0 ? ' ' : (char)('0'+number); 
+	return (this->number == 0) ? VIEW : (char)('0'+this->number); 
 }
 
 void EmptyCell_touch(EmptyCell* this){
 	int i;
-	if (CELL_ISSHOWN(&(this->super))) return;
+	if (Cell_isShown(&(this->super))) return;
+	
 	Cell_show(&(this->super));
 	/*Board b = Minesweeper.board;*/
+	
 	for (i=0; i< dL_size; ++i){
-		if (Board_isBomb(this->super.board,lin + difLin[i], col + difCol[i]))
-			++number;
+		if (Board_isBomb(this->super.board,this->line + difLin[i], this->colunm + difCol[i]))
+			++this->number;
 	}
-	if (number == 0)
+	if (this->number == 0){
 		for(i=0; i< dL_size ; ++i)
-			Board_touch(this->super.board,lin + difLin[i], col + difCol[i]);
+			Board_touch(this->super.board,this->line + difLin[i], this->colunm + difCol[i]);
+	}
 }
 
 void EmptyCell_cleanup(EmptyCell* this){
 	if (this == NULL) return;
-	this->super.vptr->dtor(&(this->super));
-	lin=col=0;
+	this->line=this->colunm=0;
 }
 void EmptyCell_delete(EmptyCell* this){
 	if (this == NULL) return;
@@ -34,24 +34,25 @@ void EmptyCell_delete(EmptyCell* this){
 	free(this);
 }
 static Cell_Methods emptycell_vtable={
-	(CELL_VOID_CAST) EmptyCell_cleanup,
+	(CELL_VOID_CAST) EmptyCell_delete,
 	(CELL_CHAR_CAST) EmptyCell_getView,
 	(CELL_VOID_CAST) EmptyCell_touch,
 	(CELL_BOOLEAN_CAST) Cell_isBomb	
 };
   
 
-void EmptyCell_init(EmptyCell* this,Board * b,int l, int c){
-	Cell_init(&(this->super),b);
+void EmptyCell_init(EmptyCell* this,Board* board,int l, int c){
+	Cell_init(&(this->super),board);
 	this->super.vptr=&emptycell_vtable;
-	lin=l; 
-	col=c;
+	this->line=l; 
+	this->colunm=c;
+	this->number=0;
 }
 
-EmptyCell* EmptyCell_new(Board * b,int l, int c){
+EmptyCell* EmptyCell_new(Board* board,int l, int c){
 	EmptyCell* this;
 	this =(EmptyCell*)calloc(1,sizeof(EmptyCell));
-	EmptyCell_init(this,b,l,c);
+	EmptyCell_init(this,board,l,c);
 	return this;
 }
 

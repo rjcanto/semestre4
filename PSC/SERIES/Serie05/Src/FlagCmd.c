@@ -4,7 +4,6 @@ void  FlagCmd_exec(FlagCmd* this,char* txt){
 		int l = Command_parseLine(txt);
 		int c = Command_parseCol(txt);
 		
-		printf("%d < - > %d", l, c);
 		this->super.gvptr->flag(l,c);
 		if (this->super.gvptr->isSolved()){
 			puts("You Win");

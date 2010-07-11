@@ -64,9 +64,9 @@ static void Commands_Array_delete(Command** this){
 static void Command_unloading(Command* t){
 	void* hp = t->handler;
 	(t)->vptr->dtor(t);
-	/*free(t);*/
 	dlclose(hp);
 }
+
 void Command_unload(){
 	int i;
 	for (i=0;i< Commands_Array.length ; ++i){
@@ -74,6 +74,7 @@ void Command_unload(){
 	}
 	Commands_Array_delete(Commands_Array.cmds);
 }
+
 
 boolean Command_load(Game_Methods* gvptr,char* cfgFile){
 	int nLines;
@@ -117,7 +118,6 @@ boolean Command_load(Game_Methods* gvptr,char* cfgFile){
 		fclose(fin);
 		return false;
 	}TRY_END;
-	printf(">>%d\n",nLines);
 	return true;		
 }
 

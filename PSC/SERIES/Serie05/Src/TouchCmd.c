@@ -3,14 +3,11 @@
 void  TouchCmd_exec(TouchCmd* this,char* txt){
 		int l = Command_parseLine(txt);
 		int c = Command_parseCol(txt);
-		printf("%d < - > %d\n", l, c);
 		
 		this->super.gvptr->touch(l,c);
 		if (this->super.gvptr->isSolved()){
 			puts("You Win");
 			this->super.gvptr->showAll();
-		}else{
-			puts("Keep Trying");
 		}
 		/*
 		Minesweeper.board.touch(l, c);

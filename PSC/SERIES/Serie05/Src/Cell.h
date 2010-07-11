@@ -10,15 +10,20 @@
 #define CELL_BOOLEAN_CAST boolean (*)(Cell*)
 #define CELL_CHAR_CAST	char 	(*)(Cell*)
 
+boolean Board_isBomb(Board* this, int l, int c);
+void Board_touch(Board* this, int l, int c);
 
 
 struct cell_t;
 typedef struct cell_t Cell;
 enum status {NONE='*', FLAG='X', VIEW=' '};
 typedef enum status Stat;
-
+/*
 #define CELL_ISSHOWN(T)		((T)->stat == VIEW)
 #define CELL_ISFLAGGED(T)	((T)->stat == FLAG)
+*/
+boolean Cell_isShown(Cell* this);
+boolean Cell_isFlagged(Cell* this);
 
 
 typedef struct cell_methods{
@@ -48,6 +53,6 @@ struct cell_t{
   extern void Cell_show(Cell*);
   extern void Cell_toggleFlag(Cell*);
   
-  void Cell_init(Cell* this,Board* b);
+  void Cell_init(Cell* this,Board* board);
   void Cell_cleanup(Cell* this);
 #endif

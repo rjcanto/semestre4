@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "newtypes.h"
-#include "Board.h"
 
 struct bomcell_t{
 	Cell super;
@@ -17,8 +16,8 @@ char BombCell_getView(BombCell* this);
 void BombCell_touch(BombCell* this);
 boolean BombCell_isBomb(BombCell* this);
 
-BombCell* BombCell_new(Board * b);
-void BombCell_init(BombCell* this,Board * b);
+BombCell* BombCell_new(Board* board);
+void BombCell_init(BombCell* this,Board* board);
 void BombCell_delete(BombCell* this);
 void BombCell_cleanup(BombCell* this);
 

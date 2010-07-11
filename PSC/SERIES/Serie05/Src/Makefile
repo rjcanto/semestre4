@@ -14,7 +14,7 @@ CC 				= gcc
 WARINIGS		= -Wall -pedantic
 OUTPUT 			= -o
 COMPILE_ONLY 	= -c 
-DINAMIC_LYBRARY = -ldl -rdynamic
+DINAMIC_LYBRARY = -ldl 
 POS_INDEPENDENT = -fPIC
 SHARED_LYBRARY  = -shared
 BIBLIOTECAS		= HelpCmd.so TouchCmd.so NewCmd.so FlagCmd.so ExitCmd.so
@@ -63,7 +63,7 @@ Command.o: Command.c Command.h
 	${CC} ${WARINIGS}  ${COMPILE_ONLY} ${OUTPUT} $@ $<
 Minesweeper.o: Minesweeper.c Minesweeper.h Command.o  Board.o
 	${CC} ${WARINIGS} ${COMPILE_ONLY} ${OUTPUT} $@ $<
-Board.o: Board.c Board.h Cell.o EmptyCell.o BombCell.o
+Board.o: Board.c Board.h ${CELL}
 	${CC} ${WARINIGS} ${COMPILE_ONLY} ${OUTPUT} $@ $<
 Cell.o: Cell.c Cell.h
 	${CC} ${WARINIGS} ${COMPILE_ONLY} ${OUTPUT} $@ $<
@@ -81,8 +81,9 @@ EmptyCell.o: EmptyCell.c EmptyCell.h Cell.o
 #=======================================================================
 #Geração do Executável
 #=======================================================================
-#MineSweeper: Minesweeper.o Cell.o BombCell.o EmptyCell.o Board.o Command.o
-#	${CC} -ldl ${WARINIGS}  ${OUTPUT} $@ $^
+MineSweeper: Minesweeper.o Cell.o BombCell.o EmptyCell.o Board.o Command.o
+#MineSweeper: Minesweeper.o Board.o ${CELL}
+	${CC} -ldl ${WARINIGS}  ${OUTPUT} $@ $^
 #=======================================================================
 #Clean
 #=======================================================================
