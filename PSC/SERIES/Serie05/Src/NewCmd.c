@@ -1,11 +1,16 @@
 #include "NewCmd.h"
-
+#include <stdlib.h>
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
 void  NewCmd_exec(NewCmd* this,char* txt){
 	this->super.gvptr->newGame();
-	/*Minesweeper.board=new Board();*/
 }
 
-void  NewCmd_help(NewCmd* this){puts(this->help);}
+void  NewCmd_help(NewCmd* this){
+	printf("[%c] - %s\n",this->prefix,this->description);
+	puts(this->help);
+}
 char  NewCmd_prefix(NewCmd* this){return this->prefix;}
 
 void NewCmd_cleanup(NewCmd* this){

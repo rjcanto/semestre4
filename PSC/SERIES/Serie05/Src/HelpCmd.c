@@ -1,18 +1,30 @@
 #include "HelpCmd.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+
+
+
 void  HelpCmd_exec(HelpCmd* this,char* txt){
-/*	Command* c;
+	Command* c;
 	int i;
+	puts("==========================================");
 	puts(this->description);
-	printf(":::%d\n",Commands_Array.length);
+	puts("==========================================");
 	for (i=0;i< Commands_Array.length;++i){
 		c = Commands_Array.cmds[i];
-		printf("%c%s :\n",c->vptr->prefix(c) ,c->vptr->syntax(c));
 		c->vptr->help(c);
-	}*/
-	puts(this->description);
+		printf("\tSyntax: %c%s\n",c->vptr->prefix(c),c->vptr->syntax(c));
+		puts("------------------------------------------");
+		
+	}
 }
 
-void  HelpCmd_help(HelpCmd* this){puts(this->help);}
+void  HelpCmd_help(HelpCmd* this){
+	printf("[%c] - %s\n",this->prefix,this->description);
+	puts(this->help);
+}
 char  HelpCmd_prefix(HelpCmd* this){return this->prefix;}
 
 void HelpCmd_cleanup(HelpCmd* this){

@@ -1,5 +1,8 @@
 #include "ExitCmd.h"
-
+#include <stdlib.h>
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
 
 void  ExitCmd_exec(ExitCmd* this,char* txt){
 		puts(this->description);
@@ -7,7 +10,10 @@ void  ExitCmd_exec(ExitCmd* this,char* txt){
 		puts("Bye");		
 }
 
-void  ExitCmd_help(ExitCmd* this){puts(this->help);}
+void  ExitCmd_help(ExitCmd* this){
+	printf("[%c] - %s\n",this->prefix,this->description);
+	puts(this->help);
+}
 char  ExitCmd_prefix(ExitCmd* this){return this->prefix;}
 
 void ExitCmd_cleanup(ExitCmd* this){
