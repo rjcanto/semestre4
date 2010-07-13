@@ -52,6 +52,9 @@ int main(int argc, char** argv){
 	
 	Command_load(MineSweeper.gvptr,"Commands.cfg");
 	while(!MineSweeper.exit){
+		puts("==========================================");
+		puts("MineSweeper - My C Version 0.1");
+		puts("==========================================");
 		Board_print(&(MineSweeper.board));
 		printf("> ");
 		if (fgets(input,MAX_COMMAND_INPUT,stdin));

@@ -1,5 +1,8 @@
 #include "TouchCmd.h"
-
+#include <stdlib.h>
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
 void  TouchCmd_exec(TouchCmd* this,char* txt){
 		int l = Command_parseLine(txt);
 		int c = Command_parseCol(txt);
@@ -9,16 +12,14 @@ void  TouchCmd_exec(TouchCmd* this,char* txt){
 			puts("You Win");
 			this->super.gvptr->showAll();
 		}
-		/*
-		Minesweeper.board.touch(l, c);
-		if (Minesweeper.board.isSolved()) {
-			System.out.println("You WIN.");
-			Minesweeper.board.showAll();
-		}*/
+
 }
 
 char* TouchCmd_syntax(TouchCmd* this){return this->syntax;}
-void  TouchCmd_help(TouchCmd* this){puts(this->help);}
+void  TouchCmd_help(TouchCmd* this){
+	printf("[%c] - %s\n",this->prefix,this->description);
+	puts(this->help);
+}
 char  TouchCmd_prefix(TouchCmd* this){return this->prefix;}
 
 void TouchCmd_cleanup(TouchCmd* this){

@@ -1,4 +1,8 @@
 #include "FlagCmd.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
 
 void  FlagCmd_exec(FlagCmd* this,char* txt){
 		int l = Command_parseLine(txt);
@@ -9,16 +13,14 @@ void  FlagCmd_exec(FlagCmd* this,char* txt){
 			puts("You Win");
 			this->super.gvptr->showAll();
 		}
-		/*
-		Minesweeper.board.flag(l, c);
-		if (Minesweeper.board.isSolved()) {
-			System.out.println("You WIN.");
-			Minesweeper.board.showAll();
-		}*/
+
 }
 
 char* FlagCmd_syntax(FlagCmd* this){return this->syntax;}
-void  FlagCmd_help(FlagCmd* this){puts(this->help);}
+void  FlagCmd_help(FlagCmd* this){
+	printf("[%c] - %s\n",this->prefix,this->description);
+	puts(this->help);
+}
 char  FlagCmd_prefix(FlagCmd* this){return this->prefix;}
 
 

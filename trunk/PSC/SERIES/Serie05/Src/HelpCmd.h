@@ -1,10 +1,9 @@
 #ifndef HELPCMD_H
 #define HELPCMD_H
-#include "CommandInterface.h"
 #include "Command.h"
+
 struct helpcmd;
 typedef struct helpcmd HelpCmd;
-
 struct helpcmd{
 	Command super;
 	char* 	description;
@@ -17,4 +16,6 @@ struct helpcmd{
 	void 	HelpCmd_exec(HelpCmd* this,char* line);
 	void 	HelpCmd_help(HelpCmd* this);
 	void 	HelpCmd_cleanup(HelpCmd* this);
+
+
 #endif

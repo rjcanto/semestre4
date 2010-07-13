@@ -1,7 +1,7 @@
 #ifndef MINESWEEPER_H
 #define MINESWEEPER_H
 #include "newtypes.h"
-#include "Command.h"
+#include "Command_Loader.h"
 #include "GameInterface.h"
 #include "Board.h"
 #include <stdio.h>

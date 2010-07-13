@@ -11,19 +11,26 @@
 # ISEL  - Instituto Superior de Engenharia de Lisboa
 #=======================================================================
 CC 				= gcc
-WARINIGS		= -Wall -pedantic
+WARINIGS		= -g -Wall -pedantic
 OUTPUT 			= -o
 COMPILE_ONLY 	= -c 
 DINAMIC_LYBRARY = -ldl 
 POS_INDEPENDENT = -fPIC
-SHARED_LYBRARY  = -shared
+SHARED_LYBRARY  = -shared -lm
 BIBLIOTECAS		= HelpCmd.so TouchCmd.so NewCmd.so FlagCmd.so ExitCmd.so
 CELL			= EmptyCell.o Cell.o BombCell.o
 #=======================================================================
 #Geração de Todos os ficheiros
 #=======================================================================
-all:  ${BIBLIOTECAS} Command.o  ${CELL} Board.o   Minesweeper.o MineSweeper
+all: Command_Loader.o Command.o  ${BIBLIOTECAS}  ${CELL} Board.o   Minesweeper.o MineSweeper
 #CommandTest
+#=======================================================================
+#
+#=======================================================================
+Command.o: Command.c Command.h
+	${CC} ${WARINIGS} ${POS_INDEPENDENT} ${COMPILE_ONLY} ${OUTPUT} $@ $<
+Command_Loader.o: Command_Loader.c Command_Loader.h Command.o
+	${CC} ${WARINIGS}  ${POS_INDEPENDENT} ${COMPILE_ONLY} ${OUTPUT} $@ $<
 #=======================================================================
 #Bibliotecas de Carregamento Dinâmico
 #=======================================================================
@@ -59,9 +66,7 @@ ExitCmd.o: ExitCmd.c ExitCmd.h Command.h
 #=======================================================================
 #
 #=======================================================================
-Command.o: Command.c Command.h
-	${CC} ${WARINIGS}  ${COMPILE_ONLY} ${OUTPUT} $@ $<
-Minesweeper.o: Minesweeper.c Minesweeper.h Command.o  Board.o
+Minesweeper.o: Minesweeper.c Minesweeper.h Command_Loader.o  Board.o
 	${CC} ${WARINIGS} ${COMPILE_ONLY} ${OUTPUT} $@ $<
 Board.o: Board.c Board.h ${CELL}
 	${CC} ${WARINIGS} ${COMPILE_ONLY} ${OUTPUT} $@ $<
@@ -81,9 +86,9 @@ EmptyCell.o: EmptyCell.c EmptyCell.h Cell.o
 #=======================================================================
 #Geração do Executável
 #=======================================================================
-MineSweeper: Minesweeper.o Cell.o BombCell.o EmptyCell.o Board.o Command.o
+MineSweeper: Minesweeper.o Cell.o BombCell.o EmptyCell.o Board.o Command_Loader.o Command.o
 #MineSweeper: Minesweeper.o Board.o ${CELL}
-	${CC} -ldl ${WARINIGS}  ${OUTPUT} $@ $^
+	${CC} ${DINAMIC_LYBRARY} ${WARINIGS}  ${OUTPUT} $@ $^
 #=======================================================================
 #Clean
 #=======================================================================
