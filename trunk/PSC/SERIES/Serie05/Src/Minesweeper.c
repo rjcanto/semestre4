@@ -33,13 +33,23 @@ static void 	MineSweeper_flag(int l, int c){
 static void 	MineSweeper_exit(){
 	MineSweeper.exit = true;
 }
+static char* MineSweeper_save(){
+	return Board_export(BOARD_ADDR);
+	free;	
+}
+static void MineSweeper_load(char* str){
+	Board_import(BOARD_ADDR,str);
+	free(str);
+}
 Game_Methods g_Vtable={
 	MineSweeper_newGame,
 	MineSweeper_isSolved,
 	MineSweeper_touch,
 	MineSweeper_showAll,
 	MineSweeper_flag,
-	MineSweeper_exit
+	MineSweeper_exit,
+	MineSweeper_load,
+	MineSweeper_save	
 };
 
 static void MineSweeper_init_GameVtable(Miner* this){
@@ -49,7 +59,6 @@ int main(int argc, char** argv){
 	char input[MAX_COMMAND_INPUT];
 	MineSweeper_init(&MineSweeper);
 	MineSweeper_init_GameVtable(&MineSweeper);
-	
 	Command_load(MineSweeper.gvptr,"Commands.cfg");
 	while(!MineSweeper.exit){
 		puts("==========================================");

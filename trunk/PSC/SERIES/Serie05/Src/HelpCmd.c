@@ -5,7 +5,9 @@
 #include <string.h>
 
 
-
+/**
+ * Executa o Comando
+ * */
 void  HelpCmd_exec(HelpCmd* this,char* txt){
 	Command* c;
 	int i;
@@ -20,13 +22,20 @@ void  HelpCmd_exec(HelpCmd* this,char* txt){
 		
 	}
 }
-
+/**
+ * Mostra a ajuda para o comando
+ * */
 void  HelpCmd_help(HelpCmd* this){
 	printf("[%c] - %s\n",this->prefix,this->description);
 	puts(this->help);
 }
+/**
+ * Devolve o prefixo do comando
+ * */
 char  HelpCmd_prefix(HelpCmd* this){return this->prefix;}
-
+/**
+ * Destrutores/Construtores e afins
+ * */
 void HelpCmd_cleanup(HelpCmd* this){
 	if (this == NULL) return;
 	Command_cleanup(&(this->super));
@@ -67,6 +76,9 @@ HelpCmd* HelpCmd_new(Game_Methods* gvptr){
 }
 
 
+/**
+ * Devolve uma nova instancia de Comando para ser carregado dinamicamente
+ * */
 Command* newInstance(Game_Methods* gvptr) {return (Command*) HelpCmd_new(gvptr);}
 
 

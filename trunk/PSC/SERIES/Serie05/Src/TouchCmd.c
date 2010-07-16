@@ -3,6 +3,10 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
+
+/**
+ * Executa o Comando
+ * */
 void  TouchCmd_exec(TouchCmd* this,char* txt){
 		int l = Command_parseLine(txt);
 		int c = Command_parseCol(txt);
@@ -14,14 +18,27 @@ void  TouchCmd_exec(TouchCmd* this,char* txt){
 		}
 
 }
-
+/**
+ * Devolve a sintaxe do comando
+ * */
 char* TouchCmd_syntax(TouchCmd* this){return this->syntax;}
+
+/**
+ * Mostra a ajuda para o comando
+ * */
 void  TouchCmd_help(TouchCmd* this){
 	printf("[%c] - %s\n",this->prefix,this->description);
 	puts(this->help);
 }
+/**
+ * Devolve o prefixo do comando
+ * */
 char  TouchCmd_prefix(TouchCmd* this){return this->prefix;}
 
+
+/**
+ * Destrutores/Construtores e afins
+ * */
 void TouchCmd_cleanup(TouchCmd* this){
 	if (this == NULL) return;
 	free(this->help);
@@ -63,7 +80,9 @@ TouchCmd* TouchCmd_new(Game_Methods* gvptr){
 	return this;
 }
 
-
+/**
+ * Devolve uma nova instancia de Comando para ser carregado dinamicamente
+ * */
 
 Command* newInstance(Game_Methods* gvptr) {return (Command*) TouchCmd_new(gvptr);}
 

@@ -3,16 +3,26 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
+/**
+ * Executa o Comando
+ * */
 void  NewCmd_exec(NewCmd* this,char* txt){
 	this->super.gvptr->newGame();
 }
-
+/**
+ * Mostra a ajuda para o comando
+ * */
 void  NewCmd_help(NewCmd* this){
 	printf("[%c] - %s\n",this->prefix,this->description);
 	puts(this->help);
 }
+/**
+ * Devolve o prefixo do comando
+ * */
 char  NewCmd_prefix(NewCmd* this){return this->prefix;}
-
+/**
+ * Destrutores/Construtores e afins
+ * */
 void NewCmd_cleanup(NewCmd* this){
 	if (this == NULL) return;
 	Command_cleanup(&(this->super));
@@ -53,6 +63,9 @@ NewCmd* NewCmd_new(Game_Methods* gvptr){
 	return this;
 }
 
+/**
+ * Devolve uma nova instancia de Comando para ser carregado dinamicamente
+ * */
 Command* newInstance(Game_Methods* gvptr) {return (Command*) NewCmd_new(gvptr);}
 
 

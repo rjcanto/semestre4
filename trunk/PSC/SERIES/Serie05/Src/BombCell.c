@@ -1,19 +1,37 @@
 #include "BombCell.h"
 #include "Board.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include "Minesweeper.h"
+extern Miner MineSweeper;
 
-char BombCell_getView(BombCell* this){
+/**
+ * Mostra a celula
+ * */
+static char BombCell_getView(BombCell* this){
 	return ((this->exploded) ? '@' : '+'); 
 }
 
-void BombCell_touch(BombCell* this){
+/**
+ * Muda o estado da celula
+ * */
+static void BombCell_touch(BombCell* this){
 	Cell_show(&(this->super));
 	this->exploded = true;
 	puts("BUMMMM.");
-	Board_showAll(this->super.board);
+	MineSweeper.board.over=true;
+	Board_showAll(&(MineSweeper.board));
 }
 
-boolean BombCell_isBomb(BombCell* this){return true;}
+/**
+ * indica que é uma bomba
+ * */
+static boolean BombCell_isBomb(BombCell* this){return true;}
 
+/**
+ *  Destrutores/Construtores e afins
+ * */
 void BombCell_cleanup(BombCell* this){
 	if (this == NULL) return;
 	this->exploded = false;
@@ -32,15 +50,15 @@ static Cell_Methods bombcell_vtable={
 };
 
 
-void BombCell_init(BombCell* this,Board* board){
-	Cell_init(&(this->super),board);
+void BombCell_init(BombCell* this){
+	Cell_init(&(this->super),'B');
 	this->super.vptr = &bombcell_vtable;
 	this->exploded = false;
 }
-BombCell* BombCell_new(Board* board){
+BombCell* BombCell_new(){
 	BombCell* this =(BombCell*)calloc(1,sizeof(BombCell));
 	assert(this != NULL);
-	BombCell_init(this, board);
+	BombCell_init(this);
 	return this;
 }
 
