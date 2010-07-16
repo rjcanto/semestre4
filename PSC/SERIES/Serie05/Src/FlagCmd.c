@@ -3,7 +3,9 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
-
+/**
+ * Executa o Comando
+ * */
 void  FlagCmd_exec(FlagCmd* this,char* txt){
 		int l = Command_parseLine(txt);
 		int c = Command_parseCol(txt);
@@ -15,15 +17,25 @@ void  FlagCmd_exec(FlagCmd* this,char* txt){
 		}
 
 }
-
+/**
+ * Devolve a sintaxe do comando
+ * */
 char* FlagCmd_syntax(FlagCmd* this){return this->syntax;}
+/**
+ * Mostra a ajuda para o comando
+ * */
 void  FlagCmd_help(FlagCmd* this){
 	printf("[%c] - %s\n",this->prefix,this->description);
 	puts(this->help);
 }
+/**
+ * Devolve o prefixo do comando
+ * */
 char  FlagCmd_prefix(FlagCmd* this){return this->prefix;}
 
-
+/**
+ * Destrutores/Construtores e afins
+ * */
 void FlagCmd_cleanup(FlagCmd* this){
 	if (this == NULL) return;
 	free(this->help);
@@ -67,6 +79,9 @@ FlagCmd* FlagCmd_new(Game_Methods* gvptr){
 }
 
 
+/**
+ * Devolve uma nova instancia de Comando para ser carregado dinamicamente
+ * */
 Command* newInstance(Game_Methods* gvptr) {return (Command*) FlagCmd_new(gvptr);}
 
 

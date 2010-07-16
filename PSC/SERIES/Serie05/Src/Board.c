@@ -1,10 +1,9 @@
 #include "Board.h"
-
 #include <time.h>
+#include <string.h>
 
-
-/*
- * Métodos privados
+/**
+ * Método que coloca a bomba no tabuleiro
  * */
 static void Board_putBomb(Board* this,int n){
 	int l,c;
@@ -13,7 +12,7 @@ static void Board_putBomb(Board* this,int n){
 		for(c=0; c<COLS ; ++c){
 			if (this->cells[l][c] == NULL) {
 				if (n==0) { 
-				  this->cells[l][c]=(Cell*)BombCell_new(this);
+				  this->cells[l][c]=(Cell*)BombCell_new();
 				  return; 
 				}
 			--n;
@@ -22,22 +21,29 @@ static void Board_putBomb(Board* this,int n){
 	}
 	  assert(n > 0);	
 }
-
+/**
+ * Método que imprime uma linha do border do tabuleiro
+ * */
 static void Board_printLine(Board* this){
 		int c;
 		printf("   +");
 		for(c =0;c < COLS;++c) printf("--");
 		puts("-+");
 }
-/*Substituidos por Macros*/
+
+/**
+ * Métodos Booleanos que verificam se a posição é válida, o tabuleiro está resolvido,
+ * se o jogo já acabou ou se uma posição é uma bomba.
+ * */
 boolean Board_isValid(Board* this, int l, int c){return ( l >= 0 && l < LINES && c >=0 &&  c < COLS)?true:false;}
 boolean Board_isSolved(Board* this){return this->hides == this->bombs?true:false;}
+boolean Board_isOver(Board* this){return this->over;}
 boolean Board_isBomb(Board* this, int l, int c){
 	return (Board_isValid(this, l, c) && this->cells[l][c]->vptr->isBomb(this->cells[l][c]))?true:false;
 }
 
-/*
- * Métodos Públicos
+/**
+ * Imprimem o tabuleiro no ecra
  * */
 void Board_print(Board* this){
 	int c,l;
@@ -55,6 +61,9 @@ void Board_print(Board* this){
 	}
 	Board_printLine(this);
 }
+/**
+ * Procede à modificação de uma posição
+ * */
 void Board_touch(Board* this, int l, int c){
 	if (Board_isValid(this, l, c)){
 		Cell* cel = this->cells[l][c];
@@ -63,15 +72,22 @@ void Board_touch(Board* this, int l, int c){
 		--(this->hides);
 	}
 }
+/**
+ * Torna todas as posições visiveis
+ * */
 void Board_showAll(Board* this){
 	int l,c;
+	this->over = true;
 	for (l=0;l< LINES;++l){
 		for(c=0;c< COLS;++c){
 			Cell_show(this->cells[l][c]);
 		}
 	}
-	this->hides=0;
+	
 }
+/**
+ * Procede à modificação de uma posição, marcando-a como flag
+ * */
 void Board_flag(Board* this, int l, int c){
 	if (Board_isValid(this,l,c)){
 		Cell* cel = this->cells[l][c];
@@ -121,6 +137,7 @@ void Board_init(Board* this){
 	
 	this->hides=LINES*COLS;
 	this->bombs=0;
+	this->over=false;
 	
 	Board_init_array(this);
 	for( ; this->bombs < BOMBS ; ++this->bombs){
@@ -131,7 +148,7 @@ void Board_init(Board* this){
 	for(l=0 ; l<LINES ; ++l){
 		for(c=0; c<COLS ; ++c)
 			if ((this->cells[l][c])==NULL){
-				this->cells[l][c]=(Cell*)EmptyCell_new(this,l,c);
+				this->cells[l][c]=(Cell*)EmptyCell_new(l,c);
 			}
 	}
 
@@ -142,4 +159,96 @@ Board* Board_new(){
 	assert(this == NULL);
 	Board_init(this);
 	return this;
+}
+
+/**
+ * Copia o conteudo de um tabuleiro para outro.
+ * Util para fazer load de um jogo
+ * */
+static void	Board_Copy(Board* dest, Board* src){
+	int l,c;
+	if(dest == NULL || src == NULL) return;
+	Board_Cleanup(dest);
+	Board_init_array(dest);
+	dest->hides = src->hides;
+	dest->bombs = src->bombs;
+	for(l=0;l<LINES;++l){
+		for(c=0;c<COLS;++c){
+			dest->cells[l][c]=src->cells[l][c];
+			dest->cells[l][c]->stat=src->cells[l][c]->stat;
+		}
+	}
+}
+/**
+ * Exporta um tabuleiro no formato
+ * <TYPE><STAT>
+ * Aloca dinamicamente espaço para uma string com o tabuleiro.
+ * quem chama a função deve libertar o espaço quando não necessitar 
+ * */
+char* Board_export(Board* this){
+	if (this == NULL) return NULL;
+	
+	if (Board_isSolved(this) || Board_isOver(this)) {puts("No Game to Save!"); return NULL;}
+	else{
+	int i, j;
+	char* return_str=(char*)calloc(LINES*COLS*2+1,sizeof(char));
+	char* ret=return_str;
+	
+	for(i=0;i<LINES;++i){
+		for(j=0;j<COLS;++j,return_str+=2){
+			sprintf(return_str,"%c%c",this->cells[i][j]->type,this->cells[i][j]->stat);
+		}
+	}
+			
+	*(return_str ) = 0;
+	
+	return ret;
+	}
+}
+/**
+ * Contabiliza as bombas para o carregamento de um jogo gravado
+ * */
+static void Board_import_count(Board* this){
+	int l,c;
+	Cell* cel;
+	for (l=0;l<LINES;++l){
+		for(c=0;c<COLS;++c){
+			cel=this->cells[l][c];
+			if (cel->type == 'E' && Cell_isShown(cel)){
+				EmptyCell_touch_count((EmptyCell*)this->cells[l][c]);
+			}
+		}
+	}
+}
+/**
+ * Importa um jogo Gravado
+ * */
+void Board_import(Board* this, char* str){
+	int cellnbr=0;
+	Board savedBoard;
+	if (this ==  NULL && str == NULL) {puts("No Game to Load!");return;}
+	
+	Board_init_array(&savedBoard);
+	savedBoard.hides=LINES*COLS;
+	savedBoard.bombs=0;
+	savedBoard.over=false;
+	for(;*str;++str,++cellnbr){
+		if (*str == 'B'){
+			savedBoard.cells[cellnbr/LINES][cellnbr%COLS]=(Cell*)BombCell_new();
+			savedBoard.bombs++;
+		}else if (*str == 'E'){
+			savedBoard.cells[cellnbr/LINES][cellnbr%COLS]=(Cell*)EmptyCell_new(cellnbr/LINES,cellnbr%COLS);	
+			
+		}else{
+			puts("Invalid Board load.");
+			Board_Cleanup(&savedBoard);
+			return;
+		}
+		str++;	
+		savedBoard.cells[cellnbr/LINES][cellnbr%COLS]->stat=*str;
+	}
+	Board_Copy(this,&savedBoard);
+	
+	Board_import_count(&savedBoard);
+	
 }

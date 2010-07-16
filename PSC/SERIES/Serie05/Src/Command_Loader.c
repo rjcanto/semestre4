@@ -11,6 +11,9 @@
 
 
 Cmds Commands_Array;
+/**
+ * Função que procede ao carregamento dinamico
+ * */
 static Command* Command_newInstance(const char* libName,Game_Methods* gvptr){
 	void* hp;
 	Command* (*newCommand)(Game_Methods*);
@@ -30,27 +33,42 @@ static Command* Command_newInstance(const char* libName,Game_Methods* gvptr){
 	t->handler =  hp;
 	return t;
 }
+/**
+ * Função para remover os caracteres de newline
+ * */
 static char * removeNL(char * str) {
 	while( (*str != ' ') && (*str != '\r') && (*str != '\n') && (*str != 0) && (*str != EOF))str++;
 		*str = 0;
 	return str;
 }
+/**
+ * Devolve um Array de nbr_commands comands
+ * */
 static Command** Commands_Array_new(int nbr_commands){
 	Command** arr =  (Command**)calloc(nbr_commands,sizeof(Command*));
 	assert (arr != NULL);
 	return arr;
 }
-
+/**
+ * Apaga o espaço alocado pelo array comands
+ * */
 static void Commands_Array_delete(Command** this){
 	if (this == NULL) return;
 	free(this);
 
 }
+
+/**
+ * Descarrega a biblioteca
+ * */
 static void Command_unloading(Command* t){
 	void* hp = t->handler;
 	(t)->vptr->dtor(t);
 	dlclose(hp);
 }
+/**
+ * Descarrega as bibliotecas
+ * */
 
 void Command_unload(){
 	int i;
@@ -59,6 +77,9 @@ void Command_unload(){
 	}
 	Commands_Array_delete(Commands_Array.cmds);
 }
+/**
+ * Função que procede ao carregamento das Bibliotecas
+ * */
 boolean Command_load(Game_Methods* gvptr,char* cfgFile){
 	int nLines;
 	FILE* fin=NULL;
@@ -102,11 +123,16 @@ boolean Command_load(Game_Methods* gvptr,char* cfgFile){
 	system("clear");
 	return true;		
 }
+
+/**
+ * Função que executa uma função
+ * */
 void 	Command_execute(char* line){
+	system("clear");
 	if (line == NULL || *line == 0){ 
 		return;
 	}else{
-		system("clear");
+		
 		char prefix = toupper(*line);
 		char* tmp;
 		int i;

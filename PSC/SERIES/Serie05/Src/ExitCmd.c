@@ -3,19 +3,28 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
-
+/**
+ * Executa o Comando
+ * */
 void  ExitCmd_exec(ExitCmd* this,char* txt){
 		puts(this->description);
 		this->super.gvptr->exit();
 		puts("Bye");		
 }
-
+/**
+ * Mostra a ajuda para o comando
+ * */
 void  ExitCmd_help(ExitCmd* this){
 	printf("[%c] - %s\n",this->prefix,this->description);
 	puts(this->help);
 }
+/**
+ * Devolve o prefixo do comando
+ * */
 char  ExitCmd_prefix(ExitCmd* this){return this->prefix;}
-
+/**
+ * Destrutores/Construtores e afins
+ * */
 void ExitCmd_cleanup(ExitCmd* this){
 	if (this == NULL) return;
 	free(this->help);
@@ -56,4 +65,7 @@ ExitCmd* ExitCmd_new(Game_Methods* gvptr){
 }
 
 
+/**
+ * Devolve uma nova instancia de Comando para ser carregado dinamicamente
+ * */
 Command* newInstance(Game_Methods* gvptr) {return (Command*) ExitCmd_new(gvptr);}

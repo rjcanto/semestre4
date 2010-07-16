@@ -9,5 +9,7 @@ typedef struct game_t{
 	void 	(*showAll)	();
 	void 	(*flag)		(int, int);
 	void 	(*exit)		();
+	void 	(*load)		(char*);
+	char* 	(*save)		();
 }Game_Methods;
 #endif
