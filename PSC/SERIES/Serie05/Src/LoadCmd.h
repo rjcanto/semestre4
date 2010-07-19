@@ -1,6 +1,5 @@
 #ifndef LOADCMD_H
 #define LOADCMD_H
-#include "CommandInterface.h"
 #include "Command.h"
 struct loadcmd;
 typedef struct loadcmd LoadCmd;

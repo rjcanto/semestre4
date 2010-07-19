@@ -2,6 +2,7 @@
 #define HELPCMD_H
 #include "Command.h"
 
+
 struct helpcmd;
 typedef struct helpcmd HelpCmd;
 struct helpcmd{

@@ -1,6 +1,5 @@
 #ifndef EXITCMD_H
 #define EXITCMD_H
-#include "CommandInterface.h"
 #include "Command.h"
 struct exitcmd;
 typedef struct exitcmd ExitCmd;

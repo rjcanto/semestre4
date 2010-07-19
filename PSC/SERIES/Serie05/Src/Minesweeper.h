@@ -13,5 +13,5 @@ struct miner{
 	boolean exit;	
 };
 typedef struct miner Miner;
-Miner MineSweeper;
+
 #endif

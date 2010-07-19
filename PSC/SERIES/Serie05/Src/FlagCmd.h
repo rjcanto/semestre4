@@ -1,6 +1,5 @@
 #ifndef FLAGCMD_H
 #define FLAGCMD_H
-#include "CommandInterface.h"
 #include "Command.h"
 struct flagcmd;
 typedef struct flagcmd FlagCmd;

@@ -1,5 +1,5 @@
 #include "Minesweeper.h"
-Miner MineSweeper;
+static Miner MineSweeper;
 
 #define BOARD_ADDR &(MineSweeper.board)
 
@@ -35,7 +35,7 @@ static void 	MineSweeper_exit(){
 }
 static char* MineSweeper_save(){
 	return Board_export(BOARD_ADDR);
-	free;	
+	
 }
 static void MineSweeper_load(char* str){
 	Board_import(BOARD_ADDR,str);

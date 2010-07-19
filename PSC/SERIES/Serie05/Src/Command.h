@@ -2,7 +2,7 @@
 #define COMMAND_H
 #define BUFFER 1024
 #include "CommandInterface.h"
-#include "GameInterface.h"
+
 	/*Comandos da Tabela de Metodos*/
 	char 	Command_prefix(Command* this);
 	char* 	Command_syntax(Command* this);

@@ -1,14 +1,10 @@
 #ifndef BOARD_H
 #define BOARD_H
-#include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
-#include <math.h>
 #include "newtypes.h"
-#include "BoardInterface.h"
 #include "Cell.h"
-#include "BombCell.h"
-#include "EmptyCell.h"
+
+struct board_t;
+typedef struct board_t Board;
 
 #define LINES 6
 #define COLS  6
