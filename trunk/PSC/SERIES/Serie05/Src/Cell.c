@@ -1,9 +1,8 @@
 #include "Cell.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "newtypes.h"
 #include "Exception.h"
-#include "BoardInterface.h"
+#include "Board.h"
 
 
 /**
@@ -15,7 +14,7 @@ char Cell_getView(Cell* this){
 /**
  * Metodo Abstracto
  * */
-void Cell_touch(Cell* this){
+void Cell_touch(Cell* this, Board* board){
 	puts("Method not yet implemented.");
 }
 /**
@@ -55,14 +54,10 @@ void Cell_cleanup(Cell* this){
 static Cell_Methods cell_vtable={
 	(CELL_VOID_CAST) 	Cell_cleanup,
 	(CELL_CHAR_CAST)	Cell_getView,
-	(CELL_VOID_CAST)	Cell_touch,
+	(void (*)(Cell*,Board*))	Cell_touch,
 	(CELL_BOOLEAN_CAST) Cell_isBomb
 };
-static const Cell_Methods_Final cell_fvtable={
-	(const CELL_VOID_CAST)		Cell_print,
-	(const CELL_VOID_CAST)		Cell_show,
-	(const CELL_VOID_CAST)		Cell_toggleFlag
-};
+	
 void Cell_init(Cell* this,char t){
 	if (this == NULL) return;
 	this->vptr  = &cell_vtable;

@@ -1,7 +1,12 @@
 #include "Board.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <math.h>
 #include <time.h>
 #include <string.h>
-
+#include "BombCell.h"
+#include "EmptyCell.h"
 /**
  * Método que coloca a bomba no tabuleiro
  * */
@@ -68,7 +73,7 @@ void Board_touch(Board* this, int l, int c){
 	if (Board_isValid(this, l, c)){
 		Cell* cel = this->cells[l][c];
 		if (Cell_isShown(cel) || Cell_isFlagged(cel)){ return;}
-		cel->vptr->touch(cel);
+		cel->vptr->touch(cel,this);
 		--(this->hides);
 	}
 }
@@ -215,7 +220,7 @@ static void Board_import_count(Board* this){
 		for(c=0;c<COLS;++c){
 			cel=this->cells[l][c];
 			if (cel->type == 'E' && Cell_isShown(cel)){
-				EmptyCell_touch_count((EmptyCell*)this->cells[l][c]);
+				EmptyCell_touch_count((EmptyCell*)this->cells[l][c],this);
 			}
 		}
 	}

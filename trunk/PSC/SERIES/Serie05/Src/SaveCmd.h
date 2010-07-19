@@ -1,6 +1,5 @@
 #ifndef SAVECMD_H
 #define SAVECMD_H
-#include "CommandInterface.h"
 #include "Command.h"
 struct savecmd;
 typedef struct savecmd SaveCmd;

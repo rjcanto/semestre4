@@ -2,6 +2,7 @@
 #define COMMANDINTERFACE_H
 #include "newtypes.h"
 #include "GameInterface.h"
+
 struct command;
 typedef struct command Command;
 

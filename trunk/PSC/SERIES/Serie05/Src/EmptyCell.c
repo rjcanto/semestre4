@@ -3,8 +3,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "newtypes.h"
-#include "Minesweeper.h"
-extern Miner MineSweeper;
+#include "Board.h"
 
 static const  int difLin[] = {-1,-1,-1, 0, 0, 1, 1, 1 }, difCol[] = {-1, 0, 1,-1, 1,-1, 0, 1 };
 static int dL_size = 8; 
@@ -19,15 +18,15 @@ static char EmptyCell_getView(EmptyCell* this){
 /**
  * Contabiliza o numero de bombas para uma célula à vista
  * */
-static EmptyCell_touch_count(EmptyCell* this){
+void EmptyCell_touch_count(EmptyCell* this,Board* board){
 	int i;
 	for (i=0; i< dL_size; ++i){
-		if (Board_isBomb(&(MineSweeper.board),this->line + difLin[i], this->colunm + difCol[i]))
+		if (Board_isBomb(board,this->line + difLin[i], this->colunm + difCol[i]))
 			++this->number;
 	}
 	if (this->number == 0){
 		for(i=0; i< dL_size ; ++i)
-			Board_touch(&(MineSweeper.board),this->line + difLin[i], this->colunm + difCol[i]);
+			Board_touch(board,this->line + difLin[i], this->colunm + difCol[i]);
 	}
 
 }
@@ -35,12 +34,12 @@ static EmptyCell_touch_count(EmptyCell* this){
 /**
  * Muda o estado de uma celula
  * */
-static void EmptyCell_touch(EmptyCell* this){
+static void EmptyCell_touch(EmptyCell* this, Board* board){
 	
 	if (Cell_isShown(&(this->super))){return;}
 	Cell_show(&(this->super));
 	
-	EmptyCell_touch_count(this);
+	EmptyCell_touch_count(this, board);
 }
 
 
@@ -62,7 +61,7 @@ void EmptyCell_delete(EmptyCell* this){
 static Cell_Methods emptycell_vtable={
 	(CELL_VOID_CAST) EmptyCell_delete,
 	(CELL_CHAR_CAST) EmptyCell_getView,
-	(CELL_VOID_CAST) EmptyCell_touch,
+	(void (*)(Cell*,Board*)) EmptyCell_touch,
 	(CELL_BOOLEAN_CAST) Cell_isBomb	
 };
   

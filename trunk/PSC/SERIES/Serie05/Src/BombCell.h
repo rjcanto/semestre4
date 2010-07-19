@@ -1,7 +1,6 @@
 #ifndef BOMBCELL_H
 #define BOMBCELL_H
 #include "Cell.h"
-
 #include "newtypes.h"
 
 typedef struct bomcell_t{

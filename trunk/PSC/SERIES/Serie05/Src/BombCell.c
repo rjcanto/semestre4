@@ -3,8 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include "Minesweeper.h"
-extern Miner MineSweeper;
+#include "Board.h"
 
 /**
  * Mostra a celula
@@ -16,12 +15,12 @@ static char BombCell_getView(BombCell* this){
 /**
  * Muda o estado da celula
  * */
-static void BombCell_touch(BombCell* this){
+static void BombCell_touch(BombCell* this, Board* board){
 	Cell_show(&(this->super));
 	this->exploded = true;
 	puts("BUMMMM.");
-	MineSweeper.board.over=true;
-	Board_showAll(&(MineSweeper.board));
+	board->over=true;
+	Board_showAll(board);
 }
 
 /**
@@ -45,7 +44,7 @@ void BombCell_delete(BombCell* this){
 static Cell_Methods bombcell_vtable={
 	(CELL_VOID_CAST) BombCell_delete,
 	(CELL_CHAR_CAST) BombCell_getView,
-	(CELL_VOID_CAST) BombCell_touch,
+	(void (*)(Cell*,Board*)) BombCell_touch,
 	(CELL_BOOLEAN_CAST)BombCell_isBomb
 };
 

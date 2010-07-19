@@ -1,9 +1,8 @@
 #ifndef COMMANDLOADER_H
 #define COMMANDLOADER_H
 #define BUFFER 1024
-
 #include "CommandInterface.h"
-#include "GameInterface.h"
+
 
 
 	/*Métodos 'static' do java, que não precisam de objecto instanciado para serem chamado*/

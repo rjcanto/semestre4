@@ -4,6 +4,8 @@
 
 struct cell_t;
 typedef struct cell_t Cell;
+struct board_t;
+
 enum status {NONE='*', FLAG='X', VIEW=' '};
 typedef enum status Stat;
 
@@ -11,16 +13,9 @@ typedef enum status Stat;
 typedef struct cell_methods{
 	void 	(*dtor)(Cell*);
 	char 	(*getView)(Cell*);
-	void 	(*touch)(Cell*);
+	void 	(*touch)(Cell*,struct board_t*);
 	boolean (*isBomb)(Cell*);	
 }Cell_Methods;
-
-
-typedef struct final_cell_methods{
-  const void 	(*print)(Cell*);
-  const void 	(*show)(Cell*);
-  const void 	(*toggleFlag)(Cell*);
-}Cell_Methods_Final;
 
 struct cell_t{
 	Cell_Methods* vptr;
@@ -34,7 +29,7 @@ struct cell_t{
 	boolean Cell_isShown(Cell* this);
 	boolean Cell_isFlagged(Cell* this);
 	char Cell_getView(Cell*);
-	void Cell_touch(Cell*);
+	void Cell_touch(Cell* this, struct board_t* board);
 	boolean Cell_isBomb(Cell*);
 
 

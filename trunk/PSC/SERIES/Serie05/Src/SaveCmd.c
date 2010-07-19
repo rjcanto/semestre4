@@ -8,12 +8,14 @@
  * */
 void  SaveCmd_exec(SaveCmd* this,char* txt){
 	char* str;
+	char* strp;
 	if ((str = this->super.gvptr->save()) == NULL) {return;}
 	else{
 	FILE* fp=NULL;
 	char* saveKey=(char*)calloc(strlen(str)+1+1,sizeof(char));
 	char* cur=saveKey;
 	unsigned char length=strlen(str);
+	strp=str;
 	*saveKey++ = length ;
 	puts("Saving game in MineSweeper.bin");
 	for(;*str;++str,++saveKey)
@@ -24,6 +26,7 @@ void  SaveCmd_exec(SaveCmd* this,char* txt){
 	fclose(fp);
 	puts("Done");
 	free(saveKey=cur);
+	free(strp);
 	}
 }
 /**
