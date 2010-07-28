@@ -38,7 +38,9 @@ Renda*(((1+i)^n)*i/((1+i)^n - 1))
 		* Inferior à Unidade: VAL < 0
 	*ROI= VAL/Investimento
 * Método do Periodo de Recuperação do Capital Investido (Payback)
-
+	* Basea-se no primeiro ano positivo do Cashflow Actualizado Acumulado
+	* MesesX = [(CF Actualizado Acumulado)/(CF Actualizado)]*12 
+	* PayBack = [Ano Positivo] - MesesX 
 * Modelo do Cash-Flow Periodico Equivalente (Fluxo Anual Equivalente)
 	VAL = Renda*(1 - (1+i)^(-n))/i
 	a_(n|r) = (1 - (1+i)^(-n))/i
@@ -105,9 +107,9 @@ de P
 	VA = C * (1/I - 1/(I*(1+I)^(X+N-1)))		(Anuidade)
 ==> Para identificar valores de Imposto, VAL, Investimento, Volume de 
 Vendas, preço de Venda.
-	VAL = Inv + (((Quantidade)*(Pvenda - Cvariaveis) - CF - Amortizações)*(1-I)+Amortizações)*(Taxa de Anuidade)
-==> Taxa	
+	VAL = Inv + (((Quantidade)*(Pvenda - Cvariaveis) - CF - Amortizações)*(1-%ISR)+Amortizações)*(Taxa de Anuidade)
 
+========================================================================
 ==> Materia Colectável
 	Importante este conceito. Se o valor do RAI < não paga impostos, mas
 a materia colectavel do proximo ano lucrativo, será o valor do RAI + os 
@@ -127,3 +129,32 @@ a materia colectavel do proximo ano lucrativo, será o valor do RAI + os
 	Sistema de duas Equações
 		* I  = - CF*(Taxa de Anuidade TIR), sendo a taxa a do TIR
 		* CF = VAL /((Taxa de Anuidade VAL) - (Taxa de Anuidade TIR))
+==> Emprestimo em que em alguns anos não se paga (ter em atenção quando começa o emprestimo)
+	* nesses anos paga-se somente os juros da divida nessa altura
+	* nos outros paga-se parte do valor em divida + juros sobre o valor em divida
+==> Imobilizado incorporeo:
+	* Software cientifico
+	* Patentes
+	* Custos de implementação da empresa
+	* Licenças
+==> Fundo de Maneio
+	* Reserva de Tesouraria + Existencias + Dividas de Clientes - Dividas a Fornecedores
+		* Existencias:
+			- Existencia final de Produtos Acabados
+			- Existencia final de Materia Prima
+		* Dividas de Clientes
+			- Creditos concedidos a clientes
+		* Dividas a Fornecedores
+			- Creditos obtidos de Forncedores
+	==> Custo de Materias Consumidas
+	* % sobre (Vendas + Existencias de Produtos Acabados)
+	==> Existencias final de Materia Prima
+	* % sobre o custo das materias consumidas
+	==> Credito de Fornecedores
+	* % sobre as Compras
+	==> Investimento Nec. Fundo Maneio
+	* Variação de Fundo de maneio entre este ano e o proximo.
+========================================================================
+* Encargos Financeiros: Só entra os juros do Empréstimos
+* Investimento é um valor negativo (no mapa de cash-flow)
+* Matéria Colectável: Transposição até 3 anos
