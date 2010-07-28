@@ -1,0 +1,52 @@
+1) Indique de que forma se obtém o sincronismo de uma trama em Ethernet?
+O sincronismo de uma trama em Ethernet é efectuado através dos primeiros 7 bytes da trama no prêambulo,
+começado por 10101010 e terminado por 10101011.
+--------------------------------------------------------------------------------
+2) Qual o máximo atraso introduzido pelo algoritmo exponencial backoff assumindo
+ que na 4ª tentativa de transmissão de uma trama ela é enviada com sucesso?
+Tentativa 1: backoff maximo: 1*512 bits
+Tentativa 2: backoff máximo: 3*512 bits
+Tentativa 3: backoff máximo: 7*512 bits
+Tentativa 4: Envio Com Sucesso.
+
+Backoff Máximo: 1*512 + 3*512 + 7*512 = 7032
+--------------------------------------------------------------------------------
+3) Determine o número mínimo de bit’s da trama Ethernet 802.3 se duplicasse o 
+seu ritmo binário (de 10 Mbps para 20 Mbps).
+Nota: Siga os critérios usados na Ethernet de 10 Mbps, isto é, margem de 
+segurança de 11 bit e 23 bit de atraso dos repetidores
+
+
+Comprimento máximode umsegmento:				L= 500m
+Comprimento máximoda rede:						5Seg+ 4 Repet.
+Débito em linha:								Vt= 20Mbps = 2 * 10^7 bps
+
+Tempo de bit:									bt= 1/Vt= 1/2*10^7s = 50*10^-9 = 0.05 μs
+Vel. Propagação: 								Vp= C x 2/3 = 2x10^8m/s
+
+Tempo de Propagação num segmento 				TPS = L / Vp= 2,5 μs= 50 bt
+Espaço de bit									Lb=bt * Vp= 10 m
+Delay máximo de um repetidor					Dr= 23 bt
+Margem de Segurança:							Ms = 11
+
+Slot time 	= 2 * (Ms + TPS + Dr + TPS + Dr + TPS + Dr + TPS + Dr + TPS + Ms)
+			= 2 * (11 + 50 + 23 + 50 + 23 + 50 + 23 + 50 + 23 + 50 + 11)
+			= 2 * ( 2*11 + 5*50 +4*23)
+			= 728 bits 
+
+--------------------------------------------------------------------------------
+4) Quais as vantagens e inconvenientes de utilizar switchs na interligação de máquinas?
+
+Vantagens
+Pode receber/transmitir multiplas tramas em simultaneo
+Faz filtragem e aprendizagem baseados em MAC
+Suporta portas a velocidade e modos diferentes
+
+Desvantagens
+Mais caros que os hubs
+Não isola dominios de difusao
+Se tiver capacidade bloqueante, a capacidade de comutação tem que ser inferior
+à soma das capacidade das portas 
+
+
+
