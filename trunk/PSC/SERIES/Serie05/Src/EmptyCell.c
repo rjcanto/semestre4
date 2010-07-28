@@ -37,6 +37,7 @@ void EmptyCell_touch_count(EmptyCell* this,Board* board){
 static void EmptyCell_touch(EmptyCell* this, Board* board){
 	
 	if (Cell_isShown(&(this->super))){return;}
+	
 	Cell_show(&(this->super));
 	
 	EmptyCell_touch_count(this, board);

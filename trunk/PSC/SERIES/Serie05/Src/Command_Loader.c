@@ -23,8 +23,8 @@ static Command* Command_newInstance(const char* libName,Game_Methods* gvptr){
 	if (sprintf(tmp,"./%sCmd.so",libName) == 0){return NULL;}
 	
 	hp = dlopen(tmp,RTLD_NOW);
-
-	if (hp == NULL) {puts(dlerror());return NULL;}
+	
+	if (hp == NULL) {puts(dlerror());assert(0);return NULL;}
 	
 	*(void**)&newCommand = dlsym(hp,"newInstance");
 			
@@ -87,7 +87,7 @@ boolean Command_load(Game_Methods* gvptr,char* cfgFile){
 
 	TRY {
 		assert ((fin = fopen(cfgFile,"rb"))!= NULL);
-		fseek(fin,0,SEEK_CUR);
+		/*fseek(fin,0,SEEK_CUR);*/
 		
 		for (nLines=0 ; fgets(buffer,sizeof(buffer),fin) != NULL ; ++nLines) ;
 		rewind(fin);
