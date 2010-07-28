@@ -1,0 +1,6 @@
+Pergunta n. 1
+a)
+int main(){int d=31;printf("%c=%d\n",*"%s",(d/3);return 0;}
+
+b)Warning: utilização do printf, que não está definida. utiliza a da biblioteca
+resultado: =%10;

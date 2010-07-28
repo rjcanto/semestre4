@@ -1,0 +1,44 @@
+BEGIN Book
+title:The C Programming Language
+author:Brian Kernighan & Dennis Ritchie
+year:1978
+END
+
+BEGIN Book
+title:Viagem a Portugal
+author:Jose Saramago
+year:1985
+END
+
+BEGIN CD
+title:Yes
+artist:Morphine
+tracks:12
+year:1995
+END
+
+BEGIN CD
+title:Em Samling Sanger
+artist:Lisa Ekdahl
+tracks:17
+year:2003
+END
+
+BEGIN Book
+title:Anatomico Jocoso
+author:Fr. Francisco Rey de Abreu Matta Zeferino
+year:1755
+END
+
+BEGIN CD
+title:Heligoland
+artist:Massive Attack
+tracks:10
+year:2010
+END
+
+BEGIN Book
+title:Computer Systems: a programmer's perspective
+author:Randal Bryant & David O'Hallaron
+year:2002
+END

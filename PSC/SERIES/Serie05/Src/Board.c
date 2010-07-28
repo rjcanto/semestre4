@@ -41,8 +41,8 @@ static void Board_printLine(Board* this){
  * se o jogo já acabou ou se uma posição é uma bomba.
  * */
 boolean Board_isValid(Board* this, int l, int c){return ( l >= 0 && l < LINES && c >=0 &&  c < COLS)?true:false;}
-boolean Board_isSolved(Board* this){return this->hides == this->bombs?true:false;}
 boolean Board_isOver(Board* this){return this->over;}
+boolean Board_isSolved(Board* this){return ((this->hides == this->bombs)&&(!Board_isOver(this)))?true:false;}
 boolean Board_isBomb(Board* this, int l, int c){
 	return (Board_isValid(this, l, c) && this->cells[l][c]->vptr->isBomb(this->cells[l][c]))?true:false;
 }
@@ -177,6 +177,7 @@ static void	Board_Copy(Board* dest, Board* src){
 	Board_init_array(dest);
 	dest->hides = src->hides;
 	dest->bombs = src->bombs;
+	dest->over = src->over;
 	for(l=0;l<LINES;++l){
 		for(c=0;c<COLS;++c){
 			dest->cells[l][c]=src->cells[l][c];
@@ -230,20 +231,17 @@ static void Board_import_count(Board* this){
  * */
 void Board_import(Board* this, char* str){
 	int cellnbr=0;
+	int bombs=0,hides=COLS*LINES;
 	Board savedBoard;
 	if (this ==  NULL && str == NULL) {puts("No Game to Load!");return;}
 	
 	Board_init_array(&savedBoard);
-	savedBoard.hides=LINES*COLS;
-	savedBoard.bombs=0;
 	savedBoard.over=false;
 	for(;*str;++str,++cellnbr){
 		if (*str == 'B'){
-			savedBoard.cells[cellnbr/LINES][cellnbr%COLS]=(Cell*)BombCell_new();
-			savedBoard.bombs++;
+			savedBoard.cells[cellnbr/LINES][cellnbr%COLS]=(Cell*)BombCell_new();bombs++;
 		}else if (*str == 'E'){
 			savedBoard.cells[cellnbr/LINES][cellnbr%COLS]=(Cell*)EmptyCell_new(cellnbr/LINES,cellnbr%COLS);	
-			
 		}else{
 			puts("Invalid Board load.");
 			Board_Cleanup(&savedBoard);
@@ -251,7 +249,14 @@ void Board_import(Board* this, char* str){
 		}
 		str++;	
 		savedBoard.cells[cellnbr/LINES][cellnbr%COLS]->stat=*str;
+		
+		if (Cell_isFlagged(savedBoard.cells[cellnbr/LINES][cellnbr%COLS])){bombs--;hides--;}
+		else if(Cell_isShown(savedBoard.cells[cellnbr/LINES][cellnbr%COLS])){hides--;}
+
 	}
+	savedBoard.hides=hides;
+	savedBoard.bombs=bombs;
+
 	Board_Copy(this,&savedBoard);
 	
 	Board_import_count(&savedBoard);

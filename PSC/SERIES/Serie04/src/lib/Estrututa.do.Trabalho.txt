@@ -1,0 +1,67 @@
+Nuno Cancelo
+31401
+LI31N
+========================================================================
+Relatorio (ou algo parecido):
+
+Durante este trabalho foram realizadas várias implementações de estruturas.
+As primeiras implementações foram:
+- Teacher, que tem formas de construir objectos do tipo professor
+- UniCurr, que tem formas de construir objectos do tipo unidade curricular
+
+De seguida foi necessário estipular uma estrutura de ficheiro CDB, que não usa-se 
+mais do que o estritamente necessário em termos de espaço. Dai surgiu estas estruturas
+Estrutura da Unidade Curricular:
+Campo	Designação do Campo	Posição	Comprimento		Conteudo	OBS
+ 01		mec_number			   	01	2 bytes			Fixo
+ 02		type				   	03	1 byte			Fixo
+ 03		semestre				04	1 byte			Fixo
+ 04		Tamanho Acronimo		05	1 byte			Fixo		Indica o tamanho do texto referente ao Acronimo
+ 05		Acronimo				06  -----------		Variável	Comprimento dado pelo campo 04
+ 06		Tamanho Uni Curr		--	1 byte			Variável	Indica o tamanho do texto referente à Unidade Curricular
+ 07		Unidade Curricular		--	-----------		Variável	Comprimento dado pelo campo 06
+ 08		Tamanho Dep Fortes		--	1 byte			Variável	Indica o tamanho do texto referente à Dep Fortes
+ 09		Dependencia Fortes		--	-----------		Variável	Comprimento dado pelo campo 08
+ 10		Tamanho Dep Fracas		--	1 byte			Variável	Indica o tamanho do texto referente à Dep Fracas
+ 11		Dependencia Fracas		--	-----------		Variável	Comprimento dado pelo campo 10
+
+Estrutura do Docente:
+Campo	Designação do Campo	Posição	Comprimento		Conteudo	OBS
+ 01		mec_number			   	01	2 bytes			Fixo
+ 02		Tamanho Nome			03	1 byte			Fixo		Indica o tamanho do texto referente ao Nome
+ 03		Nome					04  -----------		Variável	Comprimento dado pelo campo 02
+ 04		Tamanho email			--	1 byte			Variável	Indica o tamanho do texto referente ao Email
+ 05		Email					--	-----------		Variável	Comprimento dado pelo campo 04
+
+Procedeu-se de seguida ao inicio dos comandos para "construir" e ler a base de dados. Contudo
+eu optei por ter um comando que criasse a base de dados e  que fornecesse metodos de poder ler.
+
+Assim sendo, não segui o requesito de ter dois programas diferentes para contruir e ler as bases de 
+dados, mas optei por ter um programa único que tem cerca de 10 opções como modo de trabalhar, sendo
+dois deles a leitura e a construção das CDB.
+ 
+Desta forma tenho:
+	Comando 02 :: -a Lista Todos as entradas da Base de dados de Unidades Curriculares e Professores.
+	Comando 03 :: -b Criação de Base de Dados com a Informação dos Docentes. Pesquisa pelo Numero Mecanográfico do Docente
+	Comando 01 :: -c Criação de Base de Dados com a Informação das Unidade Curriculares. Pesquisa pelo Acronino da UC!
+	Comando 04 :: -d Criação de Base de Dados com as Dependencias. Pesquisa pelo Acronimo, e devolve a descrição da UC de todas as Dep
+	Comando 05 :: -e Criação de Base de Dados com os Numeros Mecanograficos. Pesquisa pelo Acronimo
+	Comando 06 :: -f Criação de Base de Dados com os Acronimos. Pesquisa pelo Numero Mecanografico do Docente Responsável.
+	Comando 07 :: -g Criação de Base de Dados com os Acronimos. Pesquisa pelo Tipo de cadeira.
+	Comando 08 :: -h Criação de Base de Dados com os Acronimos. Pesquisa pelo Semestre
+	Comando 09 :: -i Processa Ficheiro Docentes
+	Comando 10 :: -j Processa Ficheiro Unidade Curricular
+
+Ao longo das implementações foram deparados muitos erros identificados pela ferramenta "Valgrind", erros os quais tentei entendelos e 
+recuperálos de uma forma limpa, para não camufular erros.
+Tentei ter sempre em atenção a alocação de memoria de forma dinamica e a sua libertação, tendo conseguido manter o racio de allocs/free em 1/1.
+Elaborei mais comandos do que necessário, é uma facto, mas a sua implementação era simples.
+
+Todos os comandos implementam uma interface de comando, que contem os metodos que são necessário para construção/leitura da base de dados.
+Os ficheiros comando9,10 e executável contem um array de commandos que permite indexar as opções directamente e ter (após validações) 
+um código de 3 linhas que executa qualquer comando.
+
+Foram utilizados muitos ponteiros para funções como argumentos de funções, para poder utilizar a mesma função para diversas "coisas".
+Isso pode-se verificar no ficheiro command.c, que as suas funções servem todos os comandos, pelo menos os que tratam com a base de dados directamente.
+Tenho consciencia que existem mais umas 3 ou 4 funções que poderiam ter sido implementadas desta maneira também, porem optei por não o fazer para ter 
+código mais legivel para ler.
