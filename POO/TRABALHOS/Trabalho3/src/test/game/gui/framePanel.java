@@ -5,9 +5,8 @@
 
 package test.game.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Container;
+import java.io.File;
+import java.io.FilenameFilter;
 import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -18,15 +17,18 @@ import javax.swing.JPanel;
  * @author nac
  */
 public class framePanel extends JPanel {
-    final String imagepath ="src/test/images/";
-    final String[] image = {"dataattack.jpg","mech.jpg","monsters.jpg","pacman.jpg","Sea.jpg","time-to-relax.jpg","fafa.jpg","Zon.jpg","B.jpg","whisky.jpg","whisky.jpg","royal.jpg","CC.jpg"};
-    ImageIcon bg;
-    JLabel bgl;
+    private final String imagepath ="src/test/images/";
+    private File imageDir = new File(imagepath);
+    private String[] image;
+    private ImageIcon bg;
+    private JLabel bgl;
+    private FilenameFilter filter;
+    private String filename;
+
     public framePanel(){
-        this.changeBG();
-    }
-    public void changeBG(){
-        String filename=imagepath+(image[(new Random().nextInt(image.length*71))%image.length]);
+        filter = new FilenameFilter() { public boolean accept(File dir, String name) { return !name.startsWith(".") && name.endsWith(".jpg"); } };
+        image = imageDir.list(filter);
+        filename=imagepath+(image[(new Random().nextInt(image.length*71))%image.length]);
         bg = new ImageIcon(filename);
         bgl = new JLabel();
         bgl.setIcon(bg);
