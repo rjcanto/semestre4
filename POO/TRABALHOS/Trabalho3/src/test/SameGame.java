@@ -4,6 +4,19 @@
  */
 
 package test;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JMenuBar;
+import javax.swing.JPanel;
+import test.game.gui.CenterPanel;
+import test.game.gui.InfoPanel;
+import test.game.gui.framePanel;
+import test.game.gui.mainMenu;
+import test.game.gui.mainWindow;
 
 /**
  *
@@ -14,6 +27,7 @@ public class SameGame {
     /**
      * @param args the command line arguments
      */
+    /*
     public static void main(String[] args) {
 
 //        Block b = new BBlock();
@@ -68,5 +82,31 @@ public class SameGame {
 
 
     }
+*/
+    public static void main(String[] args) {
+        Dimension screenSize    = Toolkit.getDefaultToolkit().getScreenSize();
+        JFrame gameFrame    = new mainWindow(800,600);
+        JMenuBar gameMenu       = new mainMenu();
+        JPanel gamePanel        = new framePanel();
+        JPanel center           = new CenterPanel();
+        JPanel info             = new InfoPanel();
+        
+        gameFrame.setJMenuBar(gameMenu);
+        gamePanel.setLocation(0,0);
+        center.setLocation(0, 0);
+        info.setLocation(600,0);
 
+        
+
+
+        gameFrame.add(center);
+        gameFrame.add(info);
+        gameFrame.add(gamePanel);
+        
+        gameFrame.setResizable(false);
+        gameFrame.setLocation((screenSize.width - gameFrame.getWidth())/2, (screenSize.height - gameFrame.getHeight())/2);
+        gameFrame.pack();
+        gameFrame.setVisible(true);
+
+    }
 }

@@ -1,4 +1,7 @@
-package test;
+package test.game;
+
+import test.game.model.Block;
+
 /**
  *
  * @author Nuno
