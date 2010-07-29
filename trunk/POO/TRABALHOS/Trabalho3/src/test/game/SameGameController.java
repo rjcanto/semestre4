@@ -3,8 +3,14 @@
  * and open the template in the editor.
  */
 
-package test;
+package test.game;
 
+import test.game.model.Board;
+import test.game.model.YMBlock;
+import test.game.model.RGBBlock;
+import test.game.model.BBlock;
+import test.game.model.Block;
+import test.game.model.WBlock;
 import java.io.*;
 import java.util.Random;
 import java.util.logging.Level;

@@ -1,4 +1,4 @@
-package test;
+package test.game.model;
 
 import java.util.Random;
 import java.util.logging.Level;

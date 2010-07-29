@@ -1,10 +1,12 @@
 
-package test;
+package test.game.gui;
 import java.awt.*;
 import java.applet.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import test.game.SameGameEngine_I;
+import test.game.SameGameUI_I;
 
 /**
  *
@@ -14,11 +16,6 @@ public class SameGameGUI implements SameGameUI_I, ActionListener{
 
     public SameGameGUI(int width, int height){
         createAndShowGUI(width, height);
-
-
-
-
-
     }
 
     private void createAndShowGUI(int width, int height) {
@@ -36,7 +33,7 @@ public class SameGameGUI implements SameGameUI_I, ActionListener{
 
         /*criacao dos menus do jogo*/
         JMenuBar menuBar = new JMenuBar();
-        main.setJMenuBar(menuBar);
+        
         JMenu game = new JMenu("Game");
         menuBar.add(game);
         JMenuItem newGame = new JMenuItem("New");
@@ -75,7 +72,7 @@ public class SameGameGUI implements SameGameUI_I, ActionListener{
 
 
 
-
+main.setJMenuBar(menuBar);
 
         //main.pack();
         main.setVisible(true);
