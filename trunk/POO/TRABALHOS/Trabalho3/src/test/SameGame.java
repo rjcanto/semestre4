@@ -8,11 +8,14 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import test.game.gui.CenterPanel;
+import test.game.gui.GamePanel;
 import test.game.gui.InfoPanel;
 import test.game.gui.framePanel;
 import test.game.gui.mainMenu;
@@ -107,6 +110,20 @@ public class SameGame {
         gameFrame.setLocation((screenSize.width - gameFrame.getWidth())/2, (screenSize.height - gameFrame.getHeight())/2);
         gameFrame.pack();
         gameFrame.setVisible(true);
+
+//        for (int i = 0; i<10; ++i){
+//
+//            gamePanel = new framePanel();
+//            gamePanel.setLocation(0,0);
+//            gameFrame.add(gamePanel);
+//
+//            try {
+//                Thread.sleep(2000);
+//            } catch (InterruptedException ex) {
+//                Logger.getLogger(SameGame.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//            gameFrame.setVisible(true);
+//        }
 
     }
 }
