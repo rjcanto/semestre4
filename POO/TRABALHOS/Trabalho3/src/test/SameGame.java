@@ -102,9 +102,9 @@ public class SameGame {
         
 
 
-        gameFrame.add(center);
-        gameFrame.add(info);
-        gameFrame.add(gamePanel);
+        gameFrame.getContentPane().add(center);
+        gameFrame.getContentPane().add(info);
+        gameFrame.getContentPane().add(gamePanel);
         
         gameFrame.setResizable(false);
         gameFrame.setLocation((screenSize.width - gameFrame.getWidth())/2, (screenSize.height - gameFrame.getHeight())/2);

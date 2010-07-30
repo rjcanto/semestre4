@@ -22,6 +22,7 @@ import javax.swing.border.Border;
 public class CenterPanel extends JPanel {
     public static final Border CENTER_BORDER = BorderFactory.createTitledBorder("XPTO");
     public CenterPanel(){
+        setLayout(new BorderLayout());
         Container center = new Container();
         center.setLayout(new BorderLayout());
         setBackground(new Color(150, 150, 150, 125));
