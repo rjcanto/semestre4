@@ -5,6 +5,7 @@
 
 package test.game.gui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import javax.swing.BoxLayout;
@@ -18,6 +19,7 @@ import javax.swing.JPanel;
 public class GamePanel extends JPanel {
 
     public GamePanel(){
+        setLayout(new BorderLayout());
         Container center = new Container();
         center.setLayout(new BoxLayout(center, 1));
         setBackground(new Color(128, 128, 128, 125));
