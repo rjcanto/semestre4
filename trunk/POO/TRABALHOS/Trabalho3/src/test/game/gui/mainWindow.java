@@ -6,7 +6,6 @@
 package test.game.gui;
 
 import javax.swing.JFrame;
-import javax.swing.JMenuBar;
 
 /**
  *
