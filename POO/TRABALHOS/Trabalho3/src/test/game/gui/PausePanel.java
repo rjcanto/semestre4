@@ -42,9 +42,8 @@ public class PausePanel extends JPanel{
         add(center);
         center.add(pause);
     }
-   public void paintComponent(Graphics g) {
-        repaint();
+   public void paintShape(Graphics g) {
+        setBackground(shown);
 
-        
     }
 }

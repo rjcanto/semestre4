@@ -4,10 +4,12 @@
  */
 package test.game.gui;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.geom.Ellipse2D;
 
 /**
@@ -16,6 +18,7 @@ import java.awt.geom.Ellipse2D;
  */
 public class CircleBlock implements GameShape {
     private Ellipse2D.Double object;
+    private Ellipse2D.Double center;
     private Color color;
     private int x;
     private int y;
@@ -26,6 +29,8 @@ public class CircleBlock implements GameShape {
         y = posY;
         color = c;
         object = new Ellipse2D.Double(posX, posY, SIZE, SIZE);
+        center = new Ellipse2D.Double(posX + SIZE/4, posY + SIZE/4, SIZE/2, SIZE/2);
+        
     }
 
     public void setPosition(int x, int y) {
@@ -58,12 +63,16 @@ public class CircleBlock implements GameShape {
     public void setY(int y){
         this.y=y;
     }
-    public void paintComponent(Graphics g) {
+    public void paintShape(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
-        g2d.translate(x, y);
+        g2d.setColor(Color.BLACK);
+
         g2d.setColor(color);
         g2d.fill(object);
         g2d.draw(object);
+        g2d.setColor(color.darker());
+        g2d.fill(center);
+        g2d.draw(center);
     }
 
     public int getSize() {

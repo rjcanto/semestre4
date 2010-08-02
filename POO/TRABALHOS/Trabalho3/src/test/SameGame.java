@@ -6,13 +6,14 @@
 package test;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import test.game.gui.CenterPanel;
 import test.game.gui.InfoPanel;
-import test.game.gui.PausePanel;
-import test.game.gui.framePanel;
+import test.game.gui.FramePanel;
 import test.game.gui.mainMenu;
 import test.game.gui.mainWindow;
 
@@ -85,7 +86,7 @@ public class SameGame {
         Dimension screenSize    = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame gameFrame    = new mainWindow(800,600);
         JMenuBar gameMenu       = new mainMenu();
-        JPanel gamePanel        = new framePanel();
+        JPanel gamePanel        = new FramePanel();
         JPanel center           = new CenterPanel();
         JPanel info             = new InfoPanel();
         
@@ -109,19 +110,5 @@ public class SameGame {
         gameFrame.setVisible(true);
         
 
-//        for (int i = 0; i<10; ++i){
-//
-//            gamePanel = new framePanel();
-//            gamePanel.setLocation(0,0);
-//            gameFrame.add(gamePanel);
-//
-//            try {
-//                Thread.sleep(2000);
-//            } catch (InterruptedException ex) {
-//                Logger.getLogger(SameGame.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//            gameFrame.setVisible(true);
-//        }
-
-    }
+}
 }

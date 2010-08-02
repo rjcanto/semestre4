@@ -17,7 +17,7 @@ import javax.swing.JPanel;
  *
  * @author nac
  */
-public class framePanel extends JPanel implements GameGUIVars {
+public class FramePanel extends JPanel implements GameGUIVars {
     
     private File imageDir = new File(IMAGEPATH);
     private String[] image;
@@ -27,7 +27,7 @@ public class framePanel extends JPanel implements GameGUIVars {
     private JLabel bgl;
     private String filename;
 
-    public framePanel(){
+    public FramePanel(){
         
         setLayout(new BorderLayout());
         filter = new FilenameFilter() { public boolean accept(File dir, String name) { return !name.startsWith(".") && name.endsWith(".jpg"); } };
@@ -39,5 +39,13 @@ public class framePanel extends JPanel implements GameGUIVars {
         
         add(bgl);
         setName("Frame Panel");
+    }
+    public void changeBG(){
+        image = imageDir.list(filter);
+        filename=IMAGEPATH+(image[(new Random().nextInt(image.length*71))%image.length]);
+        bg = new ImageIcon(filename);
+        bgl = new JLabel();
+        bgl.setIcon(bg);
+        repaint();
     }
 }

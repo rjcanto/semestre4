@@ -27,7 +27,7 @@ public class TriangleBlock implements GameShape {
 
         color = c;
         int[] xx={0,SIZE/2,SIZE};
-        int[] yy={0,SIZE,0};
+        int[] yy={SIZE,0,SIZE};
         object = new Polygon(xx,yy,3);
         object.translate(x, y);
     }
@@ -60,9 +60,8 @@ public class TriangleBlock implements GameShape {
     }
 
 
-    public void paintComponent(Graphics g) {
+    public void paintShape(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
-        g2d.translate(x, y);
         g2d.setColor(color);
         g2d.fill(object);
         g2d.draw(object);

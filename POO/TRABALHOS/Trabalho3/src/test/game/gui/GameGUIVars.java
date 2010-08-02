@@ -14,4 +14,5 @@ public interface GameGUIVars {
     public final String INFOIMAGEPATH ="src/test/images/infoBg/";
     public final String IMAGEPATH ="src/test/images/";
 
+
 }

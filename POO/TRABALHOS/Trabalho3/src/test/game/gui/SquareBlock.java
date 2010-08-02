@@ -58,9 +58,8 @@ public class SquareBlock implements GameShape {
     public void setY(int y){
         this.y=y;
     }
-    public void paintComponent(Graphics g) {
+    public void paintShape(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
-        g2d.translate(x, y);
         g2d.setColor(color);
         g2d.fill(object);
         g2d.draw(object);

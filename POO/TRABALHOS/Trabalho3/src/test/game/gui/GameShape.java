@@ -20,7 +20,7 @@ public interface GameShape {
     public int getSize();
     public Color getColor();
     public Shape getShape();
-    public void paintComponent(Graphics g);
+    public void paintShape(Graphics g);
     public int getX();
     public int getY();
     public void setX(int x);
