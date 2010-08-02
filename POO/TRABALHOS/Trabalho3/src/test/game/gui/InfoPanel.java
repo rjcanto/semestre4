@@ -63,7 +63,7 @@ public class InfoPanel extends JPanel implements GameGUIVars {
         centerPanel.setBackground(new Color(205, 155, 250, 0));
         centerPanel.setSize(200,600);
                 
-        centerPanel.setBorder();
+
 
         JLabel x = new JLabel("Info Panel");
         JButton a = new JButton("Info PanelA");

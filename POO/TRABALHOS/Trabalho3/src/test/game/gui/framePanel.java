@@ -6,8 +6,6 @@
 package test.game.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Container;
-import java.awt.FlowLayout;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.Random;

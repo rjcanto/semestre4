@@ -67,7 +67,7 @@ public class SameGameController implements SameGameEngine_I {
      */
     
     public void generateNew(){
-       int horiz=0, vert=0;
+/*       int horiz=0, vert=0;
        Random r = new Random();
        for (int i=0; i<width; ++i){
             for (int j=0; j<height; ++j){
@@ -88,7 +88,7 @@ public class SameGameController implements SameGameEngine_I {
                     }else{grid[i][j] = new YMBlock();}
                 }
             }
-       }
+       }*/
     }
     public void setGameLevel(int level) {
         throw new UnsupportedOperationException("Not supported yet.");
@@ -119,6 +119,14 @@ public class SameGameController implements SameGameEngine_I {
     }
 
     public void newGame() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setGameType(int type) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public void setContinuity(boolean cont) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
