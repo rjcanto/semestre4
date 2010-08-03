@@ -1,4 +1,7 @@
 package SameGame;
+
+import SameGame.Game.model.Block;
+
 /**
  *
  * @author Nuno
