@@ -5,6 +5,12 @@
 
 package SameGame;
 
+import SameGame.Game.model.RGBBlock;
+import SameGame.Game.model.Board;
+import SameGame.Game.model.YMBlock;
+import SameGame.Game.model.BBlock;
+import SameGame.Game.model.WBlock;
+import SameGame.Game.model.Block;
 import java.io.*;
 import java.util.Random;
 import java.util.logging.Level;
