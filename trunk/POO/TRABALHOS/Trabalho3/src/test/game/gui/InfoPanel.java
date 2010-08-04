@@ -11,14 +11,11 @@ import java.awt.Container;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.util.Random;
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.Border;
 import test.Fonts.Fonts;
 
 /**

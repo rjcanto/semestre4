@@ -11,6 +11,6 @@ import java.awt.Font;
  *
  * @author nac
  */
-public class Fonts{
+public interface Fonts{
     public static final Font INFOFONT = new Font("Times New Roman", Font.BOLD, 32);
 }
