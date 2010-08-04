@@ -6,8 +6,6 @@
 package test;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;

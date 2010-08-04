@@ -30,7 +30,7 @@ public class GamePanel extends JPanel {
         board=new GameShape[9][9];
         for (int line =0;line<9;++line){
             for(int col=0;col<9;++col){
-                board[line][col]=new CircleBlock(c[(new Random().nextInt(c.length*71))%c.length], 55*line+20, 55*col+20);
+                board[line][col]=new RubiBlock(c[(new Random().nextInt(c.length*71))%c.length], 55*line+20, 55*col+20);
             }
         }
         add(center);

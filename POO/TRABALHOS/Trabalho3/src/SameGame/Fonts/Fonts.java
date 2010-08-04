@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package test.Fonts;
+package SameGame.Fonts;
 
 import java.awt.Font;
 
