@@ -41,10 +41,21 @@ public class SameGame {
 
         b.addBlock(new WBlock(b,0,2));
         LinkedList<Block> list = new LinkedList<Block>();
+        b.getBlock(2, 1).select();
+        System.out.println(b.toString());
         list = b.getBlock(2, 1).selectGroup(list);
         list = b.getBlock(0, 2).selectGroup(list);
 
         System.out.println(b.toString());
+        b.rotate(false);
+        System.out.println(b.toString());
+        b.rotate(false);
+        System.out.println(b.toString());
+        b.rotate(true);
+        System.out.println(b.toString());
+        b.rotate(true);
+        System.out.println(b.toString());
+
 
         Iterator it = list.iterator();
 
@@ -56,15 +67,15 @@ public class SameGame {
         System.out.println(b.toString());
         b.shiftDown();
         System.out.println(b.toString());
-        b.rotateLeft();
+        b.rotate(false);
         System.out.println("left");
         System.out.println(b.toString());
         b.shiftDown();
         System.out.println(b.toString());
-        b.rotateRight();
+        b.rotate(true);
         System.out.println("right");
         System.out.println(b.toString());
-        b.rotateRight();
+        b.rotate(true);
         System.out.println("right");
         System.out.println(b.toString());
 

@@ -104,6 +104,35 @@ public class Board implements Board_I{
         grid=auxGrid;
         return true;
     }
+
+    public boolean rotate(boolean right) {
+        if (rows!=columns)
+            return false;
+        Block[][] auxGrid = new Block[columns][rows];
+
+        int myRow,myCol;
+        int size = columns - 1;
+
+        for (int row=0;row<rows;++row)
+            for (int col=0;col<columns;++col){
+
+            //Right --> auxGrid[y][columns-x-1]=grid[x][y];
+            //Left  --> auxGrid[columns-y-1][x]=grid[x][y];
+
+                if (right){
+                    myRow=size - col;
+                    myCol= row;
+                }else{
+                    myRow=col;
+                    myCol=size - row;
+                }
+            auxGrid[row][col]=grid[myRow][myCol];
+        }
+        grid=auxGrid;
+        return true;
+    }
+
+
     public void shiftDown() {
         int r, r1, c;
         for (c=0; c<columns; ++c){
@@ -137,6 +166,20 @@ public class Board implements Board_I{
             res+='\n';
         }
         return res;
+    }
+
+    /*DEBUG*/
+    private String gridToString(Block[][] g){
+        String res="";
+        for (int i=0; i<g.length;++i){
+            for (int j=0; j<g[0].length;++j)
+                res+=g[i][j]==null? "-:- | ":g[i][j].getType()+ ":" +g[i][j].isSelected() + " | ";
+            res+='\n';
+        }
+        return res;
+
+
+
     }
 
 }
