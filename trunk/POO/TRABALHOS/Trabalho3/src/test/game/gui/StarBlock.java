@@ -15,48 +15,36 @@ import java.awt.geom.Ellipse2D;
  *
  * @author nac
  */
-public class StarBlock implements GameShape {
-    
+public class StarBlock extends GameBlock {
     private Polygon object;
-    private Color color;
-    private int x;
-    private int y;
     private Ellipse2D.Double center;
+    private int width;
+    private int height;
+
+    private int[] getXpoint(){
+        int[] xx={width/2,width/2,0,width/2, width/2,width,width,width/2, width/2, width,width/2,width/2,width/2,0,0,width/2};
+        return xx;
+    }
+    private int[] getYpoint(){
+        int[] yy={height/2,0,0,height/2, height/2,0,height/2,height/2,height/2,height,height,height/2,height/2,height,height/2,height/2};
+        return yy;
+    }
     public StarBlock(Color c, int posX, int posY) {
-        x = posX;
-        y = posY;
-
-        color = c;
-        int[] xx={SIZE/2,SIZE/2,0,SIZE/2, SIZE/2,SIZE,SIZE,SIZE/2, SIZE/2, SIZE,SIZE/2,SIZE/2,SIZE/2,0,0,SIZE/2};
-        int[] yy={SIZE/2,0,0,SIZE/2, SIZE/2,0,SIZE/2,SIZE/2,SIZE/2,SIZE,SIZE,SIZE/2,SIZE/2,SIZE,SIZE/2,SIZE/2};
+        super(c,posX,posY);
+        width=height=SIZE;
+        int[] xx=getXpoint();
+        int[] yy=getYpoint();
         object = new Polygon(xx,yy,xx.length);
-        center = new Ellipse2D.Double(posX + SIZE/4, posY + SIZE/4, SIZE/2, SIZE/2);
-        object.translate(x, y);
+        center = new Ellipse2D.Double(posX + width/4, posY + height/4, width/2, height/2);
+        object.translate(getX(), getY());
     }
-
-    public void setPosition(int x, int y) {
-        this.x = x;
-        this.y = y;
-        object.translate(x, y);
+    public void setSize(int w, int h) {
+        height=h;
+        width=w;
+        object.xpoints=getXpoint();
+        object.ypoints=getYpoint();
     }
-    public int getX(){
-        return x;
-    }
-    public int getY(){
-        return y;
-    }
-    public void setX(int x){
-        this.x = x;
-    }
-    public void setY(int y){
-        this.y=y;
-    }
-    public void setColor(Color color) {
-        this.color = color;
-    }
-    public Color getColor(){
-        return color;
-    }
+    
     public Shape getShape() {
         return object;
     }
@@ -64,13 +52,13 @@ public class StarBlock implements GameShape {
 
     public void paintShape(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(color);
+        g2d.setColor(getColor());
         g2d.fill(object);
         g2d.draw(object);
-        if (color == Color.BLACK)
+        if (getColor() == Color.BLACK)
             g2d.setColor(Color.DARK_GRAY);
         else
-            g2d.setColor(color.darker());
+            g2d.setColor(getColor().darker());
         g2d.fill(center);
         g2d.draw(center);
     }

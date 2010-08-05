@@ -13,7 +13,7 @@ import java.awt.Shape;
  *
  * @author nac
  */
-public interface GameShape {
+public interface GameShape_I {
     public final int SIZE=50;
     public void setPosition(int x, int y);
     public void setColor(Color color);

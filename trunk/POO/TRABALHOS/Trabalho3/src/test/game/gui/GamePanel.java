@@ -17,7 +17,7 @@ import javax.swing.JPanel;
  * @author masterzdran
  */
 public class GamePanel extends JPanel {
-    GameShape[][] board;
+    GameShape_I[][] board;
     public GamePanel(){
         Color[] c ={Color.BLACK,Color.BLUE,Color.GREEN,Color.MAGENTA,Color.ORANGE,Color.YELLOW, Color.PINK};
         setLayout(new BorderLayout());
@@ -27,7 +27,7 @@ public class GamePanel extends JPanel {
         setOpaque(false);
         setSize(250,650);
         setName("Game Panel");
-        board=new GameShape[9][9];
+        board=new GameShape_I[9][9];
         for (int line =0;line<9;++line){
             for(int col=0;col<9;++col){
                 board[line][col]=new RubiBlock(c[(new Random().nextInt(c.length*71))%c.length], 55*line+20, 55*col+20);
