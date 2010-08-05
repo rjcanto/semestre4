@@ -5,6 +5,7 @@
 
 package test.game.gui;
 
+import test.game.gui.Game_Inteface.GameGUIVars_I;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -22,7 +23,7 @@ import test.Fonts.Fonts;
  *
  * @author nac
  */
-public class InfoPanel extends JPanel implements GameGUIVars {
+public class InfoPanel extends JPanel implements GameGUIVars_I {
     
     private final File imageDir = new File(INFOIMAGEPATH);
     private String[] image;

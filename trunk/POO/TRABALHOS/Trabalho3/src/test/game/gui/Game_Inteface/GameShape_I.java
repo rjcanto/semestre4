@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package test.game.gui;
+package test.game.gui.Game_Inteface;
 
 import java.awt.Color;
 import java.awt.Graphics;

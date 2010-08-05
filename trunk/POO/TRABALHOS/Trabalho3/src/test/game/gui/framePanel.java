@@ -5,6 +5,7 @@
 
 package test.game.gui;
 
+import test.game.gui.Game_Inteface.GameGUIVars_I;
 import java.awt.BorderLayout;
 import java.io.File;
 import java.io.FilenameFilter;
@@ -17,7 +18,7 @@ import javax.swing.JPanel;
  *
  * @author nac
  */
-public class FramePanel extends JPanel implements GameGUIVars {
+public class framePanel extends JPanel implements GameGUIVars_I {
     
     private File imageDir = new File(IMAGEPATH);
     private String[] image;
@@ -27,7 +28,7 @@ public class FramePanel extends JPanel implements GameGUIVars {
     private JLabel bgl;
     private String filename;
 
-    public FramePanel(){
+    public framePanel(){
         
         setLayout(new BorderLayout());
         filter = new FilenameFilter() { public boolean accept(File dir, String name) { return !name.startsWith(".") && name.endsWith(".jpg"); } };

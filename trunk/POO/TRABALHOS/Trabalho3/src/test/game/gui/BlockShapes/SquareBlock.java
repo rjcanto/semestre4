@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package test.game.gui;
+package test.game.gui.BlockShapes;
 
 import java.awt.Color;
 import java.awt.Graphics;
