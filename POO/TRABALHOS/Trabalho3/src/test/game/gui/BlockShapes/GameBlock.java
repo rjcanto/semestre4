@@ -3,9 +3,10 @@
  * and open the template in the editor.
  */
 
-package test.game.gui;
+package test.game.gui.BlockShapes;
 
 import java.awt.Color;
+import test.game.gui.Game_Inteface.GameShape_I;
 import test.game.model.Block_I;
 
 /**
