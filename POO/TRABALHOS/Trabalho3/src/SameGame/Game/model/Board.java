@@ -215,7 +215,7 @@ public class Board implements Board_I{
     }
     public void unselect(int r, int c){
         Coordinates coord = new Coordinates(r,c);
-        if (!selectedBlocks.contains(coord))
+        if (!grid[r][c].isSelected())
             return;
         Iterator<Coordinates> it = selectedBlocks.iterator();
         Coordinates aux;
@@ -229,7 +229,7 @@ public class Board implements Board_I{
     }
 
     public boolean isSelected(int r, int c) {
-        return selectedBlocks.contains(new Coordinates(r,c));
+        return grid[r][c].isSelected();
     }
 
     @Override
