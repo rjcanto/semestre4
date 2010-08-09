@@ -6,8 +6,12 @@
 package SameGame;
 
 import SameGame.Game.model.*;
+import java.io.*;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -33,19 +37,26 @@ public class SameGame {
     
 //        SameGameGUI sg = new SameGameGUI(5,5);
 
-        Board b = new Board(4,4);
+        Block block;
 
-        for (int i=0; i<b.getHeight();++i)
-            for (int j=0; j<b.getWidth();++j)
-                b.addBlock(new BBlock(), i, j,false);
+        //Class c = Class.forName("Page");
+        String[] blockNames = {"RGBBlock"};
 
-        b.addBlock(new WBlock(),0,2,true);
-        LinkedList<Block> list = new LinkedList<Block>();
-        b.getBlock(2, 1).select();
+        Board b = new Board(4,4,blockNames);
+
+//        for (int i=0; i<b.getHeight();++i)
+//            for (int j=0; j<b.getWidth();++j)
+//                b.addBlock(new RGBBlock(), i, j);
+
+        b.addBlock(new WBlock(), 2, 0);
+
+        b.addBlock(new BBlock(), 1, 2);
         System.out.println(b.toString());
         //list = b.getBlock(2, 1).selectGroup(list);
         //list = b.getBlock(0, 2).selectGroup(list);
 
+        b.select(2,0);
+
         System.out.println(b.toString());
         b.rotate(false);
         System.out.println(b.toString());
@@ -55,14 +66,6 @@ public class SameGame {
         System.out.println(b.toString());
         b.rotate(true);
         System.out.println(b.toString());
-
-
-        Iterator it = list.iterator();
-
-        while (it.hasNext()){
-            Block b1 = (Block) it.next();
-            b.removeBlock(b1);
-        }
 
         System.out.println(b.toString());
         b.shiftDown();
