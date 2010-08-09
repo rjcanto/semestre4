@@ -37,14 +37,14 @@ public class SameGame {
 
         for (int i=0; i<b.getHeight();++i)
             for (int j=0; j<b.getWidth();++j)
-                b.addBlock(new BBlock(b,i,j), i, j);
+                b.addBlock(new BBlock(), i, j,false);
 
-        b.addBlock(new WBlock(b,0,2));
+        b.addBlock(new WBlock(),0,2,true);
         LinkedList<Block> list = new LinkedList<Block>();
         b.getBlock(2, 1).select();
         System.out.println(b.toString());
-        list = b.getBlock(2, 1).selectGroup(list);
-        list = b.getBlock(0, 2).selectGroup(list);
+        //list = b.getBlock(2, 1).selectGroup(list);
+        //list = b.getBlock(0, 2).selectGroup(list);
 
         System.out.println(b.toString());
         b.rotate(false);

@@ -8,20 +8,23 @@ import java.util.LinkedList;
  * @author Nuno
  */
 public class WBlock extends Block{
-    public WBlock(Board b, int r, int c){
-        super(2,Color.WHITE, b);
-        super.setCoord(r, c);
+    private BlockSelectionRule rule;
+    /**
+     *Branco – bloco que permite eliminar uma coluna independentemente da cor dos blocos nessa linha;
+     */
+    public WBlock(){
+        super(3, Color.BLACK);
+        boolean r[][] = {{false,true,false},{false,false,false},{false,true,false}};
+        rule = new BlockSelectionRule(r);
     }
-    
-    public LinkedList<Block> selectGroup(LinkedList<Block> list){
-        return selectNeighbors(list, this.getColumn());
+    public WBlock(int type){
+        super(type, Color.BLACK);
+        boolean r[][] = {{false,true,false},{false,false,false},{false,true,false}};
+        rule = new BlockSelectionRule(r);
     }
 
-    private LinkedList<Block> selectNeighbors(LinkedList<Block> list, int col){
-        for (int i=0; i<super.getBoard().getWidth();++i){
-            super.getBoard().getBlock(i, col).select();
-            list.add(super.getBoard().getBlock(i, col));
-        }
-        return list;
-    }
+    @Override
+     public boolean[][] getSelectionRule(){return this.rule.getSelectionRule();}
 }
+
+
