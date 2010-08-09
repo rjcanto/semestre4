@@ -15,17 +15,9 @@ public class Board implements Board_I{
     private int rows;
     private int columns;
     private int remainingBlocks;
-    private LinkedList selectedBlocks;
+    private LinkedList<Coordinates> selectedBlocks;
     //private CoordinateList<Coordinates> selectedBlocks;
     
-    public class Coordinates{
-        private int row;
-        private int column;
-        public Coordinates(int r, int c){row=r;column=c;}
-        public int getRow(){return row;}
-        public int getColumn(){return column;}
-    }
-
     public Board(int height, int width, String[] blockNames){
         grid = new Block[height][width];
         this.columns = width;
@@ -38,17 +30,13 @@ public class Board implements Board_I{
     public int getWidth(){return columns;}
     public int getHeight(){return rows;}
     public int getRemainingBlocks(){return remainingBlocks;}
+    public int getSelectedBlocks(){return selectedBlocks.size();}
 
     public boolean isValid(int r, int c){return (r>=0 && r<rows && c>=0 && c<columns);}
-    public Block getBlock(int r, int c) {
-        if (isValid(r,c))
-            return(grid[r][c]);
-        return null;
-    }
+    public Block getBlock(int r, int c) {return  (isValid(r,c)) ? (grid[r][c]) : null;}
     public Block removeBlock(int r, int c){
-        if (!isValid(r,c) || grid[r][c]==null)
-            return null;
-        Block aux = grid[r][c];
+        Block aux = getBlock(r,c);
+        if (aux == null) return null;
         grid[r][c]=null;
         --remainingBlocks;
         return aux;
@@ -161,7 +149,7 @@ public class Board implements Board_I{
             for(int j = 0; j < columns; ++j){
                 rand = new Random().nextInt(blockNames.length);
                 try{
-                    grid[i][j] = (Block) Class.forName(blockNames[rand]).newInstance();
+                    grid[i][j] = (Block) Class.forName("SameGame.Game.model."+blockNames[rand]).newInstance();
                     ++remainingBlocks;
                         //Class.forName(string+"Block").newInstance();
                 } catch(Exception e){
@@ -176,28 +164,149 @@ public class Board implements Board_I{
     /*
      *Métodos para selecção de blocos
      */
-    public int select(int r, int c) {
+    public boolean select(int r, int c) {
+        
+        boolean[][] rule = getBlock(r,c).getSelectionRule();
+        boolean selected = select(r,c,rule);
+        if (selected)
+            selectAndSave(r,c);
+        
+        return (selectedBlocks.size()>0)? true:false;
+        
+    }
+
+    private boolean select(int r, int c, boolean[][] rule){
         Block b = this.removeBlock(r, c);
-        boolean[][] rule = b.getSelectionRule();
-
-        if (rule[0][0])
-            if (b.compareTo(grid[r-1][c-1])==0){
-
+        /*
+         * Verifica canto superior esquerdo
+         */
+        if (rule[0][0] && c!=0 && r!=0)
+            if (rule[1][1]){
+                if (b.compareTo(grid[r-1][c-1])==0){
+                    this.select(r-1,c-1,rule);
+                    selectAndSave(r-1,c-1);
+                }
+            }else{
+                if (grid[r-1][c-1]!=null){
+                    this.select(r-1,c-1,rule);
+                    selectAndSave(r-1,c-1);
+                }
             }
 
+        /*
+         * Verifica cima
+         */
+        if (rule[0][1] && r!=0)
+            if (rule[1][1]){
+                if (b.compareTo(grid[r-1][c])==0){
+                    this.select(r-1,c,rule);
+                    selectAndSave(r-1, c);
+                }
+            }else{
+                if (grid[r-1][c]!=null){
+                    this.select(r-1,c,rule);
+                    selectAndSave(r-1, c);
+                }
+            }
+        /*
+         * Verifica canto superior direito
+         */
+        if (rule[0][2] && c!=columns-1 && r!=0)
+            if (rule[1][1]){
+                if (b.compareTo(grid[r-1][c+1])==0){
+                    this.select(r-1,c+1,rule);
+                    selectAndSave(r-1,c+1);
+                }
+            }else{
+                if (grid[r-1][c+1]!=null){
+                    this.select(r-1,c+1,rule);
+                    selectAndSave(r-1,c+1);
+                }
+            }
+        /*
+         * Verifica o lado esquerdo
+         */
+        if (rule[1][0] && c!=0)
+            if (rule[1][1]){
+                if (b.compareTo(grid[r][c-1])==0){
+                    this.select(r,c-1,rule);
+                    selectAndSave(r,c-1);
+                }
+            }else{
+                if (grid[r][c-1]!=null){
+                    this.select(r,c-1,rule);
+                    selectAndSave(r,c-1);
+                }
 
+            }
+        /*
+         * Verifica o lado direito
+         */
+        if (rule[1][2] && c!=columns-1)
+            if (rule[1][1]){
+                if (b.compareTo(grid[r][c+1])==0){
+                    this.select(r-1,c+1,rule);
+                    selectAndSave(r-1,c+1);
+                }
+            }else{
+                if (grid[r-1][c+1]!=null){
+                    this.select(r-1,c+1,rule);
+                    selectAndSave(r-1,c+1);
+                }
+            }
+        /*
+         * Verifica o canto inferior esquerdo
+         */
+        if (rule[2][0] && r!=rows-1 && c!=0)
+            if (rule[1][1]){
+                if (b.compareTo(grid[r+1][c-1])==0){
+                    this.select(r+1,c-1,rule);
+                    selectAndSave(r+1,c-1);
+                }
+            }else{
+                if (grid[r+1][c-1]!=null){
+                    this.select(r+1,c-1,rule);
+                    selectAndSave(r+1,c-1);
+                }
+            }
+        /*
+         * Verifica baixo
+         */
+        if (rule[2][1] && r!=rows-1)
+            if (rule[1][1]){
+                if (b.compareTo(grid[r+1][c])==0){
+                    this.select(r+1,c,rule);
+                    selectAndSave(r+1,c);
+                }
+            }else{
+                if (grid[r+1][c]!=null){
+                    this.select(r+1,c,rule);
+                    selectAndSave(r+1,c);
+                }
+            }
+        /*
+         * Verifica o canto inferior direito
+         */
+        if (rule[2][2] && r!= rows-1 && c!=columns-1)
+            if (rule[1][1]){
+                if (b.compareTo(grid[r+1][c+1])==0){
+                    this.select(r+1,c+1,rule);
+                    selectAndSave(r+1,c+1);
+                }
+            }else{
+                if (grid[r+1][c+1]!=null){
+                    this.select(r+1,c+1,rule);
+                    selectAndSave(r+1,c+1);
+                }
+            }
 
+        addBlock(b, r, c);
+        return (selectedBlocks.size()>0)? true:false;
+    }
 
-        
-
-
-
-
-        
-
-
-
-        return selectedBlocks.size();
+    private void selectAndSave(int r, int c){
+        grid[r][c].select();
+        selectedBlocks.add(new Coordinates(r,c));
     }
 
 //    public Iterator<Block> getSelectedBlocks() {

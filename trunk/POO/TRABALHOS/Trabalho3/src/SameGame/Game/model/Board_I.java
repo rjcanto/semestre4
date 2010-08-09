@@ -18,7 +18,7 @@ public interface Board_I {
     public int removeRow(int row);
     public int removeColumn(int columns);
     public void clear();
-    public int select(int r, int c);
+    public boolean select(int r, int c);
     public void unselect();
     public boolean isSelected(int r, int c);
     //public Iterator<Block> getSelectedBlocks();
