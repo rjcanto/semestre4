@@ -11,8 +11,9 @@ public interface Board_I {
     public int getWidth();
     public int getHeight();
     public int getRemainingBlocks();
+    public boolean isValid(int r, int c);
     public Block getBlock(int row, int column);
-    public boolean addBlock(Block b, int row, int column, boolean replace);
+    public void addBlock(Block b, int row, int column);
     public Block removeBlock(int row, int column);
     public int removeRow(int row);
     public int removeColumn(int columns);

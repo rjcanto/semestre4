@@ -17,8 +17,6 @@ public class Board implements Board_I{
     private int remainingBlocks;
     private LinkedList selectedBlocks;
     //private CoordinateList<Coordinates> selectedBlocks;
-    private int activeBlockRow;
-    private int activeBlockColumn;
     
     public class Coordinates{
         private int row;
@@ -33,7 +31,6 @@ public class Board implements Board_I{
         this.columns = width;
         this.rows = height;
         remainingBlocks = 0;
-        activeBlockRow=activeBlockColumn=-1;
         selectedBlocks= new LinkedList();
         this.init(blockNames);
     }
@@ -42,48 +39,45 @@ public class Board implements Board_I{
     public int getHeight(){return rows;}
     public int getRemainingBlocks(){return remainingBlocks;}
 
+    public boolean isValid(int r, int c){return (r>=0 && r<rows && c>=0 && c<columns);}
     public Block getBlock(int r, int c) {
-        return(grid[r][c]);
-    }
-    public Block getActiveBlock(){
-        if (activeBlockRow<0 || activeBlockRow>rows || activeBlockColumn<0 || activeBlockColumn>columns)
-            return null;
-        return(grid[activeBlockRow][activeBlockColumn]);
+        if (isValid(r,c))
+            return(grid[r][c]);
+        return null;
     }
     public Block removeBlock(int r, int c){
-        if (grid[r][c]==null) return null;
+        if (!isValid(r,c) || grid[r][c]==null)
+            return null;
         Block aux = grid[r][c];
         grid[r][c]=null;
         --remainingBlocks;
         return aux;
     }
-    public boolean addBlock(Block b, int r, int c, boolean replace){
-        if (!replace && grid[r][c]!=null)
-            return false;
+    public void addBlock(Block b, int r, int c){
+        if (!isValid(r,c)) return;
+        if (grid[r][c]==null)
+            ++remainingBlocks;
         grid[r][c]=b;
-        if (replace)
-        ++remainingBlocks;
-        return true;
     }
     public int removeRow(int r){
-        int res=0;
+        if (!isValid(r,0)) return 0;
+        int res=remainingBlocks;
         for(int i=0; i<columns;++i)
             if (grid[r][i]!=null){
                 grid[r][i]=null;
                 --remainingBlocks;
-                ++res;
             }
-        return res;
+        return res-remainingBlocks;
     }
     public int removeColumn(int c){
-        int res=0;
+        if (!isValid(0,c)) return 0;
+        int res=remainingBlocks;
         for(int i=0; i<rows;++i)
             if (grid[i][c]!=null){
                 grid[i][c]=null;
                 --remainingBlocks;
-                ++res;
             }
-        return res;
+        return res-remainingBlocks;
     }
     public void clear(){
         if (remainingBlocks==0) return;
@@ -172,6 +166,7 @@ public class Board implements Board_I{
                         //Class.forName(string+"Block").newInstance();
                 } catch(Exception e){
                     System.err.print("Classe para criar o bloco " +blockNames[rand]+ "não foi encontrada.");
+                    return false;
                 }
             }
         }
@@ -182,8 +177,6 @@ public class Board implements Board_I{
      *Métodos para selecção de blocos
      */
     public int select(int r, int c) {
-        activeBlockRow = r;
-        activeBlockColumn = c;
         Block b = this.removeBlock(r, c);
         boolean[][] rule = b.getSelectionRule();
 
@@ -213,18 +206,31 @@ public class Board implements Board_I{
 
     public void unselect(){
         Iterator<Coordinates> it = selectedBlocks.iterator();
+        Coordinates c;
         while (it.hasNext()){
-            Coordinates c = it.next();
+            c = it.next();
             grid[c.getRow()][c.getColumn()].unselect();
             selectedBlocks.remove();
+        }
+    }
+    public void unselect(int r, int c){
+        Coordinates coord = new Coordinates(r,c);
+        if (!selectedBlocks.contains(coord))
+            return;
+        Iterator<Coordinates> it = selectedBlocks.iterator();
+        Coordinates aux;
+        while (it.hasNext()){
+            aux = it.next();
+            if (aux.equals(coord)){
+                grid[coord.getRow()][coord.getColumn()].unselect();
+                selectedBlocks.remove();
+            }
         }
     }
 
     public boolean isSelected(int r, int c) {
         return selectedBlocks.contains(new Coordinates(r,c));
     }
-
-
 
     @Override
     public String toString(){
