@@ -9,7 +9,7 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
-import test.game.gui.Layouts.Layout2;
+import test.game.gui.Layouts.Layout2.Layout2;
 import test.game.gui.mainMenu;
 import test.game.gui.mainWindow;
 

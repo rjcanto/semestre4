@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package test.game.gui.Layouts;
+package test.game.gui.Layouts.Layout1;
 
 import java.awt.BorderLayout;
 import java.awt.Container;

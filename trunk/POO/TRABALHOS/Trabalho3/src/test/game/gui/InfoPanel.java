@@ -5,7 +5,6 @@
 
 package test.game.gui;
 
-import test.game.gui.Game_Inteface.GameGUIVars_I;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -23,8 +22,8 @@ import test.Fonts.Fonts;
  *
  * @author nac
  */
-public class InfoPanel extends JPanel implements GameGUIVars_I {
-    
+public class InfoPanel extends JPanel{
+    private final String INFOIMAGEPATH ="src/test/images/Layouts/Layout1/infoBG/";
     private final File imageDir = new File(INFOIMAGEPATH);
     private String[] image;
     private FilenameFilter filter;
@@ -41,6 +40,7 @@ public class InfoPanel extends JPanel implements GameGUIVars_I {
         //Set BackGround
         filter = new FilenameFilter() { public boolean accept(File dir, String name) { return !name.startsWith(".") && name.endsWith(".jpg"); } };
         image = imageDir.list(filter);
+        
         filename=INFOIMAGEPATH+(image[(new Random().nextInt(image.length*71))%image.length]);
         bg = new ImageIcon(filename);
         bgl = new JLabel();
@@ -48,7 +48,7 @@ public class InfoPanel extends JPanel implements GameGUIVars_I {
         bgl.setLocation(0, 0);
      
         Container center = new Container();
-        //System.out.print(imageDir.getAbsolutePath()+" -- " + filename);
+        System.out.print(imageDir.getAbsolutePath()+" -- " + filename);
         center.setLayout(new BorderLayout());
         center.setLocation(0, 0);
         

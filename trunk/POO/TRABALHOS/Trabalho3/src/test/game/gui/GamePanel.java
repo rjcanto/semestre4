@@ -5,7 +5,7 @@
 
 package test.game.gui;
 
-import test.game.gui.Game_Inteface.GameShape_I;
+import test.game.gui.Game_Interfaces.GameShape_I;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -51,7 +51,6 @@ public class GamePanel extends JPanel implements MouseInputListener {
             for(int col=0;col<BOARD_W;++col){
                     if( board[line][col] != null)
                     board[line][col].paintShape(g2);
-
             }
         }
         this.validate();
