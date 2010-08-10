@@ -6,7 +6,7 @@
 package test.game.gui.BlockShapes;
 
 import java.awt.Color;
-import test.game.gui.Game_Inteface.GameShape_I;
+import test.game.gui.Game_Interfaces.GameShape_I;
 import test.game.model.Block_I;
 
 /**

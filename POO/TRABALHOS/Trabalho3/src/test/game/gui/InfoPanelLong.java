@@ -5,7 +5,6 @@
 
 package test.game.gui;
 
-import test.game.gui.Game_Inteface.GameGUIVars_I;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -22,8 +21,8 @@ import test.Fonts.Fonts;
  *
  * @author nac
  */
-public class InfoPanelLong extends JPanel implements GameGUIVars_I {
-    private final String INFOIMAGEPATH ="src/test/images/Layout2/info/";
+public class InfoPanelLong extends JPanel {
+    private final String INFOIMAGEPATH ="src/test/images/Layouts/Layout2/infoBG/";
     private final File imageDir = new File(INFOIMAGEPATH);
     private String[] image;
     private FilenameFilter filter;
@@ -41,7 +40,6 @@ public class InfoPanelLong extends JPanel implements GameGUIVars_I {
         filter = new FilenameFilter() { public boolean accept(File dir, String name) { return !name.startsWith(".") &&( name.endsWith(".jpg") ||  name.endsWith(".png") ||  name.endsWith(".gif")); } };
         image = imageDir.list(filter);
         filename=INFOIMAGEPATH+(image[(new Random().nextInt(image.length*71))%image.length]);
-        System.out.println(filename);
         bg = new ImageIcon(filename);
         bgl = new JLabel();
         bgl.setIcon(bg);
