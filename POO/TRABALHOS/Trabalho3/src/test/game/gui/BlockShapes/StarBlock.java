@@ -18,29 +18,26 @@ import java.awt.geom.Ellipse2D;
 public class StarBlock extends GameBlock {
     private Polygon object;
     private Ellipse2D.Double center;
-    private int width;
-    private int height;
 
     private int[] getXpoint(){
-        int[] xx={width/2,width/2,0,width/2, width/2,width,width,width/2, width/2, width,width/2,width/2,width/2,0,0,width/2};
+        int[] xx={getWidth()/2,getWidth()/2,0,getWidth()/2, getWidth()/2,getWidth(),getWidth(),getWidth()/2, getWidth()/2, getWidth(),getWidth()/2,getWidth()/2,getWidth()/2,0,0,getWidth()/2};
         return xx;
     }
     private int[] getYpoint(){
-        int[] yy={height/2,0,0,height/2, height/2,0,height/2,height/2,height/2,height,height,height/2,height/2,height,height/2,height/2};
+        int[] yy={getHeight()/2,0,0,getHeight()/2, getHeight()/2,0,getHeight()/2,getHeight()/2,getHeight()/2,getHeight(),getHeight(),getHeight()/2,getHeight()/2,getHeight(),getHeight()/2,getHeight()/2};
         return yy;
     }
     public StarBlock(Color c, int posX, int posY) {
         super(c,posX,posY);
-        width=height=SIZE;
         int[] xx=getXpoint();
         int[] yy=getYpoint();
         object = new Polygon(xx,yy,xx.length);
-        center = new Ellipse2D.Double(posX + width/4, posY + height/4, width/2, height/2);
+        center = new Ellipse2D.Double(getX() + getWidth()/4, getY() + getHeight()/4, getWidth()/2, getHeight()/2);
         object.translate(getX(), getY());
+        
     }
     public void setSize(int w, int h) {
-        height=h;
-        width=w;
+        super.setSize(w,h);
         object.xpoints=getXpoint();
         object.ypoints=getYpoint();
     }
@@ -59,6 +56,7 @@ public class StarBlock extends GameBlock {
             g2d.setColor(Color.DARK_GRAY);
         else
             g2d.setColor(getColor().darker());
+
         g2d.fill(center);
         g2d.draw(center);
     }

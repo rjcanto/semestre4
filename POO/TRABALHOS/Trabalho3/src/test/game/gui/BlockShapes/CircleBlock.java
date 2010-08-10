@@ -17,26 +17,22 @@ import java.awt.geom.Ellipse2D;
 public class CircleBlock extends GameBlock {
     private Ellipse2D.Double object;
     private Ellipse2D.Double center;
-    private int width;
-    private int height;
 
     public CircleBlock(Color c, int posX, int posY) {
         super(c,posX,posY);
-        width=height=SIZE;
-        object = new Ellipse2D.Double(posX, posY, width, height);
-        center = new Ellipse2D.Double(posX + width/4, posY + height/4, width/2, height/2);
-        setSize(40, 40);
+        object = new Ellipse2D.Double(getX(), getY(), getWidth(), getHeight());
+        center = new Ellipse2D.Double(getX() + getWidth()/4, getY() + getHeight()/4, getWidth()/2, getHeight()/2);
+        this.setSize(40, 40);
     }
 
     public void setSize(int w, int h) {
-        height=h;
-        width=w;
-        object.width=height;
-        object.height=width;
-        center.width=height/2;
-        center.height=width/2;
-        center.x=getX()+width/4;
-        center.y=getY()+height/4;
+        super.setSize(w,h);
+        object.width=w;
+        object.height=h;
+        center.width=w/2;
+        center.height=h/2;
+        center.x=getX()+w/4;
+        center.y=getY()+h/4;
     }
 
     public Shape getShape() {
@@ -58,7 +54,7 @@ public class CircleBlock extends GameBlock {
     }
 
     public int getSize() {
-        return width;
+        return getWidth();
     }
 
 }

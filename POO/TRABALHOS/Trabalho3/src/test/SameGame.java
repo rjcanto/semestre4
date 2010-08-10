@@ -9,9 +9,7 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
-import test.game.gui.CenterPanel;
-import test.game.gui.InfoPanel;
-import test.game.gui.framePanel;
+import test.game.gui.Layouts.Layout2;
 import test.game.gui.mainMenu;
 import test.game.gui.mainWindow;
 
@@ -84,24 +82,11 @@ public class SameGame {
         Dimension screenSize    = Toolkit.getDefaultToolkit().getScreenSize();
         JFrame gameFrame    = new mainWindow(800,600);
         JMenuBar gameMenu       = new mainMenu();
-        JPanel gamePanel        = new framePanel();
-        JPanel center           = new CenterPanel();
-        JPanel info             = new InfoPanel();
-        
+        JPanel layout           = new Layout2();
         
 
         gameFrame.setJMenuBar(gameMenu);
-        gamePanel.setLocation(0,0);
-        center.setLocation(0, 0);
-        info.setLocation(600,0);
-
-        
-
-        
-        gameFrame.getContentPane().add(center);
-        gameFrame.getContentPane().add(info);
-        gameFrame.getContentPane().add(gamePanel);
-        
+        gameFrame.getContentPane().add(layout);
         gameFrame.setResizable(false);
         gameFrame.setLocation((screenSize.width - gameFrame.getWidth())/2, (screenSize.height - gameFrame.getHeight())/2);
         gameFrame.pack();

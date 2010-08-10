@@ -18,25 +18,21 @@ import java.awt.geom.Ellipse2D;
 public class RubiBlock extends GameBlock {
     private Polygon object;
     private Ellipse2D.Double center;
-    private int width;
-    private int height;
-    
     private int[] getXpoint(){
-        int[] xx={0,width/2,width,width/2};
+        int[] xx={0,getWidth()/2,getWidth(),getWidth()/2};
         return xx;
     }
     private int[] getYpoint(){
-        int[] yy={height/2,0,height/2,height};
+        int[] yy={getHeight()/2,0,getHeight()/2,getHeight()};
         return yy;
     }
 
     public RubiBlock(Color c, int posX, int posY) {
         super(c,posX,posY);
-        width=height=SIZE;
         int[] xx=getXpoint();
         int[] yy=getYpoint();
         object = new Polygon(xx,yy,xx.length);
-        center = new Ellipse2D.Double(posX + width/4, posY + height/4, width/2, height/2);
+        center = new Ellipse2D.Double(getX() + getWidth()/4, getY() + getHeight()/4, getWidth()/2, getHeight()/2);
         object.translate(getX(), getY());
     }
     public Shape getShape() {
@@ -55,14 +51,13 @@ public class RubiBlock extends GameBlock {
         g2d.draw(center);
     }
     public void setSize(int w, int h) {
-        height=h;
-        width=w;
+        super.setSize(w,h);
         object.xpoints=getXpoint();
         object.ypoints=getYpoint();
-        center.width=height/2;
-        center.height=width/2;
-        center.x=getX()+width/4;
-        center.y=getY()+height/4;
+        center.width=getHeight()/2;
+        center.height=getWidth()/2;
+        center.x=getX()+getWidth()/4;
+        center.y=getY()+getHeight()/4;
         object.translate(getX(), getY());
     }
     public int getSize() {

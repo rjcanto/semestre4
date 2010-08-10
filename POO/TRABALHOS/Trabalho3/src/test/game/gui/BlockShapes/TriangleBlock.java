@@ -16,29 +16,26 @@ import java.awt.Shape;
  */
 public class TriangleBlock extends GameBlock {
     private Polygon object;
-    private int width;
-    private int height;
 
     private int[] getXpoint(){
-        int[] xx={0,width/2,width};
+        int[] xx={0,getWidth()/2,getWidth()};
         return xx;
     }
     private int[] getYpoint(){
-        int[] yy={height,0,height};
+        int[] yy={getHeight(),0,getHeight()};
         return yy;
     }
     public TriangleBlock(Color c, int posX, int posY) {
         super(c,posX,posY);
-        width=height=SIZE;
         int[] xx=getXpoint();
         int[] yy=getYpoint();
         object = new Polygon(xx,yy,xx.length);
         object.translate(posX, posY);
+        object.translate(getX(), getY());
     }
 
     public void setSize(int w, int h) {
-        height=h;
-        width=w;
+        super.setSize(w,h);
         object.xpoints=getXpoint();
         object.ypoints=getYpoint();
     }
