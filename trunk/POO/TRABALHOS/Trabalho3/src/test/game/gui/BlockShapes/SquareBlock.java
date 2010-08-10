@@ -16,20 +16,14 @@ import java.awt.geom.Rectangle2D;
  */
 public class SquareBlock extends GameBlock {
     private Rectangle2D.Double object;
-    private int width;
-    private int height;
-
-
     public SquareBlock(Color c, int posX, int posY) {
         super(c,posX,posY);
-        width=height=SIZE;
-        object = new Rectangle2D.Double(posX, posY, width, height);
+        object = new Rectangle2D.Double(posX, posY, getWidth(), getHeight());
     }
     public void setSize(int w, int h) {
-        height=h;
-        width=w;
-        object.height=height;
-        object.width=width;
+        super.setSize(w,h);
+        object.height=h;
+        object.width=w;
     }
     public void paintShape(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;

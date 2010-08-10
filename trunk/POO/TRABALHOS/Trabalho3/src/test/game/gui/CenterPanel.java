@@ -23,8 +23,7 @@ public class CenterPanel extends JPanel {
         setLayout(new BorderLayout());
         Container center = new Container();
         center.setLayout(new BorderLayout());
-        setBackground(new Color(150, 150, 150, 125));
-        setOpaque(true);
+        setOpaque(false);
         setSize(600,600);
         setName("Center Panel");
         JPanel game =new GamePanel();
