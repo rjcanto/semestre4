@@ -6,6 +6,7 @@
 package SameGame;
 
 import SameGame.Game.model.*;
+import java.awt.Color;
 import java.io.*;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -18,7 +19,7 @@ import java.util.logging.Logger;
  *
  * @author Nuno
  */
-public class SameGame {
+public class SameGame implements GameModelVars_I{
 
     /**
      * @param args the command line arguments
@@ -56,8 +57,20 @@ public class SameGame {
         //list = b.getBlock(0, 2).selectGroup(list);
 
         b.select(2,0);
-
         System.out.println(b.toString());
+        b.unselect();
+        System.out.println(b.toString());
+
+        b.select(1,2);
+        System.out.println(b.toString());
+        b.unselect(1,1);
+        System.out.println(b.toString());
+
+        b.select(0,0);
+        System.out.println(b.toString());
+        b.removeSelected();
+        System.out.println(b.toString());
+        
         b.rotate(false);
         System.out.println(b.toString());
         b.rotate(false);
