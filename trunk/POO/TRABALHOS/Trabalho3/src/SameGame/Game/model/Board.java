@@ -16,6 +16,8 @@ public class Board implements Board_I, GameModelVars_I{
     private int columns;
     private int remainingBlocks;
     private LinkedList<Coordinates> selectedBlocks;
+    private UndoInfo[] undoData;
+    private int undoLevel;
     //private CoordinateList<Coordinates> selectedBlocks;
     
     public Board(int height, int width, String[] blockNames){
@@ -23,6 +25,10 @@ public class Board implements Board_I, GameModelVars_I{
         this.columns = width;
         this.rows = height;
         remainingBlocks = 0;
+        /*  normalmente, o número máximo de jogadas será 
+         *  metade do número total de blocos */
+        undoData = new UndoInfo[height*width/2];
+        undoLevel=0;
         selectedBlocks= new LinkedList();
         this.init(blockNames);
     }
@@ -154,10 +160,17 @@ public class Board implements Board_I, GameModelVars_I{
             }
         }
     }
-    public void shitPartiallyLeft(int emptyColumn){
-        
 
-
+    /*
+     * Desloca todos os blocos da coluna col até ao fim da grelha uma coluna para
+     * a esquerda.
+     * @param col coluna de destino para onde se vai shiftar os blocos
+     */
+    public void shitfLeftOne(int col){
+        for (int c=col; c<columns; ++c)
+            for (int r=rows-1;r>0;--r)
+                if (grid[r][c]==null && grid[r][c+1]!=null)
+                    addBlock(removeBlock(r, c+1), r, c);
     }
 
     /*
@@ -165,11 +178,11 @@ public class Board implements Board_I, GameModelVars_I{
      */
     public final boolean init(String[] blockNames) {
         int rand;
-        for (int i = 0; i < rows; ++i){
-            for(int j = 0; j < columns; ++j){
+        for (int r = 0; r < rows; ++r){
+            for(int c = 0; c < columns; ++c){
                 rand = new Random().nextInt(blockNames.length);
                 try{
-                    grid[i][j] = (Block) Class.forName("SameGame.Game.model."+blockNames[rand]).newInstance();
+                    grid[r][c] = (Block) Class.forName("SameGame.Game.model."+blockNames[rand]).newInstance();
                     ++remainingBlocks;
                         //Class.forName(string+"Block").newInstance();
                 } catch(Exception e){
@@ -180,12 +193,36 @@ public class Board implements Board_I, GameModelVars_I{
         }
         return true;
     }
+    /*
+     * Adiciona uma nova coluna de blocos na ultima coluna do board e "encosta"
+     * os blocos ao mais próximo deste para a direita. Caso a linha esteja vazia
+     * após chegar à primeira coluna faz o "shiftDown"
+     * @param blockNames Array de strings com o nome das classes a serem usadas
+     *                   na criação dos blocos.
+     */
     public void addColumnToEnd(String[] blockNames){
-
-
+        int rand;
+        for(int r = 0; r < rows; ++r){
+            rand = new Random().nextInt(blockNames.length);
+            try{
+                grid[r][columns-1] = (Block) Class.forName("SameGame.Game.model."+blockNames[rand]).newInstance();
+                ++remainingBlocks;
+                    //Class.forName(string+"Block").newInstance();
+            } catch(Exception e){
+                System.err.print("Classe para criar o bloco " +blockNames[rand]+ "não foi encontrada.");
+            }
+        }
+        for(int r = 0; r < rows; ++r){
+            int c= columns-2;
+            while (c>=0 && grid[r][c]==null)
+                c--;
+            if (c!=columns-2)
+                addBlock(removeBlock(r, columns-1), r, c+1);
+        }
+        this.shiftDown();
     }
     /*
-     *Métodos para selecção de blocos
+     *Métodos para seleccionar blocos, consultar selecção e remover seleccionados
      */
     public boolean select(int r, int c) {
         if (!isValid(r, c)) return false;
@@ -213,44 +250,11 @@ public class Board implements Board_I, GameModelVars_I{
      */
     private boolean select(int r, int c, boolean[][] rule){
         Block b = this.removeBlock(r, c);
-
         for (int i=0; i<rule.length;++i)
             for (int j=0; j<rule[0].length;++j){
-                if (rule[i][j])
-                    checkBlock(r+ROW_OFFSET[i][j] , c+(COLUMN_OFFSET[i][j]), rule, b);
+                if (rule[i][j] && isValid(r + (i - 1) , c + (j - 1)))
+                    checkBlock(r + (i - 1) , c + (j - 1), rule, b);
         }
-//        for (int i=0; i<rule.length;++i)
-//            for (int j=0; j<rule[0].length;++j){
-//                if (rule[i][j])
-//                   checkBlock(r+OFFSET[i][j].getRow() , c+OFFSET[i][j].getColumn(), rule, b);
-//        }
-
-//
-//        /*Verifica canto superior esquerdo*/
-//        if (rule[0][0] && c!=0 && r!=0)
-//            checkBlock(r+TOP_LEFT[0],c+TOP_LEFT[1],rule,b);
-//        /*Verifica cima*/
-//        if (rule[0][1] && r!=0)
-//           checkBlock(r+TOP[0],c+TOP[1],rule,b);
-//        /*Verifica canto superior direito*/
-//        if (rule[0][2] && c!=columns-1 && r!=0)
-//            checkBlock(r+TOP_RIGHT[0],c+TOP_RIGHT[1],rule,b);
-//        /*Verifica o lado esquerdo*/
-//        if (rule[1][0] && c!=0)
-//           checkBlock(r+LEFT[0],c+LEFT[1],rule,b);
-//        /*Verifica o lado direito*/
-//        if (rule[1][2] && c!=columns-1)
-//            checkBlock(r+RIGHT[0],c+RIGHT[1],rule,b);
-//        /*Verifica o canto inferior esquerdo*/
-//        if (rule[2][0] && r!=rows-1 && c!=0)
-//            checkBlock(r+BOTTOM_LEFT[0],c+BOTTOM_LEFT[1],rule,b);
-//        /*Verifica baixo*/
-//        if (rule[2][1] && r!=rows-1)
-//            checkBlock(r+BOTTOM[0],c+BOTTOM[1],rule,b);
-//        /*Verifica o canto inferior direito*/
-//        if (rule[2][2] && r!= rows-1 && c!=columns-1)
-//            checkBlock(r+BOTTOM_RIGHT[0],c+BOTTOM_RIGHT[1],rule,b);
-
         addBlock(b, r, c);
         return (selectedBlocks.size()>0)? true:false;
     }
@@ -302,6 +306,30 @@ public class Board implements Board_I, GameModelVars_I{
 
     public boolean isSelected(int r, int c) {
         return grid[r][c].isSelected();
+    }
+
+    /*
+     * Métodos para gravação de estado para possibilitar Undo
+     */
+    public void saveState(int score){
+        undoData[undoLevel++]= new UndoInfo(grid, score, remainingBlocks);
+    }
+    public int loadLastState(){
+        if (undoLevel<=0) return 0;
+        return loadState(undoLevel--);
+    }
+    public int loadState(int l){
+        if (l<0 || l>undoLevel) return 0;
+        
+        for (int r=0; r<rows; ++r)
+            for (int c=0; c<columns; ++c)
+                addBlock(undoData[l].getBlock(r, c), r, c);
+
+        remainingBlocks = undoData[l].getRemainningBlocks();
+        //para libertar espaço dos UndoInfo que deixaram de fazer sentido
+        for (int k=l;k<undoLevel;++k) undoData[k]=null;
+        undoLevel = l-1;
+        return undoData[undoLevel].getScore();
     }
 
     @Override
