@@ -16,8 +16,7 @@ public abstract class SameGameRules implements SameGameRules_I {
     public void setGameEngine(SameGameEngine eng){myEngine=eng;}
     public void setBoard(Board b){myBoard=b;}
     public SameGameEngine getGameEngine(){return myEngine;}
-    public abstract void selectBlock(int r, int c);
-    public abstract void unselectBlock(int r, int c);
+    public abstract void clickedBlock(int r, int c);
     public abstract void rotateBoard(boolean right);
     
     public void setParcialScore(int score) {

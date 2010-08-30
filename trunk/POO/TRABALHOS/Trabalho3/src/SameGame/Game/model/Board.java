@@ -40,7 +40,7 @@ public class Board implements Board_I, GameModelVars_I{
     public int getWidth(){return columns;}
     public int getHeight(){return rows;}
     public int getRemainingBlocks(){return remainingBlocks;}
-    public int getSelectedBlocks(){return selectedBlocks.size();}
+    public int getNumberSelectedBlocks(){return selectedBlocks.size();}
     public String[] getBlockNames() {return blockNames;}
     public void setBlockNames(String[] blockNames) {this.blockNames = blockNames;}
 

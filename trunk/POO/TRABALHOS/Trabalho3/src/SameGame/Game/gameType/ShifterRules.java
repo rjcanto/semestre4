@@ -23,7 +23,7 @@ public class ShifterRules extends SameGameRules {
     }
 
     @Override
-    public void selectBlock(int r, int c) {
+    public void clickedBlock(int r, int c) {
         if(myBoard.isSelected(r, c)){
             myBoard.saveState(getGameEngine().getScore());
             myBoard.removeSelected();
@@ -33,7 +33,7 @@ public class ShifterRules extends SameGameRules {
         }else{
             myBoard.unselect();
             myBoard.select(r, c);
-            getGameEngine().setParcialScore(myBoard.getSelectedBlocks());
+            getGameEngine().setParcialScore(myBoard.getNumberSelectedBlocks());
         }
     }
     public void rotateBoard(boolean right){
@@ -41,10 +41,4 @@ public class ShifterRules extends SameGameRules {
         myBoard.shiftDown();
         myBoard.shiftLeft();
     }
-
-    public void unselectBlock(int r, int c) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-
 }
