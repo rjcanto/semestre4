@@ -36,7 +36,7 @@ public class HighScores{
 
     public HighScores(){
         highScores = new LinkedList<Score>();
-        maxElements=5;
+        maxElements=10;
         initHighScores();
     }
     public HighScores(int max){

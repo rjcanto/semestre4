@@ -1,6 +1,7 @@
-package SameGame;
+package SameGame.Game;
 
-import SameGame.Game.model.Block;
+import SameGame.Game.model.Board;
+import SameGame.SameGameRules_I;
 
 /**
  *
@@ -8,33 +9,34 @@ import SameGame.Game.model.Block;
  */
 public abstract class SameGameRules implements SameGameRules_I {
 
-    public void newGame() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+    private SameGameEngine myEngine;
+    private Board myBoard;
 
-    public boolean selectBlock(int x, int y) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public SameGameRules(SameGameEngine eng){myEngine = eng;}
+    public void setGameEngine(SameGameEngine eng){myEngine=eng;}
+    public void setBoard(Board b){myBoard=b;}
+    public SameGameEngine getGameEngine(){return myEngine;}
+    public abstract void selectBlock(int r, int c);
+    public abstract void unselectBlock(int r, int c);
+    public abstract void rotateBoard(boolean right);
+    
+    public void setParcialScore(int score) {
+        myEngine.setParcialScore((score-1)^2);
     }
-
-    public boolean unselectBlock(int x, int y) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void updateScore(int score) {
+        myEngine.setParcialScore((score-1)^2);
+        myEngine.updateScore();
     }
-
-    public boolean removeBlock(int x, int y) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void updateScore() {
+        myEngine.updateScore();
     }
-
-    public String[] viewHighScores() {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void resetScores(){
+        myEngine.resetScores();
     }
-
     public boolean verifyWin() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return (myEngine.getBoard().getRemainingBlocks()==0);
     }
-
     public boolean verifyStuck() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
-
-   
 }
