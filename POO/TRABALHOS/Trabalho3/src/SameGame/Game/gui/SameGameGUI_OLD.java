@@ -11,9 +11,9 @@ import javax.swing.*;
  *
  * @author Nuno
  */
-public class SameGameGUI implements SameGameUI_I, ActionListener{
+public class SameGameGUI_OLD implements SameGameUI_I, ActionListener{
 
-    public SameGameGUI(int width, int height){
+    public SameGameGUI_OLD(int width, int height){
         createAndShowGUI(width, height);
 
 

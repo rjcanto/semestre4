@@ -6,7 +6,6 @@
 package SameGame.Game;
 
 import SameGame.Game.model.Board;
-import SameGame.SameGameRules;
 import SameGame.SameGameUI_I;
 import java.io.*;
 
@@ -46,9 +45,6 @@ public class SameGameEngine implements SameGameEngine_I, SameGameVars_I {
     public void setHeigth(int heigth) {this.heigth = heigth;}
     public int getWidth() {return width;}
     public void setWidth(int width) {this.width = width;}
-    public void setScores(int s1, int s2){score=s1;parcialScore=s2;}
-    public int getScore(){return score;}
-    public int getParcialScore(){return parcialScore;}
     public SameGameUI_I getUI() {return myUI;}
     public void setUI(SameGameUI_I myUI) {this.myUI = myUI;}
     public Board getBoard() {return myBoard;}
@@ -60,6 +56,16 @@ public class SameGameEngine implements SameGameEngine_I, SameGameVars_I {
         return ""+this.score+FILE_DELIMITERS+this.parcialScore+FILE_DELIMITERS+
                 "\n"+this.width+FILE_DELIMITERS+this.heigth+FILE_DELIMITERS;
     }
+
+    /*
+     * métodos para actualizar os Scores
+     */
+    public int getScore(){return score;}
+    public int getParcialScore(){return parcialScore;}
+    public void setScores(int s1, int s2){score=s1;parcialScore=s2;}
+    public void resetScores(){score=0; parcialScore=0;}
+    public void updateScore() {score+=parcialScore; parcialScore=0;}
+    public void setParcialScore(int s){this.parcialScore=s;}
 
     public boolean selectBlock(int x, int y) {
         return gameRules.selectBlock(x, y);
@@ -73,6 +79,8 @@ public class SameGameEngine implements SameGameEngine_I, SameGameVars_I {
     public void newGame() {
         myBoard.init();
     }
+
+    
 
 
 

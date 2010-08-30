@@ -120,16 +120,59 @@ public class Board implements Board_I, GameModelVars_I{
     }
 
     /*
-     * verifica se o board tem alguma coluna vazia
-     * @return retorna indice da primeira coluna vazia ou numero de colunas se nenhuma
+     * verifica se o board tem alguma coluna vazia (linha de baixo com espaços)
+     * e move todos os blocos à sua direita para que as coluna vazias fiquem
+     * do lado direito
+     * 
      */
-    public int checkEmptyColumn(){
-        for (int i=0;i<columns;++i)
-            if (grid[rows-1][i]==null)
-                return i;
-        return -1;
+    public boolean removeEmptyColumns(){
+        boolean res=false;
+        int colOrig=0, colDest=0;
+        //procura primeira coluna vazia
+        while (colDest<columns && grid[rows-1][colDest++]!=null){}
+        //vamos verificar qual a primeira coluna preenchida após a coluna vazia
+        //se não existirem colunas vazia, colOrig ultrapassa tb os limites
+        colOrig=colDest;
+        while (colOrig<columns && grid[rows-1][colOrig++]==null){res = true;}
+        //move as colunas à esquerda para os espaços vazios, colOrig>=colDest
+        for ( ; colOrig<columns; ++colOrig, ++colDest)
+            for (int r=rows ;r>=0 ;--r){
+                if (grid[r][colOrig]!=null)
+                    break;
+                addBlock(removeBlock(r,colOrig),r, colDest);
+            }
+        return res;
+    }
+    /*
+     * Adiciona uma nova coluna de blocos na linha col
+     * @param blockNames Array de strings com o nome das classes a serem usadas
+     *                   na criação dos blocos.
+     */
+    public void addColumn(int col){
+        int rand;
+        for(int r = 0; r < rows; ++r){
+            rand = (new Random().nextInt(blockNames.length))*71%blockNames.length;
+            while (!addBlock(blockNames[rand], rand, r, col)){
+                removeBlockName(rand);
+            }
+            ++remainingBlocks;
+        }
     }
 
+    public void fillEmptyColumns(boolean shift) {
+        int c= columns;
+        while(c>=0 && grid[rows-1][c]==null){
+            addColumn(c);
+            if (shift){
+                shiftLeft();
+                shiftDown();
+            }else{
+                --c;
+            }
+        }
+    }
+
+    
     /*
      * Métodos para manipulação da Grelha
      */
@@ -198,69 +241,28 @@ public class Board implements Board_I, GameModelVars_I{
             }
         }
     }
-
-    /*
-     * Desloca todos os blocos da coluna col até ao fim da grelha uma coluna para
-     * a esquerda.
-     * @param col coluna de destino para onde se vai shiftar os blocos
-     */
-    public void shitfLeftOne(int col){
-        for (int c=col; c<columns; ++c)
-            for (int r=rows-1;r>0;--r)
-                if (grid[r][c]==null && grid[r][c+1]!=null)
-                    addBlock(removeBlock(r, c+1), r, c);
-    }
-
     /*
      * Inicialização do Board.
      */
-    public final boolean init() {
-        int rand;
-        for (int r = 0; r < rows; ++r){
-            for(int c = 0; c < columns; ++c){
-                rand = (new Random().nextInt(blockNames.length))*71%blockNames.length;
-                if (!addBlock(blockNames[rand], rand, r, c)){
-                    removeBlockName(rand);
-                    return false;
-                }
-            }
-        }
-        return true;
+    public final void init() {
+        for (int c = 0; c < rows; ++c)
+            addColumn(c);
     }
+
+
     private void removeBlockName(int rand) {
+        if (blockNames.length==1) {
+            Logger.getLogger(Board.class.getName()).log(Level.SEVERE,
+                    "Not able to access Block Classes.");
+            System.exit(1);
+        }
         String[] aux = new String[blockNames.length-1];
         System.arraycopy(blockNames, 0, aux, 0, rand);
         System.arraycopy(blockNames, rand+1, aux, 0, aux.length-rand);
     }
 
 
-    /*
-     * Adiciona uma nova coluna de blocos na ultima coluna do board e "encosta"
-     * os blocos ao mais próximo deste para a direita. Caso a linha esteja vazia
-     * após chegar à primeira coluna faz o "shiftDown"
-     * @param blockNames Array de strings com o nome das classes a serem usadas
-     *                   na criação dos blocos.
-     */
-    public boolean addColumnToEnd(){
-        int rand;
-        for(int r = 0; r < rows; ++r){
-            rand = new Random().nextInt(blockNames.length);
-            if (!addBlock(blockNames[rand], rand, r, columns-1)){
-                removeBlockName(rand);
-                return false;
-            }
-            ++remainingBlocks;
-        }
-        for(int r = 0; r < rows; ++r){
-            int c= columns-2;
-            while (c>=0 && grid[r][c]==null)
-                c--;
-            if (c!=columns-2)
-                addBlock(removeBlock(r, columns-1), r, c+1);
-        }
-        this.shiftDown();
-        return true;
-    }
+
     /*
      *Métodos para seleccionar blocos, consultar selecção e remover seleccionados
      */
@@ -369,8 +371,6 @@ public class Board implements Board_I, GameModelVars_I{
 
 
 
-    
-
     @Override
     public String toString(){
         String res="";
@@ -391,6 +391,8 @@ public class Board implements Board_I, GameModelVars_I{
         }
         return res;
     }
+
+
 }
 
 
