@@ -7,7 +7,6 @@ package SameGame.Game;
 
 import SameGame.Game.model.Board;
 import SameGame.SameGameUI_I;
-import java.io.*;
 
 /**
  *
@@ -67,14 +66,13 @@ public class SameGameEngine implements SameGameEngine_I, SameGameVars_I {
     public void updateScore() {score+=parcialScore; parcialScore=0;}
     public void setParcialScore(int s){this.parcialScore=s;}
 
-    public boolean selectBlock(int x, int y) {
-        return gameRules.selectBlock(x, y);
+    public void clickedBlock(int x, int y) {
+        gameRules.clickedBlock(x, y);
     }
 
-    public boolean unselectBlock(int x, int y) {
-        return gameRules.unselectBlock(x, y);
+    public void rotateBoard(boolean right){
+        gameRules.rotateBoard(right);
     }
-
 
     public void newGame() {
         myBoard.init();
