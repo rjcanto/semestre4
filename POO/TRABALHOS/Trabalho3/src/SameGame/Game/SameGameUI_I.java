@@ -5,6 +5,8 @@
 
 package SameGame;
 
+import SameGame.Game.SameGameEngine_I;
+
 /**
  *
  * @author Nuno

@@ -1,12 +1,22 @@
 package SameGame;
 
+import SameGame.Game.model.Block;
+
 /**
  *
  * @author Nuno
  */
-public class SameGameRules implements SameGameRules_I {
+public abstract class SameGameRules implements SameGameRules_I {
+
+    public void newGame() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 
     public boolean selectBlock(int x, int y) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    public boolean unselectBlock(int x, int y) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -14,16 +24,17 @@ public class SameGameRules implements SameGameRules_I {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public boolean addNewColumn() {
+    public String[] viewHighScores() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public boolean shiftDown() {
+    public boolean verifyWin() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    public boolean shiftLeft() {
+    public boolean verifyStuck() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+   
 }

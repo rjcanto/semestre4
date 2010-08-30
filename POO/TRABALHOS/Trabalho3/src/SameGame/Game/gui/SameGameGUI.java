@@ -1,5 +1,6 @@
 
 package SameGame;
+import SameGame.Game.SameGameEngine_I;
 import java.awt.*;
 import java.applet.*;
 import java.awt.event.ActionEvent;
