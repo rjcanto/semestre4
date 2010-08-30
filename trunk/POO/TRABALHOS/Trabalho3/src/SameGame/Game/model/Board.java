@@ -3,6 +3,8 @@ package SameGame.Game.model;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -15,28 +17,32 @@ public class Board implements Board_I, GameModelVars_I{
     private int rows;
     private int columns;
     private int remainingBlocks;
+    private String[] blockNames;
     private LinkedList<Coordinates> selectedBlocks;
-    private UndoInfo[] undoData;
+    private LinkedList<SavedState> undoData;
     private int undoLevel;
     //private CoordinateList<Coordinates> selectedBlocks;
     
-    public Board(int height, int width, String[] blockNames){
+    public Board(int height, int width, String[] blockNames, boolean init){
         grid = new Block[height][width];
         this.columns = width;
         this.rows = height;
         remainingBlocks = 0;
         /*  normalmente, o número máximo de jogadas será 
          *  metade do número total de blocos */
-        undoData = new UndoInfo[height*width/2];
-        undoLevel=0;
-        selectedBlocks= new LinkedList();
-        this.init(blockNames);
+        undoData = new LinkedList<SavedState>();
+        undoLevel = 0;
+        selectedBlocks= new LinkedList<Coordinates>();
+        this.blockNames=blockNames;
+        if (init) this.init();
     }
 
     public int getWidth(){return columns;}
     public int getHeight(){return rows;}
     public int getRemainingBlocks(){return remainingBlocks;}
     public int getSelectedBlocks(){return selectedBlocks.size();}
+    public String[] getBlockNames() {return blockNames;}
+    public void setBlockNames(String[] blockNames) {this.blockNames = blockNames;}
 
     public boolean isValid(int r, int c){return (r>=0 && r<rows && c>=0 && c<columns);}
     public Block getBlock(int r, int c) {return  (isValid(r,c)) ? (grid[r][c]) : null;}
@@ -47,12 +53,44 @@ public class Board implements Board_I, GameModelVars_I{
         --remainingBlocks;
         return aux;
     }
-    public void addBlock(Block b, int r, int c){
-        if (!isValid(r,c)) return;
+    public boolean addBlock(Block b, int r, int c){
+        if (!isValid(r,c)) return false;
         if (grid[r][c]==null)
             ++remainingBlocks;
         grid[r][c]=b;
+        return true;
     }
+    public boolean addBlock(String name, int type, int r, int c){
+        if (!isValid(r,c)) return false;
+        if (grid[r][c]==null)
+            ++remainingBlocks;
+        try{
+            grid[r][c] = (Block) Class.forName("SameGame.Game.model.blocks."+name).
+                    getDeclaredConstructor(int.class).newInstance(type);
+        } catch(Exception ex){
+            Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
+            --remainingBlocks;
+            return false;
+        }
+        return true;
+    }
+    public boolean addBlock(String name, int type, int colorID, int r, int c){
+        if (!isValid(r,c)) return false;
+        if (grid[r][c]==null)
+            ++remainingBlocks;
+        try{
+            grid[r][c] = (Block) Class.forName("SameGame.Game.model.blocks."+name).
+                    getDeclaredConstructor(int.class, int.class).newInstance(type, colorID);
+        } catch(Exception ex){
+            Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.getMessage());
+            --remainingBlocks;
+            return false;
+        }
+        return true;
+    }
+
     public int removeRow(int r){
         if (!isValid(r,0)) return 0;
         int res=remainingBlocks;
@@ -176,23 +214,26 @@ public class Board implements Board_I, GameModelVars_I{
     /*
      * Inicialização do Board.
      */
-    public final boolean init(String[] blockNames) {
+    public final boolean init() {
         int rand;
         for (int r = 0; r < rows; ++r){
             for(int c = 0; c < columns; ++c){
-                rand = new Random().nextInt(blockNames.length);
-                try{
-                    grid[r][c] = (Block) Class.forName("SameGame.Game.model."+blockNames[rand]).newInstance();
-                    ++remainingBlocks;
-                        //Class.forName(string+"Block").newInstance();
-                } catch(Exception e){
-                    System.err.print("Classe para criar o bloco " +blockNames[rand]+ "não foi encontrada.");
+                rand = (new Random().nextInt(blockNames.length))*71%blockNames.length;
+                if (!addBlock(blockNames[rand], rand, r, c)){
+                    removeBlockName(rand);
                     return false;
                 }
             }
         }
         return true;
     }
+    private void removeBlockName(int rand) {
+        String[] aux = new String[blockNames.length-1];
+        System.arraycopy(blockNames, 0, aux, 0, rand);
+        System.arraycopy(blockNames, rand+1, aux, 0, aux.length-rand);
+    }
+
+
     /*
      * Adiciona uma nova coluna de blocos na ultima coluna do board e "encosta"
      * os blocos ao mais próximo deste para a direita. Caso a linha esteja vazia
@@ -200,17 +241,15 @@ public class Board implements Board_I, GameModelVars_I{
      * @param blockNames Array de strings com o nome das classes a serem usadas
      *                   na criação dos blocos.
      */
-    public void addColumnToEnd(String[] blockNames){
+    public boolean addColumnToEnd(){
         int rand;
         for(int r = 0; r < rows; ++r){
             rand = new Random().nextInt(blockNames.length);
-            try{
-                grid[r][columns-1] = (Block) Class.forName("SameGame.Game.model."+blockNames[rand]).newInstance();
-                ++remainingBlocks;
-                    //Class.forName(string+"Block").newInstance();
-            } catch(Exception e){
-                System.err.print("Classe para criar o bloco " +blockNames[rand]+ "não foi encontrada.");
+            if (!addBlock(blockNames[rand], rand, r, columns-1)){
+                removeBlockName(rand);
+                return false;
             }
+            ++remainingBlocks;
         }
         for(int r = 0; r < rows; ++r){
             int c= columns-2;
@@ -220,6 +259,7 @@ public class Board implements Board_I, GameModelVars_I{
                 addBlock(removeBlock(r, columns-1), r, c+1);
         }
         this.shiftDown();
+        return true;
     }
     /*
      *Métodos para seleccionar blocos, consultar selecção e remover seleccionados
@@ -256,21 +296,23 @@ public class Board implements Board_I, GameModelVars_I{
                     checkBlock(r + (i - 1) , c + (j - 1), rule, b);
         }
         addBlock(b, r, c);
-        return (selectedBlocks.size()>0)? true:false;
+        return (selectedBlocks.size()>0);
     }
 
     private void checkBlock(int r, int c, boolean[][] rule, Block b){
         if (!isValid(r, c)) return;
-        if (rule[1][1]){
-            if (grid[r][c]!=null && b.compareTo(grid[r][c])==0){
-                this.select(r,c,rule);
-                grid[r][c].select();
-                selectedBlocks.add(new Coordinates(r,c));
+        if (grid[r][c]!=null){
+            if (rule[1][1]){
+                if (b.compareTo(grid[r][c])==0){
+                    this.select(r,c,rule);
+                    grid[r][c].select();
+                    selectedBlocks.add(new Coordinates(r,c));
+                }
+            }else if (grid[r][c]!=null){
+                    this.select(r,c,rule);
+                    grid[r][c].select();
+                    selectedBlocks.add(new Coordinates(r,c));
             }
-        }else if (grid[r][c]!=null){
-                this.select(r,c,rule);
-                grid[r][c].select();
-                selectedBlocks.add(new Coordinates(r,c));
         }
     }
 
@@ -282,8 +324,8 @@ public class Board implements Board_I, GameModelVars_I{
         while (it.hasNext()){
             c = it.next();
             grid[c.getRow()][c.getColumn()].unselect();
-            it.remove();
         }
+        selectedBlocks.clear();
     }
     public void unselect(int r, int c){
         if (!grid[r][c].isSelected())
@@ -299,8 +341,8 @@ public class Board implements Board_I, GameModelVars_I{
         while (it.hasNext()){
             c = it.next();
             this.removeBlock(c.getRow(),c.getColumn());
-            it.remove();
         }
+        selectedBlocks.clear();
         return result;
     }
 
@@ -312,56 +354,43 @@ public class Board implements Board_I, GameModelVars_I{
      * Métodos para gravação de estado para possibilitar Undo
      */
     public void saveState(int score){
-        undoData[undoLevel++]= new UndoInfo(grid, score, remainingBlocks);
+        undoData.addFirst(new SavedState(grid, score, remainingBlocks));
     }
-    public int loadLastState(){
-        if (undoLevel<=0) return 0;
-        return loadState(undoLevel--);
-    }
-    public int loadState(int l){
-        if (l<0 || l>undoLevel) return 0;
-        
+    
+    public int loadState(){
+        if (undoData.isEmpty()) return 0;
+        SavedState ss = undoData.removeFirst();
         for (int r=0; r<rows; ++r)
             for (int c=0; c<columns; ++c)
-                addBlock(undoData[l].getBlock(r, c), r, c);
-
-        remainingBlocks = undoData[l].getRemainningBlocks();
-        //para libertar espaço dos UndoInfo que deixaram de fazer sentido
-        for (int k=l;k<undoLevel;++k) undoData[k]=null;
-        undoLevel = l-1;
-        return undoData[undoLevel].getScore();
+                addBlock(ss.getBlock(r, c), r, c);
+        remainingBlocks = ss.getRemainningBlocks();
+        return ss.getScore();
     }
+
+
+
+    
 
     @Override
     public String toString(){
         String res="";
         for (int i=0; i<rows;++i){
             for (int j=0; j<columns;++j)
-                res+=grid[i][j]==null? "-:- | ":grid[i][j].getType()+ ":"+grid[i][j].getColor().getRGB()+ ":" +grid[i][j].isSelected() + " | ";
+                res+=grid[i][j]==null? " ; ;":grid[i][j].toString();
             res+='\n';
         }
         return res;
     }
 
-    /*DEBUG*/
-    private String gridToString(Block[][] g){
+    public String toStringDebug(){
         String res="";
-        for (int i=0; i<g.length;++i){
-            for (int j=0; j<g[0].length;++j)
-                res+=g[i][j]==null? "-:- | ":g[i][j].getType()+ ":" +g[i][j].isSelected() + " | ";
+        for (int i=0; i<rows;++i){
+            for (int j=0; j<columns;++j)
+                res+=grid[i][j]==null? "   - -     ||":grid[i][j].toStringDebug()+((grid[i][j].isSelected())? "true ": "false")+"||";
             res+='\n';
         }
         return res;
-
-
-
     }
-
-
-
-
-
-
 }
 
 

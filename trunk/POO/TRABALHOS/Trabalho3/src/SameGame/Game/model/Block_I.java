@@ -17,4 +17,6 @@ public interface Block_I {
     public boolean isSelected();
     public void unselect();
     public void select();
+    @Override
+    public String toString();
 }
