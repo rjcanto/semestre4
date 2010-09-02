@@ -37,26 +37,26 @@ public class HighScores{
     public HighScores(){
         highScores = new LinkedList<Score>();
         maxElements=10;
-        initHighScores();
+        init();
     }
     public HighScores(int max){
         highScores = new LinkedList<Score>();
         maxElements=max;
-        initHighScores();
+        init();
     }
 
     public int getMaxElements() {return maxElements;}
     public void setMaxElements(int maxElements) {this.maxElements = maxElements;}
     public int getSize() {return highScores.size();}
 
-    public final void initHighScores(){
+    private void init(){
         for (int i=0; i<maxElements;++i)
             highScores.add(new Score());
     }
 
-    public void clearHighScores(){
+    public void reset(){
         highScores = new LinkedList<HighScores.Score>();
-        initHighScores();
+        init();
     }
 
     public boolean isHighScore(int score){
@@ -65,7 +65,7 @@ public class HighScores{
         return false;
     }
 
-    public boolean addHighScore(String name, int score){
+    public boolean add(String name, int score){
         int i=0;
         if (isHighScore(score)){
             Iterator<Score> it = highScores.iterator();
@@ -81,7 +81,7 @@ public class HighScores{
         return false;
     }
 
-    public String[] getHighScores(){
+    public String[] get(){
         int i=0;
         String[] res= new String[highScores.size()];
         Iterator<Score> it = highScores.iterator();
@@ -98,7 +98,7 @@ public class HighScores{
         Iterator<Score> it = highScores.iterator();
         while (it.hasNext()){
             Score aux = it.next();
-            res= aux.getName() + ";" +aux.getScore()+";\n";
+            res+= aux.getName() + ";" +aux.getScore()+";\n";
         }
         return res;
     }

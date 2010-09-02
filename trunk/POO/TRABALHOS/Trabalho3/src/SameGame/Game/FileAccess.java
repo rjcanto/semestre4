@@ -13,6 +13,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,12 +27,23 @@ public class FileAccess implements SameGameVars_I{
 
     File saveGame;
     File highScore;
-    public FileAccess(){
-        saveGame = getFile(SAVEGAME_PATH+"\\"+SAVEGAME_FILENAME);
-        highScore = getFile(SAVEGAME_PATH +"\\"+HIGHSCORES_FILENAME);
+    File gameoptions;
+    SameGameEngine eng;
+
+    public FileAccess(SameGameEngine engine){
+        saveGame = getFile(SAVE_PATH+"\\"+SAVEGAME_FILENAME);
+        highScore = getFile(SAVE_PATH +"\\"+HIGHSCORES_FILENAME);
+        gameoptions = getFile(SAVE_PATH +"\\"+GAME_OPTIONS_FILENAME);
+        this.eng=engine;
     }
     private File getFile(String string) {return new File(string);}
 
+    /*
+     * Pesquisa dentro do package pack as classes existente para poderem ser
+     * inicializadas
+     * @param pack String com o nome do package a analisar
+     * @return Array de strings com os nomes das classes do package
+     */
     public String[] getFileNames(String pack) {
         /*tranformar o nome do package no path relativo do mesmo*/
         String path="";
@@ -49,30 +61,23 @@ public class FileAccess implements SameGameVars_I{
         return classesFound;
     }
 
-    public boolean readAll(SameGameEngine eng){
-        return (readSavedGame(eng) & readHighScores(eng));
+    public boolean readAll(){
+        return (readGameOptions() && readSavedGame() & readHighScores());
     }
 
-    public boolean readSavedGame(SameGameEngine eng){
+    /*
+     * Ler jogo gravado
+     */
+    public boolean readSavedGame(){
         if (saveGame.exists())
-            if(importSaveGame(eng,eng.getBoard()))
+            if(importSaveGame())
                 return true;
         eng.getBoard().init();
         return false;
      }
-
-    public boolean readHighScores(SameGameEngine eng){
-        for (int i=0;i<eng.getHighScores().length;++i)
-            eng.getHighScores()[i].initHighScores();
-        if (saveGame.exists()){
-            return importHighScores(eng);
-        }
-        return false;
-    }
-    
-    private boolean importSaveGame(SameGameEngine eng, Board b){
+    private boolean importSaveGame(){
         try {
-            if (!getSaveGame(new BufferedReader(new FileReader(saveGame)),eng))
+            if (!getSaveGame(new BufferedReader(new FileReader(saveGame))))
                 return false;
         } catch (Exception ex) {
             Logger.getLogger(FileAccess.class.getName()).log(Level.SEVERE, null, ex);
@@ -80,42 +85,36 @@ public class FileAccess implements SameGameVars_I{
         }
         return true;
     }
-
-    private boolean importHighScores(SameGameEngine eng){
-        try {
-            if (!getHighScores(new BufferedReader(new FileReader(highScore)),eng))
-                return false;
-        } catch (Exception ex) {
-            Logger.getLogger(FileAccess.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
-        }
-        return true;
-    }
-    
-/*
- * <score>;<parcialScore>;
- * <rows>;<columns>;
- * <BOARD>;
- */
-    private boolean getSaveGame(BufferedReader bf, SameGameEngine eng) throws IOException{
-        StringTokenizer strtok = new StringTokenizer(bf.readLine());
+    /*
+     * <gametype>;
+     * <score>;<parcialScore>;
+     * <rows>;<columns>;
+     * <BOARD>;
+     */
+    private boolean getSaveGame(BufferedReader bf) throws IOException, NoSuchElementException{
+        StringTokenizer strtok = new StringTokenizer(bf.readLine(),FILE_DELIMITER);
         eng.setScores(Integer.parseInt(strtok.nextToken()),
                             Integer.parseInt(strtok.nextToken()));
-        return getBoard(bf,eng.getBoard().getBlockNames());
+
+        return getBoard(bf);
     }
 
-    private boolean getBoard(BufferedReader bf, String[] blockNames) throws IOException{
+    private boolean getBoard(BufferedReader bf) throws IOException, NoSuchElementException{
         boolean success = true;
-        StringTokenizer strtok = new StringTokenizer(bf.readLine());
+        String blockNames[] = eng.getActiveBlockNames();
+        StringTokenizer strtok = new StringTokenizer(bf.readLine(),FILE_DELIMITER);
         Board board = new Board(Integer.parseInt(strtok.nextToken()),
-                Integer.parseInt(strtok.nextToken()),blockNames,false);
-        for (int r=0; r<board.getHeight() && success;++r)
+                Integer.parseInt(strtok.nextToken()),blockNames,eng.getBlockLimits(),false);
+        eng.setBoard(board);
+        for (int r=0; r<board.getHeight() && success;++r){
+            strtok = new StringTokenizer(bf.readLine(),FILE_DELIMITER);
             for (int c=0; c<board.getWidth() && success;++c){
                 String name=strtok.nextToken();
                 int type;
                 if (!name.equalsIgnoreCase(" ") && (type=checkBlockType(name, blockNames))!=-1)
                     success = board.addBlock(name, type, Integer.parseInt(strtok.nextToken()), r, c);
             }
+        }
         return success;
     }
     private int checkBlockType(String name, String[] gameTypes) {
@@ -124,6 +123,29 @@ public class FileAccess implements SameGameVars_I{
                 return i;
         return -1;
     }
+
+    /*
+     * Ler High Scores
+     */
+    public boolean readHighScores(){
+        if (saveGame.exists()){
+            return importHighScores();
+        }
+        return false;
+    }
+
+    private boolean importHighScores(){
+        try {
+            if (getHighScores(new BufferedReader(new FileReader(highScore))))
+                return true;
+        } catch (Exception ex) {
+            Logger.getLogger(FileAccess.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        return false;
+    }
+    
+
     /*
      * <Gametype>;<num de linhas>;
      * <HighScore.toString>;
@@ -132,16 +154,16 @@ public class FileAccess implements SameGameVars_I{
      * ...
      * ...
      */
-    private boolean getHighScores(BufferedReader bf,SameGameEngine eng) throws IOException {
+    private boolean getHighScores(BufferedReader bf) throws IOException, NoSuchElementException{
         String line,name;
         int numberLines, gameTypeidx;
         boolean success=true;
 
         while((line = bf.readLine())!=null){
-            StringTokenizer strtok = new StringTokenizer(line);
+            StringTokenizer strtok = new StringTokenizer(line,FILE_DELIMITER);
             name = strtok.nextToken();
             numberLines = Integer.parseInt(strtok.nextToken());
-            if ((gameTypeidx = checkGameType(name,eng.getGameType()))==-1){
+            if ((gameTypeidx = checkGameType(name,eng.getGameTypes()))==-1){
                 for(int i=0; i<numberLines;++i)
                     bf.readLine();
                 success=false;
@@ -157,21 +179,70 @@ public class FileAccess implements SameGameVars_I{
                 return i;
         return -1;
     }
-    private void addHS(BufferedReader bf, HighScores hs, int num) throws IOException{
+    private void addHS(BufferedReader bf, HighScores hs, int num) throws IOException, NoSuchElementException{
         for (int i=0; i<num;++i){
-            StringTokenizer strtok = new StringTokenizer(bf.readLine());
-            hs.addHighScore(strtok.nextToken(), Integer.parseInt(strtok.nextToken()));
+            StringTokenizer strtok = new StringTokenizer(bf.readLine(),FILE_DELIMITER);
+            hs.add(strtok.nextToken(), Integer.parseInt(strtok.nextToken()));
         }
     }
+
+    /*
+     * Ler Opções do jogo
+     */
+    public boolean readGameOptions(){
+        if (gameoptions.exists()){
+            return importGameOptions();
+        }
+        eng.setGameNameID(0);
+        eng.setActiveBlockNames(eng.getBlockNames());
+
+        return false;
+    }
+    private boolean importGameOptions(){
+        try {
+            if (!getGameOptions(new BufferedReader(new FileReader(gameoptions))))
+                return false;
+        } catch (Exception ex) {
+            Logger.getLogger(FileAccess.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        return true;
+    }
+    /*
+     * <Gametype>;
+     * <number of active blocks>;
+     * <BlockName>;<maxAmmount>;
+     * <BlockName>;<maxAmmount>;
+     * ...
+     */
+    private boolean getGameOptions(BufferedReader bf) throws IOException, NoSuchElementException{
+        String line;
+        int numberBlocks;
+
+        //le o tipo de jogo gravado
+        eng.setGameNameID(checkGameType(bf.readLine(), eng.getGameTypes()));
+        numberBlocks = Integer.parseInt(bf.readLine());
+        String[] blockNames = new String[numberBlocks];
+        int[] blockLimits = new int[numberBlocks];
+        int i=0;
+        while((line = bf.readLine())!=null && i<=numberBlocks){
+            StringTokenizer strtok = new StringTokenizer(line, FILE_DELIMITER);
+            blockNames[i]=strtok.nextToken();
+            blockLimits[i++]=Integer.parseInt(strtok.nextToken());
+        }
+        eng.setActiveBlockNames(blockNames);
+        eng.setBlockLimits(blockLimits);
+        return (i==numberBlocks);
+}
 
 
     /*
      * métodos para escrita nos ficheiros
      */
-    public boolean saveAll(SameGameEngine eng){
-        return (saveGame(eng) & saveHighScores(eng));
+    public boolean saveAll(){
+        return (saveGame() & saveHighScores() & saveGameOptions());
     }
-    public boolean saveGame(SameGameEngine eng){
+    public boolean saveGame(){
         if (!saveGame.exists())
             try {
             saveGame.createNewFile();
@@ -179,10 +250,26 @@ public class FileAccess implements SameGameVars_I{
                 Logger.getLogger(FileAccess.class.getName()).log(Level.SEVERE, null, ex);
                 return false;
             }
-        return exportSaveGame(eng,eng.getBoard());
+        return exportSaveGame();
+    }
+    private boolean exportSaveGame(){
+        try {
+            putSaveGame(new PrintWriter(new FileWriter(saveGame)));
+        } catch (Exception ex) {
+            Logger.getLogger(FileAccess.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+        return true;
+    }
+    private void putSaveGame(PrintWriter pw) throws IOException{
+        pw.println(eng.getScore()+FILE_DELIMITER+eng.getParcialScore()+FILE_DELIMITER);
+        pw.println(eng.getHeight()+FILE_DELIMITER+eng.getWidth()+FILE_DELIMITER);
+        pw.print(eng.getBoard().toString());
+        pw.flush();
+        pw.close();
     }
 
-    public boolean saveHighScores(SameGameEngine eng){
+    public boolean saveHighScores(){
         if (!highScore.exists())
             try {
             highScore.createNewFile();
@@ -190,40 +277,59 @@ public class FileAccess implements SameGameVars_I{
                 Logger.getLogger(FileAccess.class.getName()).log(Level.SEVERE, null, ex);
                 return false;
             }
-        return exportHighScores(eng);
+        return exportHighScores();
     }
-
-    private boolean exportSaveGame(SameGameEngine eng, Board b){
+    private boolean exportHighScores(){
         try {
-            putSaveGame(new PrintWriter(new FileWriter(saveGame)),eng);
+            putHighScores(new PrintWriter(new FileWriter(highScore)));
         } catch (Exception ex) {
             Logger.getLogger(FileAccess.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
         return true;
     }
+    private void putHighScores(PrintWriter pw) throws IOException {
+       for(int i=0;i<eng.getHighScores().length;++i){
+           pw.println(eng.getGameTypes()[i]+FILE_DELIMITER+
+                   eng.getHighScores()[i].getSize()+FILE_DELIMITER);
+           pw.print(eng.getHighScores()[i].toString());
+       }
+       pw.flush();
+       pw.close();
+    }
 
-    private boolean exportHighScores(SameGameEngine eng){
+    public boolean saveGameOptions(){
+        if (!gameoptions.exists())
+            try {
+            gameoptions.createNewFile();
+            } catch (IOException ex) {
+                Logger.getLogger(FileAccess.class.getName()).log(Level.SEVERE, null, ex);
+                return false;
+            }
+        return exportGameOptions();
+    }
+    private boolean exportGameOptions(){
         try {
-            putHighScores(new PrintWriter(new FileWriter(highScore)),eng);
+            putGameOptions(new PrintWriter(new FileWriter(gameoptions)));
         } catch (Exception ex) {
             Logger.getLogger(FileAccess.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
         return true;
     }
-
-    private void putSaveGame(PrintWriter pw, SameGameEngine eng) throws IOException{
-        pw.println(eng.toString());
-        pw.println(eng.getBoard().toString());
+    private void putGameOptions(PrintWriter pw) throws IOException{
+        pw.println(eng.getGameName());
+        pw.println(eng.getActiveBlockNames().length);
+        for (int i=0; i<eng.getActiveBlockNames().length;++i)
+            pw.println(eng.getActiveBlockNames()[i]+FILE_DELIMITER+
+                    eng.getBlockLimits()[i]+FILE_DELIMITER);
         pw.flush();
         pw.close();
     }
 
-    private void putHighScores(PrintWriter pw,SameGameEngine eng) throws IOException {
-       for(int i=0;i<eng.getHighScores().length;++i){
-           pw.println(eng.getGameType()[i]+eng.getHighScores()[i].getSize());
-           eng.getHighScores()[i].toString();
-       }
-    }
+
+
+
+
+
 }

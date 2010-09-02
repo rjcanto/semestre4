@@ -7,10 +7,7 @@ package SameGame;
 
 import SameGame.Game.*;
 import SameGame.Game.model.*;
-import SameGame.GaSme.model.blocks.*;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 
 /**
  *
@@ -24,16 +21,21 @@ public class SameGame implements GameModelVars_I{
     public static void main(String[] args) {
 
 
-        FileAccess file= new FileAccess();
-        SameGameEngine eng = new SameGameEngine(5,5);
+        SameGameEngine eng = new SameGameEngine(10,10);
         eng.newGame();
         System.out.println(eng.getBoard().toStringDebug());
-        eng.getBoard().select(2, 0);
-        System.out.println(eng.getBoard().toStringDebug());
-        eng.getBoard().removeSelected();
-        System.out.println(eng.getBoard().toStringDebug());
-        //eng.getBoard().rotate(true);
-        //System.out.println(eng.getBoard().toStringDebug());
+        System.out.println(eng.getHighScores()[0].toString());
+        
+        eng.saveAll();
+
+//        eng.newGame();
+//        System.out.println(eng.getBoard().toStringDebug());
+//        eng.getBoard().select(2, 0);
+//        System.out.println(eng.getBoard().toStringDebug());
+//        eng.getBoard().removeSelected();
+//        System.out.println(eng.getBoard().toStringDebug());
+//        //eng.getBoard().rotate(true);
+//        //System.out.println(eng.getBoard().toStringDebug());
 
 
 

@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 /**
  *
- * @author Nuno
+ * @author nac
  */
 
 public class Board implements Board_I{

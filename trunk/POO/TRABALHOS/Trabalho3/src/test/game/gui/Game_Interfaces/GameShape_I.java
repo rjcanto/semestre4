@@ -7,6 +7,7 @@ package test.game.gui.Game_Interfaces;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Shape;
 
 /**
  *
@@ -30,5 +31,6 @@ public interface GameShape_I {
     public void select();
     public boolean isSelected();
     public void paintShape(Graphics g);
+    public Shape getShape();
 }
 

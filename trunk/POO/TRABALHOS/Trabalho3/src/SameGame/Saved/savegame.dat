@@ -1,0 +1,12 @@
+0;0;
+10;10;
+WBlock;0;WBlock;0;WBlock;0;YMBlock;1;YMBlock;1; ; ; ; ; ; ; ; ; ; ;
+WBlock;0;YMBlock;0;YMBlock;0; ; ; ; ; ; ; ; ; ; ; ; ; ; ;
+ ; ; ; ; ; ; ; ;YMBlock;0;YMBlock;0;YMBlock;1;WBlock;0; ; ; ; ;
+ ; ; ; ; ; ; ; ;WBlock;0;WBlock;0;BBlock;0;WBlock;0;WBlock;0;BBlock;0;
+YMBlock;1;BBlock;0;BBlock;0; ; ; ; ; ; ; ; ;YMBlock;0;WBlock;0;BBlock;0;
+WBlock;0;WBlock;0;YMBlock;1;BBlock;0;YMBlock;0; ; ; ; ; ; ; ; ; ; ;
+BBlock;0;WBlock;0; ; ; ; ; ; ; ; ;WBlock;0;YMBlock;1;WBlock;0;YMBlock;1;
+BBlock;0;WBlock;0; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ;
+ ; ; ; ; ; ; ; ;YMBlock;1; ; ; ; ; ; ; ; ;BBlock;0;
+ ; ; ; ; ; ; ; ; ; ; ; ; ; ; ; ;YMBlock;0; ; ;
