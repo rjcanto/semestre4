@@ -22,7 +22,7 @@ public class CircleBlock extends GameBlock {
         super(c,posX,posY);
         object = new Ellipse2D.Double(getX(), getY(), getWidth(), getHeight());
         center = new Ellipse2D.Double(getX() + getWidth()/4, getY() + getHeight()/4, getWidth()/2, getHeight()/2);
-        this.setSize(40, 40);
+        this.setSize(45, 45);
     }
 
     public void setSize(int w, int h) {

@@ -6,6 +6,7 @@
 package test.game.gui.BlockShapes;
 
 import java.awt.Color;
+import java.awt.Shape;
 import test.game.gui.Game_Interfaces.GameShape_I;
 import test.game.model.Block_I;
 
@@ -45,6 +46,8 @@ public abstract class GameBlock implements GameShape_I,Block_I{
     public int getY() {return y;}
     public int getWidth(){return width;}
     public int getHeight(){return height;}
+
+    public abstract Shape getShape();
 
     public void unselect() {isSelected=false;}
     public void select() {isSelected=true;}

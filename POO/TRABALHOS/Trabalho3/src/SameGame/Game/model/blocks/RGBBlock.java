@@ -1,7 +1,6 @@
 package SameGame.Game.model.blocks;
 
 import SameGame.Game.model.Block;
-import SameGame.Game.model.BlockSelectionRule;
 import java.awt.Color;
 import java.util.Random;
 
@@ -10,31 +9,24 @@ import java.util.Random;
  * @author Nuno
  */
 public class RGBBlock extends Block{
-    private static Color[] rgbColor = {Color.RED,Color.GREEN,Color.BLUE};
-    private BlockSelectionRule rule;
+    private static Color[] myColors = {Color.RED,Color.GREEN,Color.BLUE};
+    private final boolean rule[][] = {{false,true,false},{true,true,true},{false,true,false}}; // Alteração
     /**
      * Vermelho, Verde e Azul – bloco que para ser removido precisa de pelo
      * menos um bloco adjacente (na horizontal e na vertical) a ele do mesmo
      * tipo;
      */
     public RGBBlock(int type){
-        super(type, rgbColor[(new Random().nextInt(rgbColor.length))]);
-        boolean r[][] = {{false,true,false},{true,true,true},{false,true,false}};
-        rule = new BlockSelectionRule(r);
+       this(type, myColors[(new Random().nextInt(myColors.length))]);
+    }
+    public RGBBlock(int type, int colorID){
+        this(type, myColors[colorID]);
     }
     public RGBBlock(int type, Color c){
         super(type, c);
-        boolean r[][] = {{false,true,false},{true,true,true},{false,true,false}};
-        rule = new BlockSelectionRule(r);
     }
-    public RGBBlock(int type, int colorID){
-        super(type, rgbColor[colorID]);
-        boolean r[][] = {{false,true,false},{true,true,true},{false,true,false}};
-        rule = new BlockSelectionRule(r);
-    }
-
     @Override
-    public boolean[][] getSelectionRule(){return this.rule.getSelectionRule();}
+    public boolean[][] getSelectionRule(){return this.rule;}
 
     @Override
     public String toString() {
@@ -42,7 +34,7 @@ public class RGBBlock extends Block{
     }
     private int getColorID() {
         int i=0;
-        while(!rgbColor[i].equals(super.getColor()))
+        while(!myColors[i].equals(super.getColor()))
             ++i;
         return i;
     }

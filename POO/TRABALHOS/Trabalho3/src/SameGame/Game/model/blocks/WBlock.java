@@ -1,37 +1,29 @@
 package SameGame.Game.model.blocks;
 
 import SameGame.Game.model.Block;
-import SameGame.Game.model.BlockSelectionRule;
 import java.awt.Color;
-import java.util.LinkedList;
 
 /**
  *
  * @author Nuno
  */
 public class WBlock extends Block{
-    private BlockSelectionRule rule;
+    private static Color[] myColors = {Color.WHITE};
+    private final boolean rule[][] = {{false,true,false},{false,false,false},{false,true,false}};
     /**
      *Branco – bloco que permite eliminar uma coluna independentemente da cor dos blocos nessa linha;
      */
     public WBlock(int type){
-        super(type, Color.WHITE);
-        boolean r[][] = {{false,true,false},{false,false,false},{false,true,false}};
-        rule = new BlockSelectionRule(r);
+        super(type, myColors[0]);
+    }
+    public WBlock(int type, int colorID){
+        this(type, myColors[colorID]);
     }
     public WBlock(int type, Color c){
         super(type, c);
-        boolean r[][] = {{false,true,false},{false,false,false},{false,true,false}};
-        rule = new BlockSelectionRule(r);
     }
-    public WBlock(int type, int colorID){
-        super(type, Color.WHITE);
-        boolean r[][] = {{false,true,false},{false,false,false},{false,true,false}};
-        rule = new BlockSelectionRule(r);
-    }
-
     @Override
-     public boolean[][] getSelectionRule(){return this.rule.getSelectionRule();}
+     public boolean[][] getSelectionRule(){return this.rule;}
 
     @Override
     public String toString() {

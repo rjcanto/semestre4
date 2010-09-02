@@ -18,22 +18,24 @@ public class Board implements Board_I, GameModelVars_I{
     private int columns;
     private int remainingBlocks;
     private String[] blockNames;
+    private int blockQtyLimit[];
+    private int blockQtyLeft[];
     private LinkedList<Coordinates> selectedBlocks;
     private LinkedList<SavedState> undoData;
-    private int undoLevel;
-    //private CoordinateList<Coordinates> selectedBlocks;
     
-    public Board(int height, int width, String[] blockNames, boolean init){
+    public Board(int height, int width, String[] blockNames, int[] blockQtyLimit, boolean init){
         grid = new Block[height][width];
         this.columns = width;
         this.rows = height;
         remainingBlocks = 0;
-        /*  normalmente, o número máximo de jogadas será 
-         *  metade do número total de blocos */
         undoData = new LinkedList<SavedState>();
-        undoLevel = 0;
         selectedBlocks= new LinkedList<Coordinates>();
         this.blockNames=blockNames;
+        if (blockQtyLimit==null)
+            defaultBlockQtyLimit();
+        else
+            this.blockQtyLimit= blockQtyLimit;
+        resetBlockQtyLeft();
         if (init) this.init();
     }
 
@@ -51,13 +53,16 @@ public class Board implements Board_I, GameModelVars_I{
         if (aux == null) return null;
         grid[r][c]=null;
         --remainingBlocks;
+        ++blockQtyLeft[aux.getType()];
         return aux;
     }
     public boolean addBlock(Block b, int r, int c){
         if (!isValid(r,c)) return false;
-        if (grid[r][c]==null)
+        if (grid[r][c]==null){
             ++remainingBlocks;
+        }
         grid[r][c]=b;
+        --blockQtyLeft[b.getType()];
         return true;
     }
     public boolean addBlock(String name, int type, int r, int c){
@@ -73,6 +78,7 @@ public class Board implements Board_I, GameModelVars_I{
             --remainingBlocks;
             return false;
         }
+        --blockQtyLeft[type];
         return true;
     }
     public boolean addBlock(String name, int type, int colorID, int r, int c){
@@ -88,6 +94,7 @@ public class Board implements Board_I, GameModelVars_I{
             --remainingBlocks;
             return false;
         }
+        --blockQtyLeft[type];
         return true;
     }
 
@@ -96,6 +103,7 @@ public class Board implements Board_I, GameModelVars_I{
         int res=remainingBlocks;
         for(int i=0; i<columns;++i)
             if (grid[r][i]!=null){
+                ++blockQtyLeft[grid[r][i].getType()];
                 grid[r][i]=null;
                 --remainingBlocks;
             }
@@ -106,8 +114,10 @@ public class Board implements Board_I, GameModelVars_I{
         int res=remainingBlocks;
         for(int i=0; i<rows;++i)
             if (grid[i][c]!=null){
+                ++blockQtyLeft[grid[i][c].getType()];
                 grid[i][c]=null;
                 --remainingBlocks;
+
             }
         return res-remainingBlocks;
     }
@@ -117,6 +127,7 @@ public class Board implements Board_I, GameModelVars_I{
             for(int y=0;y<columns;++y)
                 grid[x][y]=null;
         remainingBlocks=0;
+        resetBlockQtyLeft();
     }
 
     /*
@@ -152,12 +163,21 @@ public class Board implements Board_I, GameModelVars_I{
         int rand;
         for(int r = 0; r < rows; ++r){
             rand = (new Random().nextInt(blockNames.length))*71%blockNames.length;
+            while (blockQtyLeft[rand]<=0)
+                rand = (new Random().nextInt(blockNames.length))*71%blockNames.length;
             while (!addBlock(blockNames[rand], rand, r, col)){
                 removeBlockName(rand);
             }
-            ++remainingBlocks;
         }
     }
+    /*
+    private int getRandomBlockNameID(){
+
+
+
+
+    }
+*/
 
     public void fillEmptyColumns(boolean shift) {
         int c= columns;
@@ -171,8 +191,24 @@ public class Board implements Board_I, GameModelVars_I{
             }
         }
     }
-
-    
+    /*
+     * Métodos usados para ser possível limitar o número máximo de blocos de um
+     * determinado tipo que podem aparecer no board ao mesmo tempo.
+     * Ao usar blocos com características especiais, podemos querer limitar o
+     * número máximo destes blocos para evitar tornar o jogo demasiado fácil
+     */
+    /*
+     * Por defeito cada tipo de bloco poderá ter até remainingBlocks blocos
+     */
+    private void defaultBlockQtyLimit(){
+        blockQtyLimit = new int[blockNames.length];
+        for (int i=0; i<blockQtyLimit.length;++i)
+            blockQtyLimit[i]=rows*columns;
+    }
+    private void resetBlockQtyLeft(){
+        blockQtyLeft = new int[blockQtyLimit.length];
+        System.arraycopy(blockQtyLimit, 0, blockQtyLeft, 0, blockQtyLimit.length);}
+        
     /*
      * Métodos para manipulação da Grelha
      */
@@ -245,20 +281,21 @@ public class Board implements Board_I, GameModelVars_I{
      * Inicialização do Board.
      */
     public final void init() {
+        this.clear();
         for (int c = 0; c < rows; ++c)
             addColumn(c);
     }
 
 
-    private void removeBlockName(int rand) {
+    private void removeBlockName(int idx) {
         if (blockNames.length==1) {
             Logger.getLogger(Board.class.getName()).log(Level.SEVERE,
                     "Not able to access Block Classes.");
             System.exit(1);
         }
         String[] aux = new String[blockNames.length-1];
-        System.arraycopy(blockNames, 0, aux, 0, rand);
-        System.arraycopy(blockNames, rand+1, aux, 0, aux.length-rand);
+        System.arraycopy(blockNames, 0, aux, 0, idx);
+        System.arraycopy(blockNames, idx+1, aux, 0, aux.length-idx);
     }
 
 
@@ -354,6 +391,7 @@ public class Board implements Board_I, GameModelVars_I{
 
     /*
      * Métodos para gravação de estado para possibilitar Undo
+     * Não permite efectuar o redo
      */
     public void saveState(int score){
         undoData.addFirst(new SavedState(grid, score, remainingBlocks));

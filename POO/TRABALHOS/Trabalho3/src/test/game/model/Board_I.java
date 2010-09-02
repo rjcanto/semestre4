@@ -2,7 +2,7 @@ package test.game.model;
 
 /**
  *
- * @author Nuno
+ * @author nac
  */
 public interface Board_I {
 

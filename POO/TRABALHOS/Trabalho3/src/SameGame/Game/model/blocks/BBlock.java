@@ -1,7 +1,6 @@
 package SameGame.Game.model.blocks;
 
 import SameGame.Game.model.Block;
-import SameGame.Game.model.BlockSelectionRule;
 import java.awt.Color;
 
 /**
@@ -9,27 +8,22 @@ import java.awt.Color;
  * @author Nuno
  */
 public class BBlock extends Block{
-    private BlockSelectionRule rule;
+    private static Color[] myColors = {Color.BLACK};
+    private boolean rule[][] = {{false,false,false},{true,false,true},{false,false,false}};
     /**
      *Preto – bloco que permite eliminar uma linha independentemente da cor dos blocos nessa linha;
      */
     public BBlock(int type){
-        super(type, Color.BLACK);
-        boolean r[][] = {{false,false,false},{true,false,true},{false,false,false}};
-        rule = new BlockSelectionRule(r);
+        this(type, myColors[0]);
+    }
+    public BBlock(int type, int colorID){
+        this(type, myColors[colorID]);
     }
     public BBlock(int type, Color c){
         super(type, c);
-        boolean r[][] = {{false,false,false},{true,false,true},{false,false,false}};
-        rule = new BlockSelectionRule(r);
-    }
-    public BBlock(int type, int colorID){
-        super(type, Color.BLACK);
-        boolean r[][] = {{false,false,false},{true,false,true},{false,false,false}};
-        rule = new BlockSelectionRule(r);
     }
     @Override
-     public boolean[][] getSelectionRule(){return this.rule.getSelectionRule();}
+     public boolean[][] getSelectionRule(){return this.rule;}
     @Override
     public String toString() {
         return ""+this.getClass().getSimpleName()+";"+0+";";
