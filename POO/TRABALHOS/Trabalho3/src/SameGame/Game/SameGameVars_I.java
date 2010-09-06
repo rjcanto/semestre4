@@ -10,12 +10,13 @@ package SameGame.Game;
  * @author Nuno
  */
 public interface SameGameVars_I {
-    public final String SAVE_PATH ="src/Samegame/saved/";
+
+    public final String SAVE_PATH ="src/SameGame/Saved";
     public final String SAVEGAME_FILENAME ="savegame.dat";
     public final String HIGHSCORES_FILENAME ="highscores.dat";
     public final String GAME_OPTIONS_FILENAME ="options.dat";
-    public final String BLOCKS_PACKAGE="Samegame.game.model.blocks";
-    public final String GAMETYPE_PACKAGE="Samegame.game.gameType";
+    public final String BLOCKS_PACKAGE="build/classes/SameGame/Game/model/blocks";
+    public final String GAMETYPE_PACKAGE="build/classes/SameGame/Game/gameType";
 
     public final String FILE_DELIMITER=";";
 
@@ -23,9 +24,5 @@ public interface SameGameVars_I {
     public final int ERROR_HIGHSCORES = 1;
     public final int ERROR_OPTIONS = 2;
     public final int ERROR_SAVEGAME = 4;
-    
-    
-
-
     
 }

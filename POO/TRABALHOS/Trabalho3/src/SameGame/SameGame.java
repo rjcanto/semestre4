@@ -6,16 +6,8 @@
 package SameGame;
 
 import SameGame.Game.SameGameEngine;
-import SameGame.Game.gui.Layouts.Layout2;
 import SameGame.Game.gui.SameGameGUI;
-import SameGame.Game.gui.mainMenu;
-import SameGame.Game.gui.mainWindow;
 import SameGame.Game.model.*;
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import javax.swing.JFrame;
-import javax.swing.JMenuBar;
-import javax.swing.JPanel;
 
 
 /**
