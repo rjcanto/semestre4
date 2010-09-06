@@ -10,14 +10,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URL;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import sun.misc.Launcher;
 
 /**
  *
@@ -32,9 +31,9 @@ public class FileAccess implements SameGameVars_I{
     int error_code;
     
     public FileAccess(){
-        saveGame = getFile(SAVE_PATH+"\\"+SAVEGAME_FILENAME);
-        highScore = getFile(SAVE_PATH +"\\"+HIGHSCORES_FILENAME);
-        gameoptions = getFile(SAVE_PATH +"\\"+GAME_OPTIONS_FILENAME);
+        saveGame = getFile(SAVE_PATH+"/"+SAVEGAME_FILENAME);
+        highScore = getFile(SAVE_PATH +"/"+HIGHSCORES_FILENAME);
+        gameoptions = getFile(SAVE_PATH +"/"+GAME_OPTIONS_FILENAME);
         error_code=0;
     }
     public void setEngine(SameGameEngine_I engine){eng=engine;}
@@ -55,18 +54,16 @@ public class FileAccess implements SameGameVars_I{
      */
     public String[] getFileNames(String pack) {
         /*tranformar o nome do package no path relativo do mesmo*/
-        String path="";
-        if (!pack.startsWith("/")) {
-            path = "/" + pack;
-        }
-        path = path.replace('.','/');
+        FilenameFilter filter = new FilenameFilter() { public boolean accept(File dir, String name) { return !name.startsWith(".") && name.endsWith(".class"); } };
         /*obter o path absoluto do package*/
-        URL url = Launcher.class.getResource(path);
-        File directory = new File(url.getFile());
-        String[] classesFound = directory.list();
+        File directory = new File(pack);
+        System.out.println(directory.isDirectory());
+        System.out.println(directory.getAbsolutePath());
+        String[] classesFound = directory.list(filter);
         /*retirar o .class do nome dos ficheiros*/
-        for (int i=0; i<classesFound.length;++i)
+        for (int i=0; i< classesFound.length;++i)
             classesFound[i]=classesFound[i].substring(0,classesFound[i].length()-6);
+
         return classesFound;
     }
 

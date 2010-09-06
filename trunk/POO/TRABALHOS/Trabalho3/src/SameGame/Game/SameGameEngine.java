@@ -190,7 +190,7 @@ public class SameGameEngine extends SameGameEngineAbstract implements SameGameEn
         initAllHighScores();
         //lê jogo previamente gravado e suas opções
         if (!file.readAll())
-            fileErrorAnalyzer(file.getErrorCode());
+            //fileErrorAnalyzer(file.getErrorCode());
         score=parcialScore=0;
         newGame(true);
     }
@@ -219,10 +219,10 @@ public class SameGameEngine extends SameGameEngineAbstract implements SameGameEn
         if (gameRules.verifyStuck()){
             if (gameRules.verifyWin())
                 gameRules.addWinBonus();
-            if (highScores[activeGameID].isHighScore(getScore())){
-                highScores[activeGameID].add(myUI.getHighScoreName(), score);
-                myUI.showHighScores(highScores[activeGameID]);
-                }
+//            if (highScores[activeGameID].isHighScore(getScore())){
+//                highScores[activeGameID].add(myUI.getHighScoreName(), score);
+//                myUI.showHighScores(highScores[activeGameID]);
+//                }
           }
 
     }
