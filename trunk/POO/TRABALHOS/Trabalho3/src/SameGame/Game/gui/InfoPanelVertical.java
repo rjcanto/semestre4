@@ -99,10 +99,17 @@ public class InfoPanelVertical extends InfoPanel implements GameGUIVars_I, Swing
         rotateRight.addActionListener(new rotateButttonAction());
 
 
-        centerPanel.add(Box.createRigidArea(new Dimension(0,200)));
+        centerPanel.add(Box.createRigidArea(new Dimension(0,150)));
         centerPanel.add(rotateLeft);
         centerPanel.add(Box.createRigidArea(new Dimension(0,5)));
         centerPanel.add(rotateRight);
+
+        centerPanel.add(Box.createRigidArea(new Dimension(0,50)));
+
+        getGameMessage().setFont(Fonts.INFOFONT_SMALL);
+        getGameMessage().setForeground(Color.red);
+        centerPanel.add(getGameMessage());
+
         
         return centerPanel;
     }

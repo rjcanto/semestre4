@@ -25,5 +25,5 @@ public interface Board_I {
     public boolean isSelected(int r, int c);
     //public Iterator<Block> getSelectedBlocks();
     public boolean rotate(boolean right);
-    public void initBoard();
+    public void initBoard(int[] blockQtyLimit);
 }

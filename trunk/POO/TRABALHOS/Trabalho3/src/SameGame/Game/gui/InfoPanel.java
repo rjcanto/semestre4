@@ -34,6 +34,7 @@ public abstract class InfoPanel extends JPanel implements GameGUIVars_I, SwingCo
     private JLabel remBlocks;
     private JLabel pscore;
     private JLabel score;
+    private JLabel gameMessage;
 
     public InfoPanel(SameGameUI_I ui){
         this(ui,100,100);
@@ -47,6 +48,7 @@ public abstract class InfoPanel extends JPanel implements GameGUIVars_I, SwingCo
         remBlocks = new JLabel();
         pscore = new JLabel();
         score = new JLabel();
+        gameMessage = new JLabel();
     }
 
     public SameGameUI_I getGameUI(){return myUI;}
@@ -56,11 +58,15 @@ public abstract class InfoPanel extends JPanel implements GameGUIVars_I, SwingCo
     public void setPScore(JLabel jl){pscore=jl;}
     public JLabel getScore(){return score;}
     public void setScore(JLabel jl){score=jl;}
+    public JLabel getGameMessage(){return gameMessage;}
+    public void setGameMessage(JLabel jl){gameMessage=jl;}
 
     public void updateLabels() {
         updateLabel(remBlocks, ""+myUI.getGameEngine().getRemainingBlocks());
         updateLabel(pscore, ""+myUI.getGameEngine().getParcialScore());
         updateLabel(score, ""+myUI.getGameEngine().getScore());
+        updateLabel(gameMessage, (myUI.getGameEngine().isGameFinished())?
+            "Game Over!":"");
     }
 
     public void updateLabel(JLabel label, String text){label.setText(text);}

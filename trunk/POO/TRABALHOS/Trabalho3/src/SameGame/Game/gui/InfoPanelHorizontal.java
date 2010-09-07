@@ -98,9 +98,13 @@ public class InfoPanelHorizontal extends InfoPanel implements GameGUIVars_I, Swi
         getScore().setForeground(Color.red);
 
         centerPanel.add(score_text);
-        centerPanel.add(Box.createRigidArea(new Dimension(0,10)));
+        centerPanel.add(Box.createRigidArea(new Dimension(10,0)));
         centerPanel.add(getScore());
-        centerPanel.add(Box.createRigidArea(new Dimension(0,40)));
+        centerPanel.add(Box.createRigidArea(new Dimension(50,0)));
+        
+        getGameMessage().setFont(Fonts.INFOFONT_SMALL);
+        getGameMessage().setForeground(Color.red);
+        centerPanel.add(getGameMessage());
 
         updateLabels();
         return centerPanel;

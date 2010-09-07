@@ -37,6 +37,7 @@ public class SameGameGUI extends Observable implements SameGameUI_I, GameGUIVars
     public SameGameGUI(int width, int height, SameGameEngine eng){
         this.width=width; this.height=height;
         this.engine = eng;
+        this.engine.setUI(this);
         layouts = new FileAccess().getFileNames(LAYOUTS_PACKAGE);
         blockShapes = new FileAccess().getFileNames(BLOCKSHAPES_PACKAGE);
         getActiveOptions();
@@ -44,7 +45,7 @@ public class SameGameGUI extends Observable implements SameGameUI_I, GameGUIVars
     }
     private void createAndShowGUI(int width, int height) {
         Dimension screenSize    = Toolkit.getDefaultToolkit().getScreenSize();
-        gameFrame               = new mainWindow(800,600);
+        gameFrame               = new mainWindow(800,600, this);
 
         if (mainMenu==null)
             mainMenu = new mainMenu(this);
@@ -59,16 +60,21 @@ public class SameGameGUI extends Observable implements SameGameUI_I, GameGUIVars
     }
 
     public void setGameEngine(SameGameEngineAbstract c) {this.engine = c;}
-    public SameGameEngine_I getGameEngine(){return engine;}
+    public SameGameEngineAbstract getGameEngine(){return engine;}
     public String[] getLayoutNames() {return this.layouts;}
     public int getActiveLayout() {return this.activeLayout;}
     public void setInfoPanel(InfoPanel i){this.infoPanel=i;}
     public void setGamePanel(GamePanel g){this.gamePanel=g;}
-    
+    public void setActiveLayout(String lname){
+        for (int i=0; i<layouts.length;++i)
+            if (layouts[i].equalsIgnoreCase(lname)){
+                activeLayout=i;
+                break;
+            }
+    }
     public void setActiveLayout(int i) {
         if (activeLayout==i) return;
         this.activeLayout = i;
-        engine.setLayoutName(layouts[activeLayout]);
         gameFrame.dispose();
         createAndShowGUI(width, height);
     }
@@ -90,7 +96,8 @@ public class SameGameGUI extends Observable implements SameGameUI_I, GameGUIVars
     public int getActiveBlockShape() {return activeBlockShape;}
     public void setBlockShape(int i) {
         activeBlockShape=i;
-        engine.setBlockShapeName(blockShapes[activeBlockShape]);
+        gamePanel.validate();
+        gamePanel.repaint();
     }
 
     public void rotate(boolean right){engine.rotateBoard(right);}
@@ -98,17 +105,17 @@ public class SameGameGUI extends Observable implements SameGameUI_I, GameGUIVars
 
     public void clickedBlock(int r, int c){
         engine.clickedBlock(r, c);
-        System.out.println(engine.getBoard().toStringDebug());
+        //System.out.println(engine.getBoard().toStringDebug());
     }
     private void getActiveOptions() {
-        String l = engine.getLayoutName();
+        String l = engine.getFile().getSavedLayoutName();
         activeLayout=0;
         for (int i=0; i< layouts.length;++i)
             if(layouts[i].equalsIgnoreCase(l)) {
                 activeLayout = i;
                 break;
             }
-        String bs = engine.getBlockShapeName();
+        String bs = engine.getFile().getSavedBlockShapeName();
         activeBlockShape=0;
         for (int i=0; i< blockShapes.length;++i)
             if(blockShapes[i].equalsIgnoreCase(bs)) {
@@ -120,13 +127,15 @@ public class SameGameGUI extends Observable implements SameGameUI_I, GameGUIVars
     public void newGame(){engine.newGame(false);}
     public void exit() {engine.exit();}
     public void showHighScores() {
-
+        HighScores[] hs= engine.getAllHighScores();
+        for (int i=0;i<hs.length;++i)
+            System.out.println(hs[i].toString());
     }
     public void showHighScores(HighScores hs) {
-
+        System.out.println(hs.toString());
     }
     public String getHighScoreName() {
-        return "<empty>";
+        return "Nuno";
     }
     public void update(Observable o, Object arg) {
         infoPanel.updateLabels();
