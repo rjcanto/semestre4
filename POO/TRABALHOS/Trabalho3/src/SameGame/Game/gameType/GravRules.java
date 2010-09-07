@@ -15,7 +15,7 @@ import SameGame.Game.model.Board;
 public class GravRules extends SameGameRules {
 
     public GravRules(SameGameEngine eng){
-        super(eng);
+        super(eng, false);
         resetScores();
     }
 

@@ -21,11 +21,12 @@ public class SameGame implements GameModelVars_I{
      */
     public static void main(String[] args) {
 
+
         int width=10;
         int height=10;
         SameGameEngine engine   = new SameGameEngine(height,width);
         SameGameGUI gui = new SameGameGUI(height, width, engine);
 
-
+        while(true){}
     }
 }

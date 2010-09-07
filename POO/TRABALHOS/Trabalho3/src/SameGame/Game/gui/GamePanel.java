@@ -101,7 +101,7 @@ public class GamePanel extends JPanel implements MouseInputListener {
 
     public void mouseClicked(MouseEvent e) {
         if(e.getX() > 0 && e.getY()> 0 && e.getX() < 500 && e.getY()<500  ){
-            System.out.println(e.getX()+":"+e.getY());
+            //System.out.println(e.getX()+":"+e.getY());
             int col = (e.getX()/width);
             int line = (e.getY()/height);
 //            System.out.println(line+":"+col);

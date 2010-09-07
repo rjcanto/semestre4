@@ -15,7 +15,7 @@ import SameGame.Game.model.Board;
 public class MegaGravRules extends SameGameRules {
 
     public MegaGravRules(SameGameEngine eng){
-        super(eng);
+        super(eng, true);
         resetScores();
     }
 

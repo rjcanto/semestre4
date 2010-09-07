@@ -1,7 +1,7 @@
-ShifterRules
+GravRules
 4
 RGBBlock;100;
 YMBlock;100;
-BBlock;5;
-WBlock;5;
+BBlock;50;
+WBlock;50;
 Layout2;SquareBlock;

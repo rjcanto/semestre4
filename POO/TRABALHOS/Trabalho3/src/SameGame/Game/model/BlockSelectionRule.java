@@ -1,7 +1,5 @@
 package SameGame.Game.model;
 
-import test.game.model.*;
-
 /**
  *
  * @author 

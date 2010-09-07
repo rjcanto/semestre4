@@ -30,12 +30,13 @@ public class SquareBlock extends GameBlock {
     public void paintShape(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(getColor());
+        g2d.fill(object);
         if (this.isSelected()){
             paintSelection(g2d, object);
         }else{
             g2d.draw(object);
-            g2d.fill(object);
         }
+        
     }
 
     public int getSize() {

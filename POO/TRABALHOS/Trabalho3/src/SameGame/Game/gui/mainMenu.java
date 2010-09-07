@@ -47,7 +47,7 @@ public class mainMenu extends JMenuBar{
             /*Game type*/
         JMenuItem gameType = new JMenu("Game type");
         gameType.setMnemonic(KeyEvent.VK_G);
-        createButtonGroup(gameType, myUI.getGameEngine().getGameTypes(), myUI.getGameEngine().getActiveGameType(), new gameTypeAction());
+        createButtonGroup(gameType, myUI.getGameEngine().getGameNames(), myUI.getGameEngine().getGameType(), new gameTypeAction());
         options.add(gameType);
        
             /*Block Types*/
@@ -123,14 +123,14 @@ public class mainMenu extends JMenuBar{
     private class newGameAction implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             myUI.newGame();
-            System.out.println(myUI.getGameEngine().getBoard().toStringDebug());
+            //System.out.println(myUI.getGameEngine().getBoard().toStringDebug());
         }
     }
 
     private class gameTypeAction implements ActionListener{
         public void actionPerformed(ActionEvent e) {
             System.out.println(e.getActionCommand());
-            myUI.getGameEngine().setGameType(Integer.parseInt(e.getActionCommand()));
+            myUI.getGameEngine().setNewGameType(Integer.parseInt(e.getActionCommand()));
         }
     }
     private class blockShapeAction implements ActionListener{

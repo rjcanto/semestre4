@@ -56,10 +56,12 @@ public abstract class GameBlock implements GameShape_I,Block_I{
     public boolean isSelected() {return isSelected;}
     
     public void paintSelection(Graphics2D g2d, Shape object){
+        Color aux = getColor();
         g2d.setStroke(new BasicStroke(10));
         g2d.setColor(Color.DARK_GRAY);
         g2d.draw(object);
         g2d.setStroke(new BasicStroke(0));
+        g2d.setColor(aux);
     }
 
 }

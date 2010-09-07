@@ -60,7 +60,7 @@ public class HighScores{
         return(highScores.getLast().getScore()<=score);
     }
 
-    public boolean add(String name, int score){
+    public boolean addHighScore(String name, int score){
         int i=0;
         if (isHighScore(score)){
             Iterator<Score> it = highScores.iterator();

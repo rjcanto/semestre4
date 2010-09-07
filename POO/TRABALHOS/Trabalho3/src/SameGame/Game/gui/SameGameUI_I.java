@@ -19,7 +19,7 @@ import javax.swing.JPanel;
 public interface SameGameUI_I {
 
     public void setGameEngine(SameGameEngineAbstract c);
-    public SameGameEngine_I getGameEngine();
+    public SameGameEngineAbstract getGameEngine();
 
     /*View Options*/
     public String[] getLayoutNames();

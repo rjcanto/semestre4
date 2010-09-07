@@ -14,7 +14,7 @@ public class WBlock extends Block{
      *Branco – bloco que permite eliminar uma coluna independentemente da cor dos blocos nessa linha;
      */
     public WBlock(int type){
-        super(type, myColors[0]);
+        this(type, myColors[0]);
     }
     public WBlock(int type, int colorID){
         this(type, myColors[colorID]);

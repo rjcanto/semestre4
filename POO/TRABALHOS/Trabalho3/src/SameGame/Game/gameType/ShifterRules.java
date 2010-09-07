@@ -15,7 +15,7 @@ import SameGame.Game.model.Board;
 public class ShifterRules extends SameGameRules {
 
     public ShifterRules(SameGameEngine eng){
-        super(eng);
+        super(eng, true);
         resetScores();
     }
 
@@ -31,7 +31,7 @@ public class ShifterRules extends SameGameRules {
         }else{
             myBoard.unselect();
             myBoard.select(r, c);
-            getGameEngine().setParcialScore(myBoard.getNumberSelectedBlocks());
+            setParcialScore(myBoard.getNumberSelectedBlocks());
         }
     }
     public void rotateBoard(boolean right){

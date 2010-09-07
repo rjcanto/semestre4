@@ -15,7 +15,7 @@ import SameGame.Game.model.Board;
 public class MegaShifterRules extends SameGameRules {
 
     public MegaShifterRules(SameGameEngine eng){
-        super(eng);
+        super(eng, true);
         resetScores();
     }
 
@@ -32,7 +32,7 @@ public class MegaShifterRules extends SameGameRules {
         }else{
             myBoard.unselect();
             myBoard.select(r, c);
-            getGameEngine().setParcialScore(myBoard.getNumberSelectedBlocks());
+            setParcialScore(myBoard.getNumberSelectedBlocks());
         }
     }
     public void rotateBoard(boolean right){
