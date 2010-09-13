@@ -1,16 +1,13 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * ISEL - POO
+ * 3º trabalho Semestre Verão 2009/2010
+ * 33595 - Nuno Sousa
  */
-
 package SameGame.Game.model;
 
 import java.awt.Color;
 
-/**
- *
- * @author nac
- */
+
 public interface Block_I {
     public void setColor(Color c);
     public Color getColor();

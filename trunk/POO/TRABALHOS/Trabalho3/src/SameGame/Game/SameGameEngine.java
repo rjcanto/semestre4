@@ -1,6 +1,7 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * ISEL - POO
+ * 3º trabalho Semestre Verão 2009/2010
+ * 33595 - Nuno Sousa
  */
 
 package SameGame.Game;
@@ -9,10 +10,6 @@ import SameGame.Game.model.Board;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author Nuno
- */
 public class SameGameEngine extends SameGameEngineAbstract implements SameGameVars_I {
 
     public SameGameEngine(int height, int width){
@@ -36,7 +33,6 @@ public class SameGameEngine extends SameGameEngineAbstract implements SameGameVa
         //lê jogo previamente gravado e suas opções
         if (!getFile().loadAll())
             fileErrorAnalyzer(getFile().getErrorCode());
-        setScores(0, 0);
         newGame(true);
     }
     /*
@@ -74,8 +70,9 @@ public class SameGameEngine extends SameGameEngineAbstract implements SameGameVa
     }
 
     public void undoMove(){
-        this.setScores(getBoard().loadState(), 0);
-        getGameRules().setParcialScore(getBoard().getNumberSelectedBlocks());
+        getBoard().loadState(this);
+        getBoard().unselect();
+        //getGameRules().setParcialScore(getBoard().getNumberSelectedBlocks());
         setChanged();
         notifyObservers();
     }
@@ -128,14 +125,19 @@ public class SameGameEngine extends SameGameEngineAbstract implements SameGameVa
         setChanged();
         notifyObservers();
     }
+    public void resetRotateLimit(){setRotateLimit(ROTATE_LIMIT);}
+
     public void rotateBoard(boolean right){
+        if (getRotateLimit()==0 || getRemainingBlocks()==0)
+            return;
         getGameRules().rotateBoard(right);
+        decRotateLimit();
         setChanged();
         notifyObservers();
     }
+    
     public void newGame(boolean continueGame) {
-        if (!continueGame && isContinuous())
-            verifyHighScores();
+        resetRotateLimit();
         updateGameType();
         updateBlockLimits();
         try{
@@ -149,10 +151,16 @@ public class SameGameEngine extends SameGameEngineAbstract implements SameGameVa
         /* se está a continuar um jogo (jogo gravado) verifica se o jogo
          * já tinha terminado antes de gravar.
          */
-        if (continueGame && verifyStuck())
+        if (!continueGame && isContinuous())
+            verifyHighScores();
+        
+        if (continueGame && verifyStuck()){
             gameFinished();
-        else
+        }
+        else{
             gameStarted();
+            resetRotateLimit();
+        }
         
         if (!continueGame){
             getBoard().initBoard(getBlockLimits());

@@ -1,13 +1,15 @@
+/*
+ * ISEL - POO
+ * 3º trabalho Semestre Verão 2009/2010
+ * 33595 - Nuno Sousa
+ */
 package SameGame.Game.model.blocks;
 
 import SameGame.Game.model.Block;
 import java.awt.Color;
 import java.util.Random;
 
-/**
- *
- * @author Nuno
- */
+
 public class YMBlock extends Block{
     private static Color[] myColors = {Color.YELLOW,Color.MAGENTA};
     private final boolean rule[][] = {{true,true,true},{true,true,true},{true,true,true}};

@@ -1,6 +1,10 @@
+/*
+ * ISEL - POO
+ * 3º trabalho Semestre Verão 2009/2010
+ * 33595 - Nuno Sousa
+ */
 package SameGame.Game.gui;
 
-import SameGame.Game.SameGameEngine;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -10,10 +14,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 
-/**
- *
- * 
- */
+
 public class mainMenu extends JMenuBar{
 
     private SameGameUI_I myUI;
@@ -129,25 +130,25 @@ public class mainMenu extends JMenuBar{
 
     private class gameTypeAction implements ActionListener{
         public void actionPerformed(ActionEvent e) {
-            System.out.println(e.getActionCommand());
+            //System.out.println(e.getActionCommand());
             myUI.getGameEngine().setNewGameType(Integer.parseInt(e.getActionCommand()));
         }
     }
     private class blockShapeAction implements ActionListener{
         public void actionPerformed(ActionEvent e) {
-            System.out.println(e.getActionCommand());
+            //System.out.println(e.getActionCommand());
             myUI.setBlockShape(Integer.parseInt(e.getActionCommand()));
         }
     }
     private class layoutAction implements ActionListener{
         public void actionPerformed(ActionEvent e) {
-            System.out.println(e.getActionCommand());
+            //System.out.println(e.getActionCommand());
             myUI.setActiveLayout(Integer.parseInt(e.getActionCommand()));
         }
     }
     private class blockTypeAction implements ActionListener{
         public void actionPerformed(ActionEvent e) {
-            System.out.println(e.getActionCommand());
+            //System.out.println(e.getActionCommand());
 
             /*TODO*/
 
@@ -155,13 +156,13 @@ public class mainMenu extends JMenuBar{
     }
     private class undoMoveAction implements ActionListener{
         public void actionPerformed(ActionEvent e) {
-            System.out.println(e.getActionCommand());
+            //System.out.println(e.getActionCommand());
             myUI.undoMove();
         }
     }
     private class showHighScoresAction implements ActionListener{
         public void actionPerformed(ActionEvent e) {
-            System.out.println(e.getActionCommand());
+            //System.out.println(e.getActionCommand());
             myUI.showHighScores();
         }
     }

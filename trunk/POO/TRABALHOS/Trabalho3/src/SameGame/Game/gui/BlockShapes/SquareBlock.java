@@ -1,6 +1,7 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * ISEL - POO
+ * 3º trabalho Semestre Verão 2009/2010
+ * 33595 - Nuno Sousa
  */
 package SameGame.Game.gui.BlockShapes;
 
@@ -11,10 +12,6 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 
-/**
- *
- * @author nac
- */
 public class SquareBlock extends GameBlock {
     private Rectangle2D.Double object;
 

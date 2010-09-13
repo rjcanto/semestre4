@@ -1,6 +1,7 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * ISEL - POO
+ * 3º trabalho Semestre Verão 2009/2010
+ * 33595 - Nuno Sousa
  */
 package SameGame.Game.gui.BlockShapes;
 
@@ -11,10 +12,7 @@ import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
-/**
- *
- * @author nac
- */
+
 public class CircleBlock extends GameBlock {
     private Ellipse2D.Double object;
 

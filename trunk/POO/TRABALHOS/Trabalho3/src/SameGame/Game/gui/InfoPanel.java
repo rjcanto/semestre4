@@ -1,33 +1,17 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * ISEL - POO
+ * 3º trabalho Semestre Verão 2009/2010
+ * 33595 - Nuno Sousa
  */
 
 package SameGame.Game.gui;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.io.File;
-import java.io.FilenameFilter;
-import java.util.Observable;
-import java.util.Random;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import SameGame.Fonts.Fonts;
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Observer;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
-/**
- *
- * @author nac
- */
 public abstract class InfoPanel extends JPanel implements GameGUIVars_I, SwingConstants{
     private SameGameUI_I myUI;
 
@@ -35,6 +19,10 @@ public abstract class InfoPanel extends JPanel implements GameGUIVars_I, SwingCo
     private JLabel pscore;
     private JLabel score;
     private JLabel gameMessage;
+    private JLabel rotateLimit;
+
+    private JButton rright;
+    private JButton rleft;
 
     public InfoPanel(SameGameUI_I ui){
         this(ui,100,100);
@@ -49,6 +37,7 @@ public abstract class InfoPanel extends JPanel implements GameGUIVars_I, SwingCo
         pscore = new JLabel();
         score = new JLabel();
         gameMessage = new JLabel();
+        rotateLimit = new JLabel();
     }
 
     public SameGameUI_I getGameUI(){return myUI;}
@@ -60,14 +49,32 @@ public abstract class InfoPanel extends JPanel implements GameGUIVars_I, SwingCo
     public void setScore(JLabel jl){score=jl;}
     public JLabel getGameMessage(){return gameMessage;}
     public void setGameMessage(JLabel jl){gameMessage=jl;}
+    public JLabel getRotateLimit(){return rotateLimit;}
+    public void setRotateLimit(JLabel jl){rotateLimit=jl;}
+    public void setRotRightButton(JButton rr){rright=rr;}
+    public void setRotLeftButton(JButton rl){rleft=rl;}
 
-    public void updateLabels() {
+    public void updateInfo() {
         updateLabel(remBlocks, ""+myUI.getGameEngine().getRemainingBlocks());
         updateLabel(pscore, ""+myUI.getGameEngine().getParcialScore());
         updateLabel(score, ""+myUI.getGameEngine().getScore());
+        updateLabel(rotateLimit, ""+myUI.getGameEngine().getRotateLimit());
         updateLabel(gameMessage, (myUI.getGameEngine().isGameFinished())?
             "Game Over!":"");
+        if (myUI.getGameEngine().canRotate()){
+            enableRotateButtons();
+        }else{
+            disableRotateButtons();
+        }
     }
 
+    private void disableRotateButtons(){
+        rright.setEnabled(false);
+        rleft.setEnabled(false);
+    }
+    private void enableRotateButtons(){
+        rright.setEnabled(true);
+        rleft.setEnabled(true);
+    }
     public void updateLabel(JLabel label, String text){label.setText(text);}
 }

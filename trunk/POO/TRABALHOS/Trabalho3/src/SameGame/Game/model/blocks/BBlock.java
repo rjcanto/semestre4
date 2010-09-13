@@ -1,12 +1,14 @@
+/*
+ * ISEL - POO
+ * 3º trabalho Semestre Verão 2009/2010
+ * 33595 - Nuno Sousa
+ */
 package SameGame.Game.model.blocks;
 
 import SameGame.Game.model.Block;
 import java.awt.Color;
 
-/**
- *
- * @author Nuno
- */
+
 public class BBlock extends Block{
     private static Color[] myColors = {Color.BLACK};
     private boolean rule[][] = {{false,false,false},{true,false,true},{false,false,false}};

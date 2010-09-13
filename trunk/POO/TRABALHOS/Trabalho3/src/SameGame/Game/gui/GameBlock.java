@@ -1,6 +1,7 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * ISEL - POO
+ * 3º trabalho Semestre Verão 2009/2010
+ * 33595 - Nuno Sousa
  */
 
 package SameGame.Game.gui;
@@ -9,15 +10,9 @@ import SameGame.Game.gui.Game_Interfaces.GameShape_I;
 import SameGame.Game.model.Block_I;
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 
-
-/**
- *
- * @author nac
- */
 public abstract class GameBlock implements GameShape_I,Block_I{
     private Color color;
     private int x;

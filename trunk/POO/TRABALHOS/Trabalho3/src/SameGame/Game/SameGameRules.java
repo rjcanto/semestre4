@@ -1,9 +1,10 @@
+/*
+ * ISEL - POO
+ * 3º trabalho Semestre Verão 2009/2010
+ * 33595 - Nuno Sousa
+ */
 package SameGame.Game;
 
-/**
- *
- * @author Nuno
- */
 public abstract class SameGameRules implements SameGameRules_I {
 
     private SameGameEngine myEngine;

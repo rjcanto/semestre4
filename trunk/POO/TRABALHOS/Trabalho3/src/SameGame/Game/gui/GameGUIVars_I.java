@@ -1,11 +1,10 @@
-
+/*
+ * ISEL - POO
+ * 3º trabalho Semestre Verão 2009/2010
+ * 33595 - Nuno Sousa
+ */
 package SameGame.Game.gui;
 
-
-/**
- *
- * @author Nuno
- */
 public interface GameGUIVars_I {
     public final String BLOCKSHAPES_PACKAGE="build/classes/Samegame/game/gui/BlockShapes";
     public final String LAYOUTS_PACKAGE="build/classes/Samegame/game/gui/Layouts";

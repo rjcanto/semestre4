@@ -1,6 +1,7 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * ISEL - POO
+ * 3º trabalho Semestre Verão 2009/2010
+ * 33595 - Nuno Sousa
  */
 
 package SameGame.Game.gameType;
@@ -8,25 +9,22 @@ import SameGame.Game.SameGameEngine;
 import SameGame.Game.SameGameRules;
 import SameGame.Game.model.Board;
 
-/**
- *
- * @author Nuno
- */
+
 public class GravRules extends SameGameRules {
 
     public GravRules(SameGameEngine eng){
         super(eng, false);
-        resetScores();
     }
 
     public void clickedBlock(int r, int c) {
         Board myBoard = getGameEngine().getBoard();
         if(myBoard.isSelected(r, c)){
-            myBoard.saveState(getGameEngine().getScore());
+            myBoard.saveState(getGameEngine().getScore(), getGameEngine().getRotateLimit());
             myBoard.removeSelected();
             myBoard.shiftDown();
             myBoard.removeEmptyColumns();
             updateScore();
+            getGameEngine().verifyEnd();
         }else{
             myBoard.unselect();
             myBoard.select(r, c);

@@ -1,6 +1,7 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * ISEL - POO
+ * 3º trabalho Semestre Verão 2009/2010
+ * 33595 - Nuno Sousa
  */
 
 package SameGame.Game.gui.Game_Interfaces;
@@ -9,10 +10,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Shape;
 
-/**
- *
- * @author nac
- */
 public interface GameShape_I {
     public final int SIZE=50;
     public void setColor(Color c);

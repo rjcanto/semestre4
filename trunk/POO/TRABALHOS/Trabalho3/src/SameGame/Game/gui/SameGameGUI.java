@@ -1,10 +1,13 @@
-
+/*
+ * ISEL - POO
+ * 3º trabalho Semestre Verão 2009/2010
+ * 33595 - Nuno Sousa
+ */
 package SameGame.Game.gui;
 import SameGame.Game.FileAccess;
-import SameGame.Game.HighScores;
+import SameGame.Game.model.HighScores;
 import SameGame.Game.SameGameEngine;
 import SameGame.Game.SameGameEngineAbstract;
-import SameGame.Game.SameGameEngine_I;
 import java.awt.*;
 import java.util.Observable;
 import java.util.Observer;
@@ -13,10 +16,6 @@ import java.util.logging.Logger;
 import javax.swing.*;
 
 
-/**
- *
- * @author Nuno
- */
 public class SameGameGUI extends Observable implements SameGameUI_I, GameGUIVars_I, Observer{
 
     private SameGameEngineAbstract engine;
@@ -24,7 +23,7 @@ public class SameGameGUI extends Observable implements SameGameUI_I, GameGUIVars
     private JMenuBar mainMenu;
     private InfoPanel infoPanel;
     private GamePanel gamePanel;
-    private JPanel layout;
+    private Layout_I layout;
 
     int width;
     int height;
@@ -51,7 +50,7 @@ public class SameGameGUI extends Observable implements SameGameUI_I, GameGUIVars
             mainMenu = new mainMenu(this);
 
         gameFrame.setJMenuBar(mainMenu);
-        gameFrame.getContentPane().add(createLayout(activeLayout));
+        gameFrame.getContentPane().add((JPanel)createLayout(activeLayout));
         gameFrame.setResizable(false);
         gameFrame.setLocation((screenSize.width - gameFrame.getWidth())/2, (screenSize.height - gameFrame.getHeight())/2);
         gameFrame.pack();
@@ -78,10 +77,10 @@ public class SameGameGUI extends Observable implements SameGameUI_I, GameGUIVars
         gameFrame.dispose();
         createAndShowGUI(width, height);
     }
-    private JPanel createLayout(int l) {
+    private Layout_I createLayout(int l) {
         boolean hadLayout = (layout==null)?false:true;
         try{
-            layout = (JPanel) Class.forName("SameGame.Game.gui.Layouts."+layouts[l]).
+            layout = (Layout_I) Class.forName("SameGame.Game.gui.Layouts."+layouts[l]).
                     getDeclaredConstructor(SameGameUI_I.class).newInstance(this);
         } catch(Exception ex){
             Logger.getLogger(SameGameGUI.class.getName()).log(Level.SEVERE, null, ex);
@@ -124,7 +123,9 @@ public class SameGameGUI extends Observable implements SameGameUI_I, GameGUIVars
             }
     }
 
-    public void newGame(){engine.newGame(false);}
+    public void newGame(){
+        engine.newGame(false);
+    }
     public void exit() {engine.exit();}
     public void showHighScores() {
         HighScores[] hs= engine.getAllHighScores();
@@ -138,10 +139,9 @@ public class SameGameGUI extends Observable implements SameGameUI_I, GameGUIVars
         return "Nuno";
     }
     public void update(Observable o, Object arg) {
-        infoPanel.updateLabels();
+        infoPanel.updateInfo();
         gamePanel.validate();
-        gamePanel.repaint();
-        engine.verifyEnd();
+            gamePanel.repaint();
     }
 
 

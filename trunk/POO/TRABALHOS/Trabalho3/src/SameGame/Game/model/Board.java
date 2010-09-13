@@ -1,5 +1,11 @@
+/*
+ * ISEL - POO
+ * 3º trabalho Semestre Verão 2009/2010
+ * 33595 - Nuno Sousa
+ */
 package SameGame.Game.model;
 
+import SameGame.Game.SameGameEngineAbstract;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
@@ -7,19 +13,17 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-/**
- *
- * @author Nuno
- */
 
-public class Board implements Board_I, GameModelVars_I{
+
+public class Board implements Board_I{
     private Block[][] grid;
     private int rows;
     private int columns;
     private int remainingBlocks;
     private String[] blockNames;
-    private int blockQtyLimit[];
-    private int blockQtyLeft[];
+    private int[] blockQtyLimit;
+    private int[] blockQtyLeft;
+    private int[] blockConstraints;
 
     private LinkedList<Coordinates> selectedBlocks;
     private LinkedList<UndoInfo> undoData;
@@ -38,6 +42,7 @@ public class Board implements Board_I, GameModelVars_I{
         else
             this.blockQtyLimit= initIntArray(this.blockQtyLimit, blockQtyLimit);
         resetBlockQtyLeft();
+        buildBlockConstraints();
         if (init) this.initBoard(blockQtyLimit);
     }
     private int[] initIntArray(int[] dest, int[] source){
@@ -58,6 +63,34 @@ public class Board implements Board_I, GameModelVars_I{
     public String[] getBlockNames() {return blockNames;}
     public void setBlockNames(String[] blockNames) {initStringArray(this.blockNames, blockNames);}
 
+    /*
+     * constrói array com as proporções da quantidade de cada tipo de bloco
+     * se tiver limite máximo assume-se bloco especial e então fica com
+     * uma probabilidade de 5% de aparecer em cada posição do quadro
+     */
+    private void buildBlockConstraints(){
+        blockConstraints = new int[blockQtyLimit.length];
+        int maxBlock=getWidth()*getHeight();
+        int cumulativeSum=0,count=0;
+        for (int i=0; i<blockQtyLimit.length;++i)
+            //se for igual ao máximo, então não tem restrições
+            if (blockQtyLimit[i]!=maxBlock){
+                //contamos número de blocos especiais
+                ++count;
+            }
+        //se não for igual máximo fica com 10%
+        //se igual ao máximo fica com o que resta a dividir pelos outros blocos
+        //não especiais:
+        //100-(10*count)/((qtd tipos)-count)
+        for (int i=0; i<blockConstraints.length;++i)
+            if (blockQtyLimit[i]==maxBlock){
+                cumulativeSum+=(100-(5*count))/(blockQtyLimit.length-count);
+                blockConstraints[i]=cumulativeSum;
+            } else {
+                cumulativeSum+=5;
+                blockConstraints[i]=cumulativeSum;
+            }
+    }
     public boolean isValid(int r, int c){
         return (r>=0 && r<rows && c>=0 && c<columns);}
     public Block getBlock(int r, int c) {return  (isValid(r,c)) ? (grid[r][c]) : null;}
@@ -183,13 +216,21 @@ public class Board implements Board_I, GameModelVars_I{
     public void addColumn(int col){
         int rand;
         for(int r = 0; r < rows; ++r){
-            rand = (new Random().nextInt(blockNames.length))*71%blockNames.length;
+            rand = getRandom();
             while (blockQtyLeft[rand]<=0)
-                rand = (new Random().nextInt(blockNames.length))*71%blockNames.length;
+                rand = getRandom();
             while (!addBlock(blockNames[rand], rand, r, col)){
                 removeBlockName(rand);
             }
         }
+    }
+    private int getRandom(){
+        int rand;
+        rand = (new Random().nextInt(100));
+        for (int i=0;i<blockConstraints.length;++i)
+            if(rand<blockConstraints[i])
+                return i;
+        return 0;
     }
     public void fillEmptyColumns(boolean shift) {
         int c=columns-1;
@@ -260,7 +301,7 @@ public class Board implements Board_I, GameModelVars_I{
             r=rows-1;r1=rows-2;
             while(r>0){
                 if (grid[r][c]!=null){
-                    --r;;
+                    --r;
                 }else{
                     r1=r;
                     while (r1>=0 && grid[r1][c]==null)
@@ -338,11 +379,11 @@ public class Board implements Board_I, GameModelVars_I{
         return selectable;
     }
 
-    private boolean select(int r, int c, boolean select, boolean verifyEqual) {
+    private boolean select(int r, int c, boolean select) {
         if (!isValid(r, c)) return false;
         if (grid[r][c]==null) return false;
         boolean[][] rule = getBlock(r,c).getSelectionRule();
-        boolean selected = select(r,c,rule, select, rule[1][1]);
+        boolean selected = select(r,c,rule, select);
         if (selected || !rule[1][1]){
             if (select)
                 grid[r][c].select();
@@ -433,13 +474,13 @@ public class Board implements Board_I, GameModelVars_I{
      * Métodos para gravação de estado para possibilitar Undo
      * Não permite efectuar o redo
      */
-    public void saveState(int score){
-        undoData.addFirst(new UndoInfo(grid, score, remainingBlocks));
+    public void saveState(int score, int rotateLimit){
+        undoData.addFirst(new UndoInfo(grid, score, remainingBlocks, rotateLimit));
     }
     
-    public int loadState(){
-        if (undoData.isEmpty()) return 0;
-        selectedBlocks.clear();
+    public void loadState(SameGameEngineAbstract engine){
+        if (undoData.isEmpty()) return;
+        unselect();
         UndoInfo ss = undoData.removeFirst();
         for (int r=0; r<rows; ++r)
             for (int c=0; c<columns; ++c){
@@ -451,7 +492,8 @@ public class Board implements Board_I, GameModelVars_I{
                 }
             }
         remainingBlocks = ss.getRemainningBlocks();
-        return ss.getScore();
+        engine.setScores(ss.getScore(), 0);
+        engine.setRotateLimit(ss.getRotateLimit());
     }
 
     @Override

@@ -1,6 +1,7 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * ISEL - POO
+ * 3º trabalho Semestre Verão 2009/2010
+ * 33595 - Nuno Sousa
  */
 
 package SameGame.Game.gui;
@@ -18,10 +19,7 @@ import java.util.logging.Logger;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputListener;
 
-/**
- *
- * @author 
- */
+
 public class GamePanel extends JPanel implements MouseInputListener {
     private SameGameUI_I myUI;
     private GameShape_I[][] board;
@@ -68,6 +66,8 @@ public class GamePanel extends JPanel implements MouseInputListener {
     @Override
     public void paint (Graphics g) {
         super.paint(g);
+        if (myUI.getGameEngine().getRemainingBlocks()==0)
+            return;
         Graphics2D g2 = (Graphics2D)g;
         for (int line =0;line<BOARD_H;++line){
             for(int col=0;col<BOARD_W;++col){

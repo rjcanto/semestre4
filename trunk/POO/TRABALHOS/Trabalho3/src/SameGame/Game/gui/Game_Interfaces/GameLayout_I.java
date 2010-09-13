@@ -1,18 +1,16 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * ISEL - POO
+ * 3º trabalho Semestre Verão 2009/2010
+ * 33595 - Nuno Sousa
  */
 
 package SameGame.Game.gui.Game_Interfaces;
 
-import SameGame.Game.HighScores;
+import SameGame.Game.model.HighScores;
 import SameGame.Game.model.Block;
 import java.util.LinkedList;
 
-/**
- *
- * @author masterzdran
- */
+
 public interface GameLayout_I {
 
     public void setScore(int score);
