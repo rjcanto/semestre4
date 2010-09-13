@@ -1,6 +1,7 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * ISEL - POO
+ * 3º trabalho Semestre Verão 2009/2010
+ * 33595 - Nuno Sousa
  */
 
 package SameGame.Game.gameType;
@@ -8,26 +9,23 @@ import SameGame.Game.SameGameEngine;
 import SameGame.Game.SameGameRules;
 import SameGame.Game.model.Board;
 
-/**
- *
- * @author Nuno
- */
+
 public class ShifterRules extends SameGameRules {
 
     public ShifterRules(SameGameEngine eng){
         super(eng, true);
-        resetScores();
     }
 
     @Override
     public void clickedBlock(int r, int c) {
         Board myBoard = getGameEngine().getBoard();
         if(myBoard.isSelected(r, c)){
-            myBoard.saveState(getGameEngine().getScore());
+            myBoard.saveState(getGameEngine().getScore(), getGameEngine().getRotateLimit());
             myBoard.removeSelected();
             myBoard.shiftDown();
             myBoard.shiftLeft();
             updateScore();
+            getGameEngine().verifyEnd();
         }else{
             myBoard.unselect();
             myBoard.select(r, c);

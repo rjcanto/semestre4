@@ -1,45 +1,48 @@
+/*
+ * ISEL - POO
+ * 3º trabalho Semestre Verão 2009/2010
+ * 33595 - Nuno Sousa
+ */
 package SameGame.Game;
 
+import SameGame.Game.model.HighScores;
 import SameGame.Game.model.Board;
 import SameGame.Game.gui.SameGameUI_I;
 import SameGame.Game.model.Block;
 
-/**
- *
- * @author Nuno
- */
 public interface SameGameEngine_I {
 
-    void setBoard(Board myBoard);
-    Board getBoard();
-    void setUI(SameGameUI_I myUI);
-    SameGameUI_I getUI();
-    void setGameRules(SameGameRules gameRules);
-    SameGameRules getGameRules();
-    int getHeight();
-    int getWidth();
+    public void setBoard(Board myBoard);
+    public Board getBoard();
+    public void setUI(SameGameUI_I myUI);
+    public SameGameUI_I getUI();
+    public void setGameRules(SameGameRules gameRules);
+    public SameGameRules getGameRules();
+    public int getHeight();
+    public int getWidth();
 
-    void setGameNames(String[] gameNames);
-    String[] getGameNames();
-    int getGameType();
+    public void setGameNames(String[] gameNames);
+    public String[] getGameNames();
+    public int getGameType();
 
-    Block getBlock(int r, int c);
-    void clickedBlock(int x, int y);
-    int getRemainingBlocks();
-    void rotateBoard(boolean right);
+    public Block getBlock(int r, int c);
+    public void clickedBlock(int x, int y);
+    public int getRemainingBlocks();
+    public void rotateBoard(boolean right);
    
-    int getScore();
-    void updateScore();
-    void resetScores();
+    public int getScore();
+    public void updateScore();
+    public void resetScores();
 
     public void initAllHighScores();
     public void clearAllHighScores();
-    HighScores getHighScores();
-    boolean isHighScore();
+    public HighScores getHighScores();
+    public boolean isHighScore();
     public void addHighScore(String name);
     
-    void newGame(boolean continueGame);
-    void undoMove();
-    boolean verifyStuck();
-    boolean verifyWin();
+    public void newGame(boolean continueGame);
+    public void undoMove();
+    public boolean verifyEnd();
+    public boolean verifyStuck();
+    public boolean verifyWin();
 }

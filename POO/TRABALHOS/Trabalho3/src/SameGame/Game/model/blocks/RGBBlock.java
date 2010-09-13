@@ -1,13 +1,16 @@
+/*
+ * ISEL - POO
+ * 3º trabalho Semestre Verão 2009/2010
+ * 33595 - Nuno Sousa
+ */
+
 package SameGame.Game.model.blocks;
 
 import SameGame.Game.model.Block;
 import java.awt.Color;
 import java.util.Random;
 
-/**
- *
- * @author Nuno
- */
+
 public class RGBBlock extends Block{
     private static Color[] myColors = {Color.RED,Color.GREEN,Color.BLUE};
     private final boolean rule[][] = {{false,true,false},{true,true,true},{false,true,false}}; // Alteração

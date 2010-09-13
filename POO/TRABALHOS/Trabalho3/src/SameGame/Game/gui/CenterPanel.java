@@ -1,23 +1,17 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * ISEL - POO
+ * 3º trabalho Semestre Verão 2009/2010
+ * 33595 - Nuno Sousa
  */
-
 package SameGame.Game.gui;
 
-import SameGame.Game.SameGameEngine;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Container;
-import java.awt.Graphics;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
-/**
- *
- * @author nac
- */
+
 public class CenterPanel extends JPanel {
     public static final Border CENTER_BORDER = BorderFactory.createTitledBorder("XPTO");
 

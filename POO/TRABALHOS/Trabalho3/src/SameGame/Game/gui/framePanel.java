@@ -1,6 +1,7 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * ISEL - POO
+ * 3º trabalho Semestre Verão 2009/2010
+ * 33595 - Nuno Sousa
  */
 
 package SameGame.Game.gui;
@@ -13,10 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-/**
- *
- * @author nac
- */
+
 public class framePanel extends JPanel implements GameGUIVars_I{
     private File imageDir = new File(FRAMEBG_IMAGEPATH);
     private String[] image;
@@ -26,7 +24,7 @@ public class framePanel extends JPanel implements GameGUIVars_I{
     private JLabel bgl;
     private String filename;
 
-    public framePanel(SameGameUI_I ui){
+    public framePanel(){
         
         setLayout(new BorderLayout());
         filter = new FilenameFilter() { public boolean accept(File dir, String name) { return !name.startsWith(".") && name.endsWith(".jpg"); } };
@@ -35,7 +33,6 @@ public class framePanel extends JPanel implements GameGUIVars_I{
         bg = new ImageIcon(filename);
         bgl = new JLabel();
         bgl.setIcon(bg);
-        
         add(bgl);
         setName("Frame Panel");
     }

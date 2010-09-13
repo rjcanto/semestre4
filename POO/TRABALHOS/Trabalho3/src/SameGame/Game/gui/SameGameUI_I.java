@@ -1,21 +1,15 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * ISEL - POO
+ * 3º trabalho Semestre Verão 2009/2010
+ * 33595 - Nuno Sousa
  */
 
 package SameGame.Game.gui;
 
-import SameGame.Game.HighScores;
+import SameGame.Game.model.HighScores;
 import SameGame.Game.SameGameEngineAbstract;
-import SameGame.Game.SameGameEngine_I;
-import SameGame.Game.SameGameEngine_I;
-import SameGame.Game.model.Block;
-import javax.swing.JPanel;
 
-/**
- *
- * @author Nuno
- */
+
 public interface SameGameUI_I {
 
     public void setGameEngine(SameGameEngineAbstract c);

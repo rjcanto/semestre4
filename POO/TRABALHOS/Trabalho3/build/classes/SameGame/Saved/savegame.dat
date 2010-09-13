@@ -1,0 +1,12 @@
+0;0;
+10;10;
+RGBBlock;0;YMBlock;1;WBlock;0;RGBBlock;1;WBlock;0;YMBlock;0;RGBBlock;0;RGBBlock;2;YMBlock;1;RGBBlock;0;
+YMBlock;0;YMBlock;0;YMBlock;1;YMBlock;1;YMBlock;1;WBlock;0;YMBlock;1;RGBBlock;1;RGBBlock;1;WBlock;0;
+WBlock;0;RGBBlock;0;WBlock;0;WBlock;0;RGBBlock;2;BBlock;0;BBlock;0;BBlock;0;WBlock;0;YMBlock;1;
+BBlock;0;WBlock;0;WBlock;0;WBlock;0;WBlock;0;YMBlock;1;WBlock;0;BBlock;0;BBlock;0;RGBBlock;2;
+RGBBlock;2;BBlock;0;BBlock;0;BBlock;0;BBlock;0;YMBlock;0;BBlock;0;YMBlock;1;BBlock;0;BBlock;0;
+BBlock;0;WBlock;0;YMBlock;1;RGBBlock;0;BBlock;0;BBlock;0;BBlock;0;WBlock;0;YMBlock;0;WBlock;0;
+WBlock;0;WBlock;0;WBlock;0;RGBBlock;1;RGBBlock;2;YMBlock;1;BBlock;0;RGBBlock;0;BBlock;0;BBlock;0;
+BBlock;0;BBlock;0;WBlock;0;BBlock;0;WBlock;0;WBlock;0;BBlock;0;WBlock;0;BBlock;0;YMBlock;1;
+YMBlock;1;YMBlock;1;YMBlock;1;RGBBlock;1;BBlock;0;RGBBlock;0;BBlock;0;BBlock;0;YMBlock;1;YMBlock;1;
+BBlock;0;YMBlock;1;RGBBlock;2;WBlock;0;BBlock;0;YMBlock;1;BBlock;0;YMBlock;0;BBlock;0;RGBBlock;1;

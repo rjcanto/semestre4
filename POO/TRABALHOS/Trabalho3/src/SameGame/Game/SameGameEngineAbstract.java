@@ -1,6 +1,11 @@
-
+/*
+ * ISEL - POO
+ * 3º trabalho Semestre Verão 2009/2010
+ * 33595 - Nuno Sousa
+ */
 package SameGame.Game;
 
+import SameGame.Game.model.HighScores;
 import SameGame.Game.gui.SameGameUI_I;
 import SameGame.Game.model.Block;
 import SameGame.Game.model.Board;
@@ -30,6 +35,8 @@ public abstract class SameGameEngineAbstract extends Observable implements SameG
     private int score;
     private int parcialScore;
     private boolean gameFinished;
+    private int rotateLimit;
+
 
     /*constructor*/
     public SameGameEngineAbstract(int height, int width){
@@ -62,6 +69,11 @@ public abstract class SameGameEngineAbstract extends Observable implements SameG
         System.arraycopy(gameNames, 0, this.gameNames, 0, gameNames.length);
     }
 
+    public int getRotateLimit(){return rotateLimit;}
+    public void setRotateLimit(int limit){rotateLimit=limit;}
+    public void incRotateLimit(){++rotateLimit;}
+    public void decRotateLimit(){--rotateLimit;}
+    public boolean canRotate(){return (!gameFinished && rotateLimit>0);}
     /*
      * limites dos blocos tem de ter mesmo numero de posicoes que
      * nomes dos blocos. actualiza os nomes para o proximo jogo

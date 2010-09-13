@@ -1,10 +1,11 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * ISEL - POO
+ * 3º trabalho Semestre Verão 2009/2010
+ * 33595 - Nuno Sousa
  */
-
 package SameGame.Game;
 
+import SameGame.Game.model.HighScores;
 import SameGame.Game.model.Board;
 import java.io.BufferedReader;
 import java.io.File;
@@ -18,10 +19,6 @@ import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author Nuno
- */
 public class FileAccess implements SameGameVars_I{
 
     File saveGame;
@@ -98,7 +95,7 @@ public class FileAccess implements SameGameVars_I{
     }
     /*
      * <gametype>;
-     * <score>;<parcialScore>;
+     * <score>;
      * <rows>;<columns>;
      * <BOARD>;
      */
@@ -109,9 +106,8 @@ public class FileAccess implements SameGameVars_I{
                 return false;
 
         strtok = new StringTokenizer(bf.readLine(),FIELD_DELIMITER);
-        eng.setScores(Integer.parseInt(strtok.nextToken()),
-                            Integer.parseInt(strtok.nextToken()));
-
+        eng.setScores(Integer.parseInt(strtok.nextToken()),0);
+        eng.setRotateLimit(Integer.parseInt(strtok.nextToken()));
         return getBoard(bf);
     }
 
@@ -292,7 +288,8 @@ public class FileAccess implements SameGameVars_I{
         for (int i=0; i<eng.getBlockNames().length;++i)
             pw.print(eng.getBlockNames()[i]+FIELD_DELIMITER);
         pw.println();
-        pw.println(eng.getScore()+FIELD_DELIMITER+eng.getParcialScore()+FIELD_DELIMITER);
+        pw.println(eng.getScore()+FIELD_DELIMITER+eng.getParcialScore()+FIELD_DELIMITER
+                +eng.getRotateLimit()+FIELD_DELIMITER);
         pw.println(eng.getHeight()+FIELD_DELIMITER+eng.getWidth()+FIELD_DELIMITER);
         pw.print(eng.getBoard().toString());
         pw.flush();

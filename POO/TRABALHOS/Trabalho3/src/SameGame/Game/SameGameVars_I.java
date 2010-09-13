@@ -1,14 +1,12 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * ISEL - POO
+ * 3º trabalho Semestre Verão 2009/2010
+ * 33595 - Nuno Sousa
  */
 
 package SameGame.Game;
 
-/**
- *
- * @author Nuno
- */
+
 public interface SameGameVars_I {
     public final String SAVE_PATH ="src/Samegame/saved/";
     public final String SAVEGAME_FILENAME ="savegame.dat";
@@ -24,5 +22,7 @@ public interface SameGameVars_I {
     public final int ERROR_HIGHSCORES = 1;
     public final int ERROR_SAVEGAME = 2;
     public final int ERROR_OPTIONS = 4;
+
+    public final int ROTATE_LIMIT = 3;
     
 }

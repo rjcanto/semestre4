@@ -1,0 +1,4 @@
+<number gametypes>;<gametype1>;<gametype2>;<gametype n>;
+<number blocktypes>;<blocktype1>;<blocktype2>;<blocktype n>;
+<rows>;<columns>;<remainingBlocks>;<gametype>;<score>;<parcialScore>;
+<BOARD>;

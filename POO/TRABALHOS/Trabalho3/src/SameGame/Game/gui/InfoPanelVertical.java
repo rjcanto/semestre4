@@ -1,25 +1,20 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * ISEL - POO
+ * 3º trabalho Semestre Verão 2009/2010
+ * 33595 - Nuno Sousa
  */
 
 package SameGame.Game.gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.io.File;
-import java.io.FilenameFilter;
-import java.util.Observable;
-import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import SameGame.Fonts.Fonts;
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Observer;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.SwingConstants;
@@ -81,10 +76,24 @@ public class InfoPanelVertical extends InfoPanel implements GameGUIVars_I, Swing
         centerPanel.add(Box.createRigidArea(new Dimension(0,10)));
         centerPanel.add(getScore());
 
-        updateLabels();
         ImageIcon rightButtonIcon = new ImageIcon(ICON_RR_IMAGEPATH);
         ImageIcon leftButtonIcon = new ImageIcon(ICON_RL_IMAGEPATH);
 
+        JLabel rl = new JLabel("Rot. Left:");
+        rl.setFont(Fonts.INFOFONT_SMALL);
+        rl.setForeground(Color.GRAY);
+
+        getRotateLimit().setFont(Fonts.INFOFONT_MEDIUM);
+        getRotateLimit().setForeground(Color.red);
+
+        centerPanel.add(Box.createRigidArea(new Dimension(0,120)));
+        centerPanel.add(rl);
+        centerPanel.add(Box.createRigidArea(new Dimension(0,5)));
+        centerPanel.add(getRotateLimit());
+        centerPanel.add(Box.createRigidArea(new Dimension(0,5)));
+
+        getRotateLimit().setFont(Fonts.INFOFONT_MEDIUM);
+        getRotateLimit().setForeground(Color.red);
 
         /*rotate buttons*/
         JButton rotateLeft = new JButton("", leftButtonIcon);
@@ -92,14 +101,14 @@ public class InfoPanelVertical extends InfoPanel implements GameGUIVars_I, Swing
         rotateLeft.setMaximumSize(new Dimension(42, 42));
         rotateLeft.setBackground(Color.lightGray);
         rotateLeft.addActionListener(new rotateButttonAction());
+        setRotLeftButton(rotateLeft);
         JButton rotateRight = new JButton("", rightButtonIcon);
         rotateRight.setActionCommand("RIGHT");
         rotateRight.setMaximumSize(new Dimension(42, 42));
         rotateRight.setBackground(Color.lightGray);
         rotateRight.addActionListener(new rotateButttonAction());
+        setRotRightButton(rotateRight);
 
-
-        centerPanel.add(Box.createRigidArea(new Dimension(0,150)));
         centerPanel.add(rotateLeft);
         centerPanel.add(Box.createRigidArea(new Dimension(0,5)));
         centerPanel.add(rotateRight);
@@ -110,13 +119,13 @@ public class InfoPanelVertical extends InfoPanel implements GameGUIVars_I, Swing
         getGameMessage().setForeground(Color.red);
         centerPanel.add(getGameMessage());
 
-        
+        updateInfo();
         return centerPanel;
     }
 
     private class rotateButttonAction implements ActionListener{
         public void actionPerformed(ActionEvent e) {
-            System.out.println(e.getActionCommand());
+            //System.out.println(e.getActionCommand());
             getGameUI().rotate(e.getActionCommand().equalsIgnoreCase("RIGHT"));
         }
     }

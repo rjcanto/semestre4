@@ -1,11 +1,14 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * ISEL - POO
+ * 3º trabalho Semestre Verão 2009/2010
+ * 33595 - Nuno Sousa
  */
 
 package SameGame.Game.gui.Layouts;
 
+import SameGame.Game.gui.Layout_I;
 import SameGame.Game.gui.CenterPanel;
+import SameGame.Game.gui.InfoPanel;
 import SameGame.Game.gui.InfoPanelVertical;
 import SameGame.Game.gui.framePanel;
 import SameGame.Game.gui.SameGameUI_I;
@@ -14,14 +17,10 @@ import java.awt.Container;
 import javax.swing.JPanel;
 
 
-/**
- *
- * @author Nuno Alexandre Cancelo<nuno.cancelo at gmail.com>
- */
-public class Layout1 extends JPanel{
-        private JPanel center;
-        private JPanel info;
-        private JPanel framePanel;
+public class Layout1 extends JPanel implements Layout_I{
+        private CenterPanel center;
+        private InfoPanel info;
+        private framePanel framePanel;
 
         public Layout1(SameGameUI_I ui){
             Container frame = new Container();
@@ -29,7 +28,7 @@ public class Layout1 extends JPanel{
 
             center           = new CenterPanel(ui);
             info             = new InfoPanelVertical(ui);
-            framePanel       = new framePanel(ui);
+            framePanel       = new framePanel();
 
             framePanel.setLocation(0,0);
             center.setLocation(0, 0);
@@ -39,5 +38,9 @@ public class Layout1 extends JPanel{
             frame.add(info);
             frame.add(framePanel);
             add(frame);
+        }
+
+        public void changeBG(){
+            framePanel.changeBG();
         }
 }

@@ -1,0 +1,11 @@
+<Gametype>;<num de linhas>;
+<HighScore.toString>;
+<Gametype>;<num de linhas>;
+<HighScore.toString>;
+<Gametype>;<num de linhas>;
+<HighScore.toString>;
+<Gametype>;<num de linhas>;
+<HighScore.toString>;
+...
+...
+...
