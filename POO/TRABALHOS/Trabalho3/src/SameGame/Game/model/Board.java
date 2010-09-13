@@ -501,7 +501,7 @@ public class Board implements Board_I{
         String res="";
         for (int i=0; i<rows;++i){
             for (int j=0; j<columns;++j)
-                res+=grid[i][j]==null? " ; ;":grid[i][j].toString();
+                res+=grid[i][j]==null? " ;":grid[i][j].toString();
             res+='\n';
         }
         return res;

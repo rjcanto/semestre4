@@ -35,6 +35,7 @@ public class GamePanel extends JPanel implements MouseInputListener {
     public GamePanel(SameGameUI_I ui){
         this.myUI = ui;
         setLayout(new GridLayout(BOARD_H,BOARD_W));
+        //setBackground(new Color(125,125,125,125));
         setOpaque(true);
         setName("Game Panel");
         myUI.setGamePanel(this);

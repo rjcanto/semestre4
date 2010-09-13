@@ -13,7 +13,7 @@ import SameGame.Game.model.Board;
 public class ShifterRules extends SameGameRules {
 
     public ShifterRules(SameGameEngine eng){
-        super(eng, true);
+        super(eng, false);
     }
 
     @Override
@@ -34,6 +34,7 @@ public class ShifterRules extends SameGameRules {
     }
     public void rotateBoard(boolean right){
         Board myBoard = getGameEngine().getBoard();
+        myBoard.saveState(getGameEngine().getScore(), getGameEngine().getRotateLimit());
         myBoard.rotate(right);
         myBoard.shiftDown();
         myBoard.shiftLeft();
