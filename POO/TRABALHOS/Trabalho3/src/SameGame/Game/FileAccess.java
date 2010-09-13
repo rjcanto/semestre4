@@ -107,6 +107,7 @@ public class FileAccess implements SameGameVars_I{
 
         strtok = new StringTokenizer(bf.readLine(),FIELD_DELIMITER);
         eng.setScores(Integer.parseInt(strtok.nextToken()),0);
+        strtok.nextToken(); //parcial score (nao usado nesta altura)
         eng.setRotateLimit(Integer.parseInt(strtok.nextToken()));
         return getBoard(bf);
     }
