@@ -34,6 +34,7 @@ public class MegaShifterRules extends SameGameRules {
     }
     public void rotateBoard(boolean right){
         Board myBoard = getGameEngine().getBoard();
+        myBoard.saveState(getGameEngine().getScore(), getGameEngine().getRotateLimit());
         myBoard.rotate(right);
         myBoard.shiftDown();
         myBoard.shiftLeft();

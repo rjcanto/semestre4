@@ -72,6 +72,8 @@ public class SameGameEngine extends SameGameEngineAbstract implements SameGameVa
     public void undoMove(){
         getBoard().loadState(this);
         getBoard().unselect();
+        gameStarted();
+        verifyEnd();
         //getGameRules().setParcialScore(getBoard().getNumberSelectedBlocks());
         setChanged();
         notifyObservers();
@@ -132,14 +134,20 @@ public class SameGameEngine extends SameGameEngineAbstract implements SameGameVa
             return;
         getGameRules().rotateBoard(right);
         decRotateLimit();
+        setParcialScore(0);
         setChanged();
         notifyObservers();
     }
     
     public void newGame(boolean continueGame) {
-        resetRotateLimit();
         updateGameType();
         updateBlockLimits();
+        /*
+         * se não é para continuar o jogo verifica se é highscore no caso
+         * de jogo sem fim
+         */
+        if (!continueGame && isContinuous())
+            verifyHighScores();
         try{
             setGameRules((SameGameRules) Class.forName("SameGame.Game.gameType."+getGameNames()[getGameType()]).
                     getDeclaredConstructor(SameGameEngine.class).newInstance(this));
@@ -148,24 +156,31 @@ public class SameGameEngine extends SameGameEngineAbstract implements SameGameVa
             System.out.println(ex.getMessage());
             System.exit(0);
         }
-        /* se está a continuar um jogo (jogo gravado) verifica se o jogo
-         * já tinha terminado antes de gravar.
+
+        /*
+         * caso não seja continuação de jogo após criar nova instância de regras
+         * inicializa algumas variáveis de jogo que dependem do tipo de jogo
          */
-        if (!continueGame && isContinuous())
-            verifyHighScores();
-        
-        if (continueGame && verifyStuck()){
-            gameFinished();
-        }
-        else{
-            gameStarted();
-            resetRotateLimit();
-        }
-        
         if (!continueGame){
+            if (isContinuous()){
+                setRotateLimit(0);
+            }else{
+                resetRotateLimit();
+            }
             getBoard().initBoard(getBlockLimits());
             resetScores();
         }
+
+
+        /* se está a continuar um jogo (jogo gravado) verifica se o jogo
+         * já tinha terminado antes de gravar.
+         */
+        if (continueGame && verifyStuck()){
+            gameFinished();
+        }else{
+            gameStarted();
+        }
+
         setChanged();
         notifyObservers();
     }
